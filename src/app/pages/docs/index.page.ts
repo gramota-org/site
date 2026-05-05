@@ -58,6 +58,15 @@ import DocAttributes from '../../doc-attributes';
       margin: 0 0 3rem;
       font-size: 1.0625rem;
     }
+    /* Inline link inside the lede — keep it inline (not a card). */
+    .lede a {
+      color: rgb(var(--accent));
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+    .lede a:hover { text-decoration-thickness: 2px; }
+
     .section { margin-bottom: 3rem; }
     h2 {
       font-size: 0.875rem;
@@ -67,9 +76,12 @@ import DocAttributes from '../../doc-attributes';
       font-weight: 600;
       margin: 0 0 1rem;
     }
-    ul { list-style: none; padding: 0; margin: 0; }
-    li { margin-bottom: 0.5rem; }
-    a {
+    .section ul { list-style: none; padding: 0; margin: 0; }
+    .section li { margin-bottom: 0.5rem; }
+    /* Card-style links — scoped to the section list, NOT bare `a`,
+       so inline anchors elsewhere in the component (e.g. inside .lede)
+       stay inline and don't break across lines. */
+    .section a {
       display: block;
       padding: 0.875rem 1rem;
       border: 1px solid rgb(var(--border));
@@ -78,7 +90,7 @@ import DocAttributes from '../../doc-attributes';
       color: rgb(var(--fg));
       transition: border-color 80ms, transform 80ms;
     }
-    a:hover {
+    .section a:hover {
       border-color: rgb(var(--accent));
       transform: translateY(-1px);
     }
