@@ -1,8 +1,28 @@
 /// <reference types="vitest" />
 
 import { defineConfig } from 'vite';
+import { readdirSync } from 'node:fs';
+import { join, relative } from 'node:path';
 import analog from '@analogjs/platform';
 import tailwindcss from '@tailwindcss/vite';
+
+/** Walk `src/content/<area>/**` and turn each .md file into a `/<area>/<slug>` route. */
+function contentRoutes(area: 'docs' | 'blog'): string[] {
+  const root = join(__dirname, `src/content/${area}`);
+  const out: string[] = [];
+  function walk(dir: string): void {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const full = join(dir, entry.name);
+      if (entry.isDirectory()) walk(full);
+      else if (entry.isFile() && entry.name.endsWith('.md')) {
+        const slug = relative(root, full).replace(/\.md$/, '');
+        out.push(`/${area}/${slug}`);
+      }
+    }
+  }
+  walk(root);
+  return out;
+}
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -25,14 +45,15 @@ export default defineConfig(({ mode }) => ({
         },
       },
       prerender: {
-        // Routes to pre-render at build time. Add more here as content grows.
-        // The list is small so far; once content collections stabilize we'll
-        // switch this to a generator that walks src/content/docs/**.
+        // Statically: the home page + section indexes. Everything under
+        // /docs/<slug> and /blog/<slug> is discovered by walking
+        // src/content/<area>/**.
         routes: [
           '/',
           '/docs',
-          '/docs/getting-started',
-          '/docs/concepts/sd-jwt-vc',
+          ...contentRoutes('docs'),
+          '/blog',
+          ...contentRoutes('blog'),
         ],
       },
     }),

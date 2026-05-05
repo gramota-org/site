@@ -21,6 +21,7 @@ import { RouterLink } from '@angular/router';
             <ul>
               <li><a routerLink="/docs/getting-started">Getting started</a></li>
               <li><a routerLink="/docs">Documentation</a></li>
+              <li><a routerLink="/blog">Blog</a></li>
               <li>
                 <a href="https://www.npmjs.com/org/gramota" target="_blank" rel="noreferrer"
                   >npm packages</a

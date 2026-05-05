@@ -20,6 +20,12 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
             >Docs</a
           >
           <a
+            routerLink="/blog"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: false }"
+            >Blog</a
+          >
+          <a
             href="https://www.npmjs.com/org/gramota"
             target="_blank"
             rel="noreferrer"

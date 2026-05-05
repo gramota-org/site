@@ -47,5 +47,11 @@ import DocAttributes from '../../doc-attributes';
   `,
 })
 export default class DocsPage {
-  readonly post$ = injectContent<DocAttributes>('slug');
+  // Tell Analog to resolve the `slug` route param against
+  // src/content/docs/, so /docs/concepts/sd-jwt-vc loads
+  // src/content/docs/concepts/sd-jwt-vc.md.
+  readonly post$ = injectContent<DocAttributes>({
+    param: 'slug',
+    subdirectory: 'src/content/docs',
+  });
 }
