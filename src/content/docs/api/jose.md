@@ -6,6 +6,8 @@ section: API reference
 order: 8
 ---
 
+# @gramota/jose
+
 > JWS sign + verify, x5c chain validation, pluggable Signer Strategy.
 
 Install: `pnpm add @gramota/jose`

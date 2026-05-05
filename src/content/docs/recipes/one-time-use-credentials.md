@@ -6,6 +6,8 @@ section: Recipes
 order: 2
 ---
 
+# One-time-use credentials end-to-end
+
 The privacy-preserving pattern: each presentation reveals a credential
 the verifier has never seen before, so two visits to the same store
 can't be correlated.

@@ -6,6 +6,8 @@ section: API reference
 order: 10
 ---
 
+# @gramota/credential-format
+
 > Pluggable format-handler registry (SD-JWT-VC ships; mDoc plugs in).
 
 Install: `pnpm add @gramota/credential-format`

@@ -6,6 +6,8 @@ section: Guides
 order: 2
 ---
 
+# Build an issuer
+
 A relying party verifies; an *issuer* mints credentials in the first
 place. This guide walks the OID4VCI pre-authorized-code flow end-to-end,
 producing an SD-JWT-VC the EU reference wallet will accept.

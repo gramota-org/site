@@ -6,6 +6,8 @@ section: API reference
 order: 7
 ---
 
+# @gramota/dcql
+
 > Digital Credentials Query Language — OID4VP 2.0 query format.
 
 Install: `pnpm add @gramota/dcql`

@@ -6,6 +6,8 @@ section: Concepts
 order: 3
 ---
 
+# OID4VP explained
+
 OID4VP ("OpenID for Verifiable Presentations") is the verification half
 of the loop. A wallet shows a credential to a verifier, the verifier
 checks it. Like OID4VCI, it sits on top of OAuth and reuses its

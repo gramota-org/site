@@ -6,6 +6,8 @@ section: Guides
 order: 3
 ---
 
+# Batch issuance — one-time-use credentials
+
 A long-lived credential is a tracking primitive. Every time the same
 SD-JWT-VC is presented, verifiers can correlate visits — even
 selective-disclosure hash digests are stable per-credential.

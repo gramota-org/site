@@ -6,6 +6,8 @@ section: API reference
 order: 6
 ---
 
+# @gramota/presentation-exchange
+
 > DIF Presentation Exchange v2 — legacy OID4VP 1.0 query format.
 
 Install: `pnpm add @gramota/presentation-exchange`

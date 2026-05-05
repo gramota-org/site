@@ -6,6 +6,8 @@ section: API reference
 order: 4
 ---
 
+# @gramota/oid4vp
+
 > OID4VP wire format — request, response, signed JAR (RFC 9101), x509_san_dns cert helpers.
 
 Install: `pnpm add @gramota/oid4vp`

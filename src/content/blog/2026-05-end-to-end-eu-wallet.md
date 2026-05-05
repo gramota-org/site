@@ -6,6 +6,8 @@ date: 2026-05-05
 author: Petromil Pavlov
 ---
 
+# Verified end-to-end against the EU reference wallet
+
 We just shipped `@gramota/issuer@0.3.0` with batch issuance, and the
 EU reference wallet on Android emulator now mints a fresh pool of 10
 unlinkable credentials per offer. Both halves of the protocol —

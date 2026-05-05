@@ -6,6 +6,8 @@ section: API reference
 order: 11
 ---
 
+# @gramota/trust
+
 > TrustResolver Strategy — Static, JwksUrl, SdJwtVcIssuer (.well-known/jwt-vc-issuer).
 
 Install: `pnpm add @gramota/trust`

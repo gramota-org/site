@@ -6,6 +6,8 @@ section: Concepts
 order: 2
 ---
 
+# OID4VCI explained
+
 OID4VCI ("OpenID for Verifiable Credential Issuance") is the protocol
 that gets a credential into a wallet. Don't let the name scare you —
 it's mostly OAuth 2.0 with three or four extra bytes of vocabulary.

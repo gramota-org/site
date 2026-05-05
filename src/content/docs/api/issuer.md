@@ -6,6 +6,8 @@ section: API reference
 order: 2
 ---
 
+# @gramota/issuer
+
 > Issuer for SD-JWT-VC, with single + batch issuance for one-time-use credential pools.
 
 Install: `pnpm add @gramota/issuer`

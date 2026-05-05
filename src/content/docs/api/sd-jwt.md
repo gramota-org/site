@@ -6,6 +6,8 @@ section: API reference
 order: 9
 ---
 
+# @gramota/sd-jwt
+
 > SD-JWT-VC parser, hash binding, KB-JWT issuance / verification.
 
 Install: `pnpm add @gramota/sd-jwt`

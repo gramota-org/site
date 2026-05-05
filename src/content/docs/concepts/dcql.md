@@ -6,6 +6,8 @@ section: Concepts
 order: 4
 ---
 
+# DCQL — credential query language
+
 DCQL ("Digital Credentials Query Language") is OID4VP 2.0's way of
 saying: "here's the shape of credentials I need; reply with whatever
 you have that matches." It's compact JSON — a few hundred bytes for

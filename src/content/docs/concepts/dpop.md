@@ -6,6 +6,8 @@ section: Concepts
 order: 5
 ---
 
+# DPoP — sender-constrained tokens
+
 A bearer token is bearer — anyone who has it, can use it. Steal a
 wallet's access token from a network log, and you can issue yourself
 a credential.

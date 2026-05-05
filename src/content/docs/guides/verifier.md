@@ -6,6 +6,8 @@ section: Guides
 order: 1
 ---
 
+# Build a verifier
+
 This is the longer-form version of the [getting started](/docs/getting-started)
 example — same shape, but with the full 12-check pipeline explained
 and the surrounding HTTP plumbing wired up.

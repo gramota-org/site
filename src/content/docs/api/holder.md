@@ -6,6 +6,8 @@ section: API reference
 order: 3
 ---
 
+# @gramota/holder
+
 > Headless wallet — credential store + import/present/refill operations.
 
 Install: `pnpm add @gramota/holder`

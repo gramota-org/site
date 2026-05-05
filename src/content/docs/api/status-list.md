@@ -6,6 +6,8 @@ section: API reference
 order: 12
 ---
 
+# @gramota/status-list
+
 > IETF Token Status List + StatusResolver Strategy for revocation / suspension.
 
 Install: `pnpm add @gramota/status-list`

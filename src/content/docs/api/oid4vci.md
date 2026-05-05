@@ -6,6 +6,8 @@ section: API reference
 order: 5
 ---
 
+# @gramota/oid4vci
+
 > OID4VCI client + server — Draft 13/15 normalized, PAR, DPoP both sides.
 
 Install: `pnpm add @gramota/oid4vci`

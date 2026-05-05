@@ -6,6 +6,8 @@ section: Concepts
 order: 1
 ---
 
+# SD-JWT-VC explained
+
 If you've worked with JWTs, you already understand 80% of SD-JWT-VC.
 This page covers the other 20% — the part that makes selective
 disclosure work without trusting the holder.

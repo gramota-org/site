@@ -6,6 +6,8 @@ section: Recipes
 order: 1
 ---
 
+# Verify an EU PID
+
 Useful when you want to prove your verifier works against credentials
 the EU itself signed — not just synthetic ones from your own issuer.
 This recipe issues + verifies a real EU PID via the Commission's

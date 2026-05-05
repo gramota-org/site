@@ -53,44 +53,64 @@ html, body {
 }
 
 /* ---------------------------------------------------------------- */
-/* Markdown rendering — applied by `<analog-markdown>` to its content */
+/* Markdown rendering                                                 */
+/*                                                                    */
+/* Analog ships two custom elements that host parsed-Markdown HTML:   */
+/*   <analog-markdown>        — explicit inline use                   */
+/*   <analog-markdown-route>  — used when the route auto-renders a    */
+/*                              .md content file via injectContent    */
+/*                                                                    */
+/* Both have ViewEncapsulation.None, so styles target them globally.  */
+/* The `md`-class fallback covers older Analog releases that emit a   */
+/* `.analog-markdown` class on a wrapper div.                         */
 /* ---------------------------------------------------------------- */
 
+analog-markdown,
+analog-markdown-route,
 .analog-markdown {
+  display: block;
   font-size: 1rem;
   line-height: 1.7;
   color: rgb(var(--fg));
 }
 
-.analog-markdown h1,
-.analog-markdown h2,
-.analog-markdown h3,
-.analog-markdown h4 {
+analog-markdown h1, analog-markdown h2, analog-markdown h3, analog-markdown h4,
+analog-markdown-route h1, analog-markdown-route h2, analog-markdown-route h3, analog-markdown-route h4,
+.analog-markdown h1, .analog-markdown h2, .analog-markdown h3, .analog-markdown h4 {
   font-weight: 700;
   letter-spacing: -0.01em;
   margin: 2.5rem 0 1rem;
   scroll-margin-top: 5rem;
 }
-.analog-markdown h1 { font-size: 2rem; margin-top: 0; }
-.analog-markdown h2 { font-size: 1.5rem; }
-.analog-markdown h3 { font-size: 1.2rem; }
+analog-markdown h1, analog-markdown-route h1, .analog-markdown h1 { font-size: 2rem; margin-top: 0; }
+analog-markdown h2, analog-markdown-route h2, .analog-markdown h2 { font-size: 1.5rem; }
+analog-markdown h3, analog-markdown-route h3, .analog-markdown h3 { font-size: 1.2rem; }
 
-.analog-markdown p { margin: 0 0 1.25rem; }
-.analog-markdown a {
+analog-markdown p, analog-markdown-route p, .analog-markdown p { margin: 0 0 1.25rem; }
+
+analog-markdown a, analog-markdown-route a, .analog-markdown a {
   color: rgb(var(--accent));
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
-.analog-markdown a:hover { text-decoration-thickness: 2px; }
+analog-markdown a:hover, analog-markdown-route a:hover, .analog-markdown a:hover {
+  text-decoration-thickness: 2px;
+}
 
+analog-markdown ul, analog-markdown ol,
+analog-markdown-route ul, analog-markdown-route ol,
 .analog-markdown ul, .analog-markdown ol {
   margin: 0 0 1.25rem;
   padding-left: 1.5rem;
 }
-.analog-markdown li { margin: 0.25rem 0; }
+analog-markdown li, analog-markdown-route li, .analog-markdown li { margin: 0.25rem 0; }
 
-.analog-markdown code {
+/* Inline code — Shiki only highlights fenced blocks; inline backticks
+   stay as raw <code> so we style them ourselves. */
+analog-markdown :not(pre) > code,
+analog-markdown-route :not(pre) > code,
+.analog-markdown :not(pre) > code {
   font-family: var(--font-mono);
   font-size: 0.875em;
   padding: 0.125em 0.375em;
@@ -98,24 +118,25 @@ html, body {
   background: rgb(var(--border) / 0.5);
 }
 
-/* Shiki block — Analog wraps it in <pre><code class="language-..."> */
-.analog-markdown pre {
+/* Shiki fenced blocks — pre.shiki gets an inline background-color from
+   the highlighter (theme-determined). We add the layout. */
+analog-markdown pre, analog-markdown-route pre, .analog-markdown pre {
   margin: 0 0 1.5rem;
   padding: 1.25rem 1.5rem;
   border-radius: 0.5rem;
   overflow-x: auto;
   font-size: 0.875rem;
   line-height: 1.6;
-  background: rgb(var(--code-bg));
+  font-family: var(--font-mono);
 }
-.analog-markdown pre code {
+analog-markdown pre code, analog-markdown-route pre code, .analog-markdown pre code {
   padding: 0;
   background: transparent;
-  color: rgb(var(--code-fg));
   font-size: inherit;
+  font-family: inherit;
 }
 
-.analog-markdown blockquote {
+analog-markdown blockquote, analog-markdown-route blockquote, .analog-markdown blockquote {
   margin: 0 0 1.25rem;
   padding: 0.5rem 1rem;
   border-left: 3px solid rgb(var(--accent));
@@ -123,20 +144,22 @@ html, body {
   font-style: italic;
 }
 
-.analog-markdown table {
+analog-markdown table, analog-markdown-route table, .analog-markdown table {
   width: 100%;
   border-collapse: collapse;
   margin: 0 0 1.5rem;
   font-size: 0.95rem;
 }
+analog-markdown th, analog-markdown td,
+analog-markdown-route th, analog-markdown-route td,
 .analog-markdown th, .analog-markdown td {
   padding: 0.5rem 0.75rem;
   text-align: left;
   border-bottom: 1px solid rgb(var(--border));
 }
-.analog-markdown th { font-weight: 600; }
+analog-markdown th, analog-markdown-route th, .analog-markdown th { font-weight: 600; }
 
-.analog-markdown hr {
+analog-markdown hr, analog-markdown-route hr, .analog-markdown hr {
   border: 0;
   border-top: 1px solid rgb(var(--border));
   margin: 2rem 0;

@@ -116,6 +116,11 @@ async function generatePackage({ name, order, blurb }) {
     '---',
   ].join('\n');
   const intro = [
+    // h1 in the body — Analog auto-routes content/**/*.md but doesn't
+    // render the frontmatter title as h1; the markdown body has to
+    // include it itself.
+    `# @gramota/${name}`,
+    '',
     `> ${blurb}`,
     '',
     `Install: \`pnpm add @gramota/${name}\``,

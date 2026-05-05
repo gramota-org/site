@@ -6,6 +6,8 @@ section: Getting started
 order: 1
 ---
 
+# Getting started
+
 The fastest path from "I just heard about EUDIW" to a working verifier
 that returns parsed claims is about five minutes. Here it is.
 

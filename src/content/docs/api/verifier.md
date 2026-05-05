@@ -6,6 +6,8 @@ section: API reference
 order: 1
 ---
 
+# @gramota/verifier
+
 > Relying-party verifier — 12 named security checks, IETF SD-JWT-VC + KB-JWT + OID4VP-compliant.
 
 Install: `pnpm add @gramota/verifier`
