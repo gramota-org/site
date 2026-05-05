@@ -74,6 +74,16 @@ analog-markdown-route,
   color: rgb(var(--fg));
 }
 
+/* Page-level chrome for the auto-routed markdown pages. The custom page
+   components (home, /docs index, /blog index) carry their own wrapper;
+   only `<analog-markdown-route>` (rendered directly into <router-outlet>
+   for /docs/<slug> and /blog/<slug>) needs this. */
+analog-markdown-route {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
 analog-markdown h1, analog-markdown h2, analog-markdown h3, analog-markdown h4,
 analog-markdown-route h1, analog-markdown-route h2, analog-markdown-route h3, analog-markdown-route h4,
 .analog-markdown h1, .analog-markdown h2, .analog-markdown h3, .analog-markdown h4 {
