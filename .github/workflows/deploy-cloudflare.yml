@@ -1,0 +1,47 @@
+# Cloudflare Pages deploy — alternative to GitHub Pages.
+#
+# To use this instead of deploy.yml:
+#   1. Create a Pages project in the Cloudflare dashboard (one-time).
+#      Project name = "gramota-site" (matches `projectName` below).
+#   2. Add two repo secrets:
+#        gh secret set CLOUDFLARE_API_TOKEN  # Pages:Edit token
+#        gh secret set CLOUDFLARE_ACCOUNT_ID
+#   3. Disable deploy.yml (rename to deploy.yml.disabled or delete).
+#   4. Once a custom domain (gramota.dev) is configured in the Pages
+#      dashboard, drop the BASE_HREF env below — CF Pages serves the
+#      site at the apex.
+name: Deploy to Cloudflare Pages
+
+# Disabled by default — switch to `on: push` to activate.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm gen:api
+      - run: pnpm build
+
+      - name: Publish
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist/analog/public --project-name=gramota-site --branch=main

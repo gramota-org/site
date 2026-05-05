@@ -26,6 +26,11 @@ function contentRoutes(area: 'docs' | 'blog'): string[] {
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  // Base path for asset URLs. Set BASE_HREF=/site/ when deploying to a
+  // GitHub Pages project URL (gramota-org.github.io/site/); leave unset
+  // (defaults to "/") for a custom domain (e.g. gramota.dev) or
+  // Cloudflare Pages.
+  base: process.env.BASE_HREF ?? '/',
   build: {
     target: ['es2020'],
   },
@@ -33,6 +38,23 @@ export default defineConfig(({ mode }) => ({
     mainFields: ['module'],
   },
   plugins: [
+    // Patch <base href="/" /> in index.html when BASE_HREF is set, so
+    // Angular's router resolves routes against the right path prefix
+    // when deployed under a GitHub Pages project URL.
+    {
+      name: 'rewrite-base-href',
+      transformIndexHtml: {
+        order: 'pre',
+        handler(html: string): string {
+          const base = process.env.BASE_HREF ?? '/';
+          if (base === '/') return html;
+          return html.replace(
+            /<base\s+href="[^"]*"\s*\/?>/,
+            `<base href="${base}" />`,
+          );
+        },
+      },
+    },
     analog({
       content: {
         highlighter: 'shiki',

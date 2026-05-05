@@ -1,0 +1,65 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Required for the official deploy-pages action.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one in-flight deploy at a time. New pushes wait for the current
+# build to finish, then supersede any queued one.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # API reference is generated and committed to the repo (under
+      # src/content/docs/api/). Regenerate here so a release of any
+      # @gramota/* package automatically refreshes the published API
+      # docs once Dependabot bumps the lockfile.
+      - run: pnpm gen:api
+
+      # GitHub Pages serves project repos under https://<owner>.github.io/<repo>/
+      # so we have to set the base href accordingly. When you point a custom
+      # domain (e.g. gramota.dev) at this Pages site, drop the BASE_HREF env
+      # to get the apex back.
+      - run: pnpm build
+        env:
+          BASE_HREF: /site/
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/analog/public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

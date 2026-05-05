@@ -49,10 +49,30 @@ will switch to a globbed generator.
 
 ## Deploy
 
-Cloudflare Pages auto-deploys `main` on push. Build command: `pnpm build`,
-output directory: `dist/analog/public`. The site is statically pre-rendered;
-the Node server in `dist/analog/server` is only needed for routes that
-opt into SSR (none yet).
+Two options:
+
+**1. GitHub Pages** (default, zero secrets). `.github/workflows/deploy.yml`
+builds on every push to `main` and deploys to GitHub Pages. Enable
+Pages in repo settings → Pages → Source: "GitHub Actions". The site
+goes live at `https://<owner>.github.io/<repo>/` (the workflow sets
+`BASE_HREF=/site/` so asset URLs and the Angular base href line up).
+When you point a custom domain at it, drop `BASE_HREF` from the
+workflow.
+
+**2. Cloudflare Pages** (better edge perf, custom-domain-first).
+`.github/workflows/deploy-cloudflare.yml` is disabled by default;
+to switch:
+1. Create a Pages project in the Cloudflare dashboard.
+2. Add `CLOUDFLARE_API_TOKEN` (Pages:Edit) and `CLOUDFLARE_ACCOUNT_ID`
+   as repo secrets.
+3. Change the workflow trigger from `workflow_dispatch` to `push`.
+4. Disable / delete `deploy.yml`.
+
+Build command for either path: `pnpm build` (which runs
+`pnpm gen:api && vite build`). Output: `dist/analog/public/`. The
+site is statically pre-rendered — the Node server in
+`dist/analog/server/` is only needed for routes that opt into SSR
+(none yet).
 
 ## Content workflow
 
