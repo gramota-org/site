@@ -79,6 +79,7 @@ Server side (you're an issuer or a resource server) — use
 ```ts
 import { verifyDpopJwt } from "@gramota/oid4vci";
 
+// On /token: no access token yet, no `ath` claim expected.
 const { jkt } = await verifyDpopJwt({
   jwt: req.headers.dpop as string,
   htm: "POST",
@@ -86,26 +87,53 @@ const { jkt } = await verifyDpopJwt({
   hasSeenJti: (j) => replayStore.has(j),
   recordJti: (j) => replayStore.add(j),
 });
+// Persist `jkt` alongside the access token you're about to mint.
 
-// Bind jkt to the access token you're about to issue. On the next
-// /credential call, expectedJkt: <this jkt> + expectedAth: <token hash>
-// rejects any request with a different DPoP key.
+// On /credential: pass `accessToken` so verifyDpopJwt enforces `ath`.
+// Then compare the result's jkt against the one recorded at /token-time
+// — that's the sender-constraint check.
+const recordedJkt = tokenStore.get(accessToken).jkt;
+const { jkt: presentedJkt } = await verifyDpopJwt({
+  jwt: req.headers.dpop as string,
+  htm: "POST",
+  htu: "https://issuer.example/oid4vci/credential",
+  accessToken,
+  hasSeenJti: (j) => replayStore.has(j),
+  recordJti: (j) => replayStore.add(j),
+});
+if (presentedJkt !== recordedJkt) {
+  throw new Error("DPoP key mismatch — token replay");
+}
 ```
 
 Client side (you're building a wallet) — `Oid4vciClient` handles DPoP
-automatically; you supply a `dpopSigner` (any `Signer` implementation,
-typically `JwkSigner` over a fresh in-memory key) and the client adds
-the headers per request:
+automatically when the issuer's metadata advertises it
+(`dpop_signing_alg_values_supported`). You configure the client with
+either a raw key pair or a `Signer` Strategy; the client uses the
+same key for proof-of-possession across the flow.
 
 ```ts
-import { Oid4vciClient, JwkSigner } from "@gramota/oid4vci";
+import { Oid4vciClient } from "@gramota/oid4vci";
+import { JwkSigner } from "@gramota/jose";
+import { generateKeyPair, exportJWK } from "jose";
 
-const client = new Oid4vciClient({
-  issuerUrl: "https://issuer.example",
-  dpopSigner: await JwkSigner.generate("ES256"),
+// Generate a fresh keypair (production wallets keep this in secure storage).
+const { publicKey, privateKey } = await generateKeyPair("ES256", {
+  extractable: true,
 });
 
-await client.requestCredential({ /* ... */ });
+const client = new Oid4vciClient({
+  signer: new JwkSigner({
+    publicKey: await exportJWK(publicKey),
+    privateKey: await exportJWK(privateKey),
+    alg: "ES256",
+  }),
+  // dpopPolicy defaults to "auto" — DPoP is used iff the AS advertises
+  // a compatible signing alg. Pass `true` to require it, `false` to
+  // disable.
+});
+
+await client.acceptOffer(offerUrl, { trustedIssuers: [issuerJwk] });
 ```
 
 ## When to skip DPoP

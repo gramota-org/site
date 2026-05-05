@@ -130,12 +130,18 @@ shipped for compat.
 ## In Gramota
 
 [`@gramota/dcql`](https://www.npmjs.com/package/@gramota/dcql) gives:
-- `validateQuery` — sanity-check a query before sending it.
-- `matchCredentials` — wallet-side, finds credentials in a store that
-  match a query.
-- `pickClaims` — given a credential and the query, returns the subset
-  of disclosures to include in the presentation.
+- `selectForDcql` — wallet-side selection: given a DCQL query and a set
+  of stored credentials, returns the credentials + claim subsets that
+  satisfy the query (or a structured failure when nothing matches).
+- `DcqlSdJwtVcMatcher` — the SD-JWT-VC matcher implementation. Pluggable
+  via the `DcqlMatcher` interface, so adding mDoc support means
+  shipping a `DcqlMdocMatcher` and registering it.
+- `evaluateDcqlPath` / `validateDcqlPath` / `leafPropertyName` — path
+  utilities for building or interpreting `claim.path` arrays.
+- `DcqlError` with structured codes — useful when the query is
+  malformed and you need to surface why.
 
 Most users won't touch this directly — `Verifier.verify` handles the
-DCQL response shape automatically, and the holder side wraps
-`matchCredentials` in higher-level "match + present" calls.
+DCQL response shape automatically, and `@gramota/holder`'s presentation
+flow uses `selectForDcql` under the hood to match stored credentials
+against the request.

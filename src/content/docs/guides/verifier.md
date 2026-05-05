@@ -55,37 +55,34 @@ const verifier = new Verifier({
 ```ts
 import { randomBytes } from "node:crypto";
 
-function mintRequest(): { jwt: string; nonce: string; state: string } {
+async function mintRequest(): Promise<{ jwt: string; nonce: string; state: string }> {
   const nonce = randomBytes(16).toString("base64url");
   const state = randomBytes(16).toString("base64url");
 
-  return {
-    jwt: signAuthorizationRequest({
-      request: {
-        client_id: "x509_san_dns:my-bank.com",
-        response_type: "vp_token",
-        response_mode: "direct_post",
-        response_uri: "https://my-bank.com/v1/verifications/callback",
-        nonce,
-        state,
-        dcql_query: {
-          credentials: [{
-            id: "pid",
-            format: "dc+sd-jwt",
-            meta: { vct_values: ["urn:eudi:pid:1"] },
-            claims: [
-              { path: ["given_name"] },
-              { path: ["family_name"] },
-              { path: ["birth_date"] },
-            ],
-          }],
-        },
+  const jwt = await signAuthorizationRequest({
+    request: {
+      client_id: "x509_san_dns:my-bank.com",
+      response_type: "vp_token",
+      response_mode: "direct_post",
+      response_uri: "https://my-bank.com/v1/verifications/callback",
+      nonce,
+      state,
+      dcql_query: {
+        credentials: [{
+          id: "pid",
+          format: "dc+sd-jwt",
+          meta: { vct_values: ["urn:eudi:pid:1"] },
+          claims: [
+            { path: ["given_name"] },
+            { path: ["family_name"] },
+            { path: ["birth_date"] },
+          ],
+        }],
       },
-      signingCert: cert,
-    }),
-    nonce,
-    state,
-  };
+    },
+    cert,
+  });
+  return { jwt, nonce, state };
 }
 ```
 
@@ -108,7 +105,7 @@ const sessions = new Map<string, { nonce: string }>();
 // The "start verification" endpoint. Returns a deep link the user
 // scans / clicks.
 app.post("/v1/verifications", async (req, reply) => {
-  const { jwt, nonce, state } = mintRequest();
+  const { jwt, nonce, state } = await mintRequest();
   sessions.set(state, { nonce });
 
   const requestUri = `https://my-bank.com/request/${state}`;

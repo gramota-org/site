@@ -38,55 +38,103 @@ Two prerequisites:
 
 ## The wallet side
 
-For an SDK-based wallet using `@gramota/holder`:
+`@gramota/holder` ships the building blocks but **not** a built-in
+"one-time-use" policy — the SDK is intentionally lower-level than that.
+Its `CredentialsApi` exposes:
+
+- `receive(token, options)` — validate and store an issued SD-JWT-VC.
+- `list(query?)` — read out the credentials matching a query.
+- `get(id)` — read one by id.
+- `present({ credentialId, disclose, audience, nonce })` — render
+  one credential as an SD-JWT-VC presentation (issuer JWT +
+  selected disclosures + KB-JWT).
+
+The one-time-use policy is *layered on top*: persistent state outside
+the SDK that tracks which credential ids you've already presented.
+
+## A minimal one-time-use wrapper
 
 ```ts
-import { Holder } from "@gramota/holder";
-import { FileCredentialStore } from "@gramota/holder";
+import { Holder, InMemoryCredentialStore } from "@gramota/holder";
 
 const holder = new Holder({
-  store: new FileCredentialStore({ path: "./wallet-data.json" }),
+  store: new InMemoryCredentialStore(),
+  // Holder needs a signer for proof JWTs (during issuance) and
+  // KB-JWTs (during presentation). Either { privateKey, publicKey,
+  // alg } shorthand or { signer: <Signer Strategy> } in production.
+  publicKey: holderPublicJwk,
+  privateKey: holderPrivateJwk,
+  alg: "ES256",
 });
 
-// One credential per presentation. The wallet picks the next unused
-// one from the pool, marks it as used, and presents it.
-const presentation = await holder.credentials.present({
-  query: dcqlQuery,           // from the verifier's authorization request
-  audience: verifierAudience,  // verifier's client_id
-  nonce: verifierNonce,        // from the request
-  // Picks an unused credential matching the query; updates use count.
-  policy: "one-time-use",
-});
+// Simple "have I used this id yet" map — production uses durable storage.
+const usedIds = new Set<string>();
 
-// Send presentation to the verifier (response_uri / response_mode).
-await fetch(verifierResponseUri, {
-  method: "POST",
-  body: new URLSearchParams({
-    vp_token: JSON.stringify(presentation.vpToken),
-    state: presentation.state,
-  }),
-});
-```
+async function presentOnce(opts: {
+  vct: string;
+  audience: string;
+  nonce: string;
+  disclose: readonly string[];
+}): Promise<string> {
+  // CredentialQuery filters on issuer/withClaim. To filter by vct,
+  // pull all and check parsed.payload.vct in app code.
+  const all = await holder.credentials.list();
+  const candidates = all.filter(
+    (c) => c.parsed.payload["vct"] === opts.vct,
+  );
+  const fresh = candidates.find((c) => !usedIds.has(c.id));
+  if (!fresh) throw new Error("pool empty — refill from issuer");
 
-## Refill the pool
-
-```ts
-const remaining = await holder.credentials.poolSize({ vct: "urn:eudi:pid:1" });
-
-if (remaining < 2) {
-  // Re-run issuance: holder generates 10 fresh keys, sends 10 proofs,
-  // receives 10 credentials back, stores them.
-  await holder.credentials.refill({
-    issuerUrl: "https://issuer.example.com",
-    vct: "urn:eudi:pid:1",
-    count: 10,
+  const presentation = await holder.credentials.present({
+    credentialId: fresh.id,
+    disclose: opts.disclose,
+    audience: opts.audience,
+    nonce: opts.nonce,
   });
+
+  usedIds.add(fresh.id);
+  return presentation;
 }
 ```
 
-In the EU reference wallet, this happens on a background timer (every
-~15 minutes, or when the pool drops below `minNumberOfCredentials = 2`).
-You can wire the same with a `setInterval` in your wallet app.
+## Refilling the pool
+
+When the pool is low, call your issuer for another batch. With
+`@gramota/holder`, the `offers.accept(url, options)` flow handles
+the OID4VCI round-trip:
+
+```ts
+async function refill(offerUrl: string): Promise<number> {
+  // The issuer's offer URL covers ONE credential by default. To get
+  // a pool, the issuer either (a) responds to a single offer with
+  // batched credentials when the wallet asks (numberOfCredentials
+  // hint via the wallet's batch_credential_issuance support), or
+  // (b) hands you N pre-auth codes — call accept() N times.
+  await holder.offers.accept(offerUrl, {
+    trustedIssuers: [issuerJwk],
+  });
+
+  const total = (await holder.credentials.list()).length;
+  return total;
+}
+```
+
+The currently-published `Holder.offers.accept` consumes one offer →
+one credential (or more, if the issuer's response carries
+`credentials: [...]` per Draft 15). For "always have ≥ 2 in the pool",
+wrap this with a check:
+
+```ts
+const all = await holder.credentials.list();
+const remaining = all
+  .filter((c) => c.parsed.payload["vct"] === "urn:eudi:pid:1")
+  .filter((c) => !usedIds.has(c.id))
+  .length;
+
+if (remaining < 2) {
+  await refill(yourIssuerOfferUrl);
+}
+```
 
 ## Verifier side: nothing changes
 

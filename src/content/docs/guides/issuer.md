@@ -179,17 +179,22 @@ app.post("/oid4vci/credential", async (req, reply) => {
     return reply.code(401).send({ error: "invalid_token" });
   }
 
-  // 2. Re-verify DPoP if it was used at /token.
+  // 2. Re-verify DPoP if it was used at /token. Pass `accessToken` so
+  // verifyDpopJwt enforces the `ath` claim against the bearer token.
+  // The thumbprint check (sender constraint) is up to the caller —
+  // compare result.jkt to the value we recorded at /token-time.
   if (t.jkt) {
-    await verifyDpopJwt({
+    const { jkt } = await verifyDpopJwt({
       jwt: req.headers.dpop as string,
       htm: "POST",
       htu: `${ISSUER_URL}/oid4vci/credential`,
-      expectedJkt: t.jkt,
-      expectedAth: auth,
+      accessToken: auth,
       hasSeenJti: (j) => dpopJtiSeen.has(j),
       recordJti: (j) => dpopJtiSeen.add(j),
     });
+    if (jkt !== t.jkt) {
+      return reply.code(401).send({ error: "invalid_token" });
+    }
   }
 
   // 3. Parse the request — handles Draft 13 + Draft 15 shapes.

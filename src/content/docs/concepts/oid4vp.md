@@ -96,7 +96,8 @@ matches the `client_id`, the wallet will engage.
 
 For SDK code, [`@gramota/oid4vp`](https://www.npmjs.com/package/@gramota/oid4vp)
 provides:
-- `signAuthorizationRequest({ request, signingCert })` — builds the JAR.
+- `signAuthorizationRequest({ request, cert })` — builds the JAR.
+  Returns `Promise<string>` (the compact-serialised JWS).
 - `generateSigningCert({ sanDns, … })` — mints a self-signed cert for
   dev (production uses a real CA-issued cert).
 - `signingCertToJwks(cert)` — for publishing the verifier's keys at

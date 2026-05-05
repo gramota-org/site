@@ -91,9 +91,14 @@ the batch-issuance guide](/docs/guides/batch-issuance).
 ## In Gramota
 
 Client side (wallet) — `@gramota/oid4vci` provides:
-- `Oid4vciClient` — high-level orchestrator (`authorize`, `redeem`, `requestCredential`).
-- `requestToken` / `requestCredential` — low-level building blocks if you want full control.
-- DPoP signer, PKCE verifier, PAR (Pushed Authorization Requests) helpers.
+- `Oid4vciClient` — high-level orchestrator. Methods: `parseOffer`,
+  `acceptOffer` (pre-auth flow), `authorize` + `claim` (auth-code flow,
+  two-step around the user's browser hop).
+- `requestToken` / `requestCredential` — low-level building blocks if
+  you want to drive the flow yourself.
+- `buildDpopJwt`, `pushAuthorizationRequest`, `generateCodeVerifier` /
+  `codeChallenge` / `generateState` — DPoP, PAR, and PKCE helpers
+  for custom transports.
 
 Server side (issuer) — same package:
 - `parseCredentialRequest` — accepts both Draft 13 and Draft 14/15 shapes,

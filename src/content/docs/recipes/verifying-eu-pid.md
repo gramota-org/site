@@ -61,7 +61,7 @@ const verifier = new Verifier({
   // <iss>/.well-known/jwt-vc-issuer with cache. This is the only
   // sensible TrustResolver for production — the EU rotates keys on
   // a multi-week cadence, you don't want to hardcode them.
-  trust: new SdJwtVcIssuerTrustResolver({ cacheTtlMs: 60 * 60 * 1000 }),
+  trust: new SdJwtVcIssuerTrustResolver({ cacheMs: 60 * 60 * 1000 }),
 });
 
 const result = await verifier.verify(presentation, { nonce });
@@ -81,15 +81,20 @@ console.log(result.claims);
 EU dev credentials *may or may not* carry a `status` claim depending
 on the deployment configuration. The status list service is a separate
 host (`https://issuer.eudiw.dev` — note: no `dev.` prefix), and the
-public `/get` endpoint accepts no auth. Configure your `StatusResolver`
+public `/get` endpoint accepts no auth. Configure your `statusResolver`
 to follow whatever URI the credential carries — don't hardcode hosts:
 
 ```ts
 import { StatusListResolver } from "@gramota/status-list";
 
 const verifier = new Verifier({
-  ...
-  status: new StatusListResolver({ cacheTtlMs: 5 * 60 * 1000 }),
+  // …other config above…
+  statusResolver: new StatusListResolver({
+    // The status list itself is a signed JWT. `trustedIssuers` is the
+    // set of public keys we'll accept on the status-list signature —
+    // typically the same trust anchors as the credential issuer.
+    trustedIssuers: [issuerJwk],
+  }),
 });
 ```
 
