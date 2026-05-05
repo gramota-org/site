@@ -1,0 +1,215 @@
+import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+
+/**
+ * Landing page (route: `/`).
+ *
+ * Reads as: pitch → 5-line code sample → why-now (EU Digital Identity Wallet
+ * mandate) → standards table → CTA. The goal is to get a curious dev from
+ * the homepage to a working install in under 60 seconds.
+ */
+@Component({
+  selector: 'app-home',
+  imports: [RouterLink],
+  template: `
+    <section class="hero">
+      <div class="container">
+        <p class="eyebrow">@gramota — TypeScript SDK</p>
+        <h1>
+          Verify and issue
+          <span class="grad">EU Digital Identity Wallet</span>
+          credentials in 20 lines.
+        </h1>
+        <p class="lede">
+          Every wire-format check, every spec corner. End-to-end against the
+          EU reference wallet. Built for web developers who don't want to
+          read 80 pages of EU ARF documentation just to verify a holder.
+        </p>
+
+        <div class="cta">
+          <a routerLink="/docs/getting-started" class="btn primary">Get started</a>
+          <a
+            href="https://github.com/gramota-org/gramota"
+            class="btn ghost"
+            target="_blank"
+            rel="noreferrer"
+            >Star on GitHub</a
+          >
+        </div>
+
+        <pre class="code"><code>{{ sample }}</code></pre>
+      </div>
+    </section>
+
+    <section class="why">
+      <div class="container">
+        <h2>Why now</h2>
+        <p>
+          The EU Digital Identity Wallet is mandatory by 2027. Every regulated
+          digital business — banks, telcos, fintech, age-gated commerce —
+          needs to integrate. The existing identity SDKs are heavy,
+          Kotlin-first, and built for identity specialists.
+        </p>
+        <p><strong>Gramota is TypeScript-native, opinionated, and builds in 1.5s.</strong></p>
+      </div>
+    </section>
+
+    <section class="standards">
+      <div class="container">
+        <h2>Standards covered</h2>
+        <table>
+          <tbody>
+            <tr><td>eIDAS 2 / EUDIW</td><td>EU Reg. 2024/1183</td></tr>
+            <tr><td>OID4VCI</td><td>Pre-auth + auth-code, Draft 13 + 15 normalized</td></tr>
+            <tr><td>OID4VP</td><td>Final 1.0 with DCQL responses</td></tr>
+            <tr><td>SD-JWT-VC</td><td>Selective-disclosure verifiable credentials</td></tr>
+            <tr><td>DPoP (RFC 9449)</td><td>Sender-constrained tokens, both sides</td></tr>
+            <tr><td>JAR (RFC 9101)</td><td>Signed authorization requests, x509_san_dns</td></tr>
+            <tr><td>IETF Token Status List</td><td>Credential revocation/suspension</td></tr>
+            <tr><td>x5c chain validation</td><td>RFC 7515 §4.1.6</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="cta-block">
+      <div class="container">
+        <h2>Ship a verifier this afternoon.</h2>
+        <a routerLink="/docs/getting-started" class="btn primary">Read the docs</a>
+      </div>
+    </section>
+  `,
+  styles: `
+    :host { display: block; }
+
+    .container {
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .hero {
+      padding: 6rem 0 4rem;
+      text-align: center;
+    }
+    .eyebrow {
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      color: rgb(var(--muted));
+      font-weight: 600;
+      margin: 0 0 1.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.25rem, 5vw, 3.75rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      font-weight: 800;
+      margin: 0 0 1.25rem;
+    }
+    .grad {
+      background: linear-gradient(135deg, #4f46e5, #ec4899);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .lede {
+      font-size: 1.125rem;
+      max-width: 40rem;
+      margin: 0 auto 2rem;
+      color: rgb(var(--muted));
+    }
+    .cta {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: transform 80ms, box-shadow 80ms;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn.primary {
+      background: rgb(var(--accent));
+      color: white;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    .btn.primary:hover { box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25); }
+    .btn.ghost {
+      background: transparent;
+      color: rgb(var(--fg));
+      border: 1px solid rgb(var(--border));
+    }
+    .btn.ghost:hover { border-color: rgb(var(--accent)); }
+
+    .code {
+      background: rgb(var(--code-bg));
+      color: rgb(var(--code-fg));
+      padding: 1.25rem 1.5rem;
+      border-radius: 0.75rem;
+      font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+      font-size: 0.875rem;
+      line-height: 1.6;
+      text-align: left;
+      max-width: 36rem;
+      margin: 0 auto;
+      overflow-x: auto;
+      white-space: pre;
+      box-shadow: 0 10px 40px -12px rgba(0, 0, 0, 0.15);
+    }
+
+    .why, .standards, .cta-block {
+      padding: 4rem 0;
+      border-top: 1px solid rgb(var(--border));
+    }
+    .why p, .standards p {
+      max-width: 40rem;
+      margin: 0 auto 1rem;
+      color: rgb(var(--muted));
+    }
+    h2 {
+      font-size: 1.875rem;
+      letter-spacing: -0.01em;
+      font-weight: 700;
+      margin: 0 0 1.5rem;
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      max-width: 40rem;
+      margin: 0 auto;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    table td {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgb(var(--border));
+    }
+    table td:first-child {
+      font-weight: 600;
+      width: 16rem;
+    }
+    table td:last-child { color: rgb(var(--muted)); }
+
+    .cta-block { text-align: center; }
+  `,
+})
+export default class Home {
+  readonly sample = `import { Verifier } from "@gramota/verifier";
+import { StaticTrustResolver } from "@gramota/trust";
+
+const verifier = new Verifier({
+  audience: "https://my-bank.com",
+  trust: new StaticTrustResolver([issuerJwk]),
+});
+const result = await verifier.verify(token, { nonce });
+if (result.ok) console.log(result.claims);`;
+}
