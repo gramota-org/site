@@ -14,11 +14,16 @@
     <style>
       /*
         Auto-playing demo reel — screen-record this at 1280x720 to produce
-        the explanatory video. Three stages crossfade in a 24s loop:
-          0.0s –  7.0s   storefront (cursor drifts to middle card)
-          7.0s – 15.0s   verifying (QR + pulsing checks + simulator click)
-         15.0s – 22.0s   verified (green check + claims)
-         22.0s – 24.0s   fade back to storefront
+        the explanatory video. 32-second loop with breathing room on
+        either end (silence + visual hold) so the promo doesn't feel
+        rushed:
+          0.0s –  2.0s   intro hold on storefront, no captions, no voice
+          2.0s –  9.0s   storefront active (caption + cursor → middle card)
+          9.0s – 10.0s   crossfade
+         10.0s – 20.0s   verifying (QR + checks + simulator click)
+         20.0s – 21.0s   crossfade
+         21.0s – 30.0s   verified (green check strokes in, claim list)
+         30.0s – 32.0s   outro hold + crossfade back to storefront
         Animations are pure CSS — no JS — so OBS / QuickTime captures
         deterministically.
       */
@@ -128,34 +133,33 @@
         right: 0;
         bottom: 0;
         opacity: 0;
-        animation-duration: 24s;
+        animation-duration: 32s;
         animation-iteration-count: infinite;
         animation-timing-function: linear;
         animation-fill-mode: both;
       }
 
-      /* Crossfade keyframes — each stage is fully opaque only during its window. */
+      /* Crossfade keyframes — each stage is fully opaque only during its window.
+         Percentages are out of 32s. */
       @keyframes show-storefront {
         0% { opacity: 1; }
-        25% { opacity: 1; }
-        29.2% { opacity: 0; } /* 7.0s end → fade complete */
-        91.7% { opacity: 0; } /* 22.0s */
-        100% { opacity: 1; } /* 24.0s — back to start */
+        28.1% { opacity: 1; } /* 9.0s */
+        31.25% { opacity: 0; } /* 10.0s — fade complete */
+        93.75% { opacity: 0; } /* 30.0s */
+        100% { opacity: 1; } /* 32.0s — back to start */
       }
       @keyframes show-verifying {
-        0% { opacity: 0; }
-        25% { opacity: 0; } /* hidden until 6s */
-        29.2% { opacity: 1; } /* 7.0s — ramped in */
-        62.5% { opacity: 1; } /* 15.0s */
-        66.7% { opacity: 0; } /* 16.0s */
+        0%, 28.1% { opacity: 0; } /* hidden until 9.0s */
+        31.25% { opacity: 1; } /* 10.0s — ramped in */
+        62.5% { opacity: 1; } /* 20.0s */
+        65.6% { opacity: 0; } /* 21.0s */
         100% { opacity: 0; }
       }
       @keyframes show-verified {
-        0% { opacity: 0; }
-        62.5% { opacity: 0; }
-        66.7% { opacity: 1; } /* 16.0s */
-        91.7% { opacity: 1; } /* 22.0s */
-        95.8% { opacity: 0; } /* 23.0s */
+        0%, 62.5% { opacity: 0; } /* hidden until 20.0s */
+        65.6% { opacity: 1; } /* 21.0s */
+        93.75% { opacity: 1; } /* 30.0s */
+        96.9% { opacity: 0; } /* 31.0s */
         100% { opacity: 0; }
       }
 
@@ -319,14 +323,14 @@
         color: var(--slate-500);
       }
 
-      /* Cursor that drifts in to click the middle card */
+      /* Cursor that drifts in to click the middle card, scaled for 32s loop */
       .cursor {
         position: absolute;
         width: 22px;
         height: 22px;
         z-index: 60;
         pointer-events: none;
-        animation: cursor-path 24s infinite linear;
+        animation: cursor-path 32s infinite linear;
       }
       .cursor svg {
         display: block;
@@ -340,42 +344,42 @@
           top: 540px;
           opacity: 1;
         }
-        12.5% { /* 3s */
+        9.4% { /* 3.0s */
           left: 920px;
           top: 480px;
           opacity: 1;
         }
-        20.8% { /* 5.0s — over middle card */
+        21.9% { /* 7.0s — over middle card */
           left: 640px;
           top: 460px;
           opacity: 1;
           transform: scale(1);
         }
-        25% { /* 6.0s — click */
+        25% { /* 8.0s — click */
           left: 640px;
           top: 460px;
           opacity: 1;
           transform: scale(0.8);
         }
-        29.2% { /* 7.0s — fade out for next stage */
+        28.1% { /* 9.0s — fade out for next stage */
           left: 640px;
           top: 460px;
           opacity: 0;
           transform: scale(1);
         }
-        66.7% { /* 16.0s — reappear at simulator button */
+        50% { /* 16.0s — reappear at simulator button */
           left: 540px;
           top: 580px;
           opacity: 1;
           transform: scale(1);
         }
-        70.8% { /* 17.0s — click */
+        56.25% { /* 18.0s — click */
           left: 540px;
           top: 580px;
           opacity: 1;
           transform: scale(0.8);
         }
-        75% { /* 18.0s — fade out into result */
+        62.5% { /* 20.0s — fade out into result */
           opacity: 0;
         }
         100% {
@@ -581,11 +585,13 @@
         fill: none;
         stroke-dasharray: 100;
         stroke-dashoffset: 100;
-        animation: stroke-in 0.7s 16.1s infinite linear forwards;
+        animation: stroke-in 32s infinite linear;
       }
+      /* hidden until verified stage fades in (~21s = 65.6%), draws over 1s, holds */
       @keyframes stroke-in {
-        0% { stroke-dashoffset: 100; }
-        70%, 100% { stroke-dashoffset: 0; }
+        0%, 65.6% { stroke-dashoffset: 100; }
+        68.75% { stroke-dashoffset: 0; }
+        100% { stroke-dashoffset: 0; }
       }
 
       .verified-wrap h2 {
@@ -665,7 +671,7 @@
         display: block;
         height: 100%;
         background: linear-gradient(135deg, var(--indigo), var(--pink));
-        animation: progress 24s infinite linear;
+        animation: progress 32s infinite linear;
       }
       @keyframes progress {
         from { width: 0; }
@@ -685,7 +691,7 @@
         position: absolute;
         z-index: 70;
         opacity: 0;
-        animation-duration: 24s;
+        animation-duration: 32s;
         animation-iteration-count: infinite;
         animation-timing-function: ease-in-out;
         animation-fill-mode: both;
@@ -742,21 +748,34 @@
         margin-top: 2px;
       }
 
-      /* per-popup timing windows. Each pops in for ~3s with 0.4s ease at the edges. */
-      @keyframes pop-1 { 0% { opacity: 0; transform: translateX(-50%) translateY(8px); } 4.2%, 16.7% { opacity: 1; transform: translateX(-50%) translateY(0); } 20.8% { opacity: 0; transform: translateX(-50%) translateY(-4px); } 100% { opacity: 0; } }
-      @keyframes pop-2 { 0%, 25% { opacity: 0; transform: translateX(-50%) translateY(8px); } 29.2%, 41.7% { opacity: 1; transform: translateX(-50%) translateY(0); } 45.8% { opacity: 0; } 100% { opacity: 0; } }
-      @keyframes pop-3 { 0%, 50% { opacity: 0; transform: translateX(-50%) translateY(8px); } 54.2%, 62.5% { opacity: 1; transform: translateX(-50%) translateY(0); } 66.7% { opacity: 0; } 100% { opacity: 0; } }
-      @keyframes pop-4 { 0%, 70.8% { opacity: 0; transform: translateX(-50%) translateY(8px); } 75%, 87.5% { opacity: 1; transform: translateX(-50%) translateY(0); } 91.7% { opacity: 0; } 100% { opacity: 0; } }
-      @keyframes pop-5 { 0%, 91.7% { opacity: 0; transform: translateX(-50%) translateY(8px); } 95.8%, 99% { opacity: 1; transform: translateX(-50%) translateY(0); } 100% { opacity: 0; } }
+      /* Six caption windows across the 32s loop. Each entry: fade in (~1s),
+         hold (3-5s), fade out (~1s), then hidden until next loop iteration. */
+      /* cap-1: 1.5–5s   "Selling something age-restricted in Europe?"  */
+      @keyframes pop-1 { 0%, 4.7% { opacity: 0; transform: translateX(-50%) translateY(8px); } 7.8%, 15.6% { opacity: 1; transform: translateX(-50%) translateY(0); } 18.75% { opacity: 0; transform: translateX(-50%) translateY(-4px); } 100% { opacity: 0; } }
+      /* cap-2: 5.5–9s   "The old way: passport scans, photo uploads, waiting."  */
+      @keyframes pop-2 { 0%, 17.2% { opacity: 0; transform: translateX(-50%) translateY(8px); } 20.3%, 28.1% { opacity: 1; transform: translateX(-50%) translateY(0); } 31.25% { opacity: 0; } 100% { opacity: 0; } }
+      /* cap-3: 11–14.5s  "Now: your customer just shows their phone."  */
+      @keyframes pop-3 { 0%, 34.4% { opacity: 0; transform: translateX(-50%) translateY(8px); } 37.5%, 45.3% { opacity: 1; transform: translateX(-50%) translateY(0); } 48.4% { opacity: 0; } 100% { opacity: 0; } }
+      /* cap-4: 15–20s   "One tap. They share only what you asked for."  */
+      @keyframes pop-4 { 0%, 46.9% { opacity: 0; transform: translateX(-50%) translateY(8px); } 50%, 62.5% { opacity: 1; transform: translateX(-50%) translateY(0); } 65.6% { opacity: 0; } 100% { opacity: 0; } }
+      /* cap-5: 22.5–26s "Their full ID never leaves the device."  */
+      @keyframes pop-5 { 0%, 70.3% { opacity: 0; transform: translateX(-50%) translateY(8px); } 73.4%, 81.25% { opacity: 1; transform: translateX(-50%) translateY(0); } 84.4% { opacity: 0; } 100% { opacity: 0; } }
+      /* cap-6: 27.5–31s "Gramota — for European checkout."  */
+      @keyframes pop-6 { 0%, 85.9% { opacity: 0; transform: translateX(-50%) translateY(8px); } 89.1%, 96.9% { opacity: 1; transform: translateX(-50%) translateY(0); } 100% { opacity: 0; } }
 
       .pop.cap-1 { animation-name: pop-1; }
       .pop.cap-2 { animation-name: pop-2; }
       .pop.cap-3 { animation-name: pop-3; }
       .pop.cap-4 { animation-name: pop-4; }
       .pop.cap-5 { animation-name: pop-5; }
+      .pop.cap-6 { animation-name: pop-6; }
 
-      /* a corner toast that pops in over the verifying stage */
-      @keyframes toast-in { 0%, 33.3% { opacity: 0; transform: translateY(-8px); } 35.4%, 60.4% { opacity: 1; transform: translateY(0); } 62.5%, 100% { opacity: 0; transform: translateY(-4px); } }
+      /* corner toast pops in over the verifying stage (11.5s–18s) */
+      @keyframes toast-in {
+        0%, 35.9% { opacity: 0; transform: translateY(-8px); }
+        39.1%, 56.25% { opacity: 1; transform: translateY(0); }
+        59.4%, 100% { opacity: 0; transform: translateY(-4px); }
+      }
       .pop.toast-deposit {
         top: 96px;
         right: 80px;
@@ -964,11 +983,12 @@
       <div class="progress" aria-hidden="true"></div>
 
       <!-- ─────── caption popups (synced to narrator track) ─────── -->
-      <div class="pop caption cap-1">Selling something age-restricted in Europe? You have to check IDs.</div>
-      <div class="pop caption cap-2">Your customer scans a QR code with their EU digital wallet.</div>
-      <div class="pop caption cap-3">No wallet handy? The simulator works the same way.</div>
-      <div class="pop caption cap-4">They tap to share — only what you asked for. Nothing else.</div>
-      <div class="pop caption cap-5">Gramota — age and identity checks for European checkout.</div>
+      <div class="pop caption cap-1">Selling something age-restricted in Europe?</div>
+      <div class="pop caption cap-2">The old way: passport scans, photo uploads, waiting.</div>
+      <div class="pop caption cap-3">Now: your customer just shows their phone.</div>
+      <div class="pop caption cap-4">One tap — they share only what you asked for.</div>
+      <div class="pop caption cap-5">Their full ID never leaves the device.</div>
+      <div class="pop caption cap-6">Gramota — for European checkout.</div>
 
       <!-- a small toast pops over the verifying stage to make the moment land -->
       <div class="pop toast toast-deposit">

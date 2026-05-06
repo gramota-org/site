@@ -11,6 +11,12 @@ verification reports, and the occasional release announcement.
 
 ---
 
+## 2026-05-06 — [Introducing Solnce — the live demo for Gramota](/blog/2026-05-06-introducing-solnce-demo)
+
+A pretend EU storefront that runs against our production verification
+API, with an in-browser simulator so anyone can try the flow without
+installing a wallet.
+
 ## 2026-05-06 — [A field guide to OID4VCI Draft mismatches](/blog/2026-05-oid4vci-draft-mismatches)
 
 Real wallets in the wild straddle OID4VCI drafts 13, 14, and 15. The

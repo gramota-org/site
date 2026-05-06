@@ -40,20 +40,21 @@ const TMP = resolve(ROOT, ".tmp/video");
 const OUT_DIR = resolve(ROOT, "public/demo-reel");
 const OUT_FILE = resolve(OUT_DIR, "demo.mp4");
 
-const LOOP_SECONDS = 24;
+const LOOP_SECONDS = 32;
 const FPS = 30;
 const WIDTH = 1280;
 const HEIGHT = 720;
 
 // Narrator track. Each line is `{ at, text }` where `at` is seconds into the loop.
-// Keep total speech under LOOP_SECONDS — anything that doesn't fit gets clipped.
 // Plain English on purpose — most viewers are non-developers.
+// Bookend padding: 1.5s of silence at the top, ~1s after the last line.
 const NARRATION = [
-  { at: 0.5, text: "Selling something age-restricted in Europe? You have to check IDs." },
-  { at: 7.0, text: "Show a code. Your customer scans it with their digital wallet on their phone." },
-  { at: 13.0, text: "No wallet handy? The simulator works the same way. Try it yourself." },
-  { at: 17.5, text: "They tap to share — only what you asked for. Nothing else leaves their phone." },
-  { at: 22.0, text: "Gramota. Age and identity checks for European checkout." },
+  { at: 1.5, text: "Selling something age-restricted in Europe?" },
+  { at: 5.5, text: "The old way meant a passport scan, a photo upload, and a wait." },
+  { at: 11.0, text: "Now your customer just shows their phone." },
+  { at: 15.0, text: "One tap in their EU digital wallet — they share only what you asked for, nothing else." },
+  { at: 23.0, text: "Their full ID never leaves the device." },
+  { at: 28.0, text: "Gramota — age and identity checks for European checkout." },
 ];
 
 // ─────────────────────────────────────────────────────────────────────

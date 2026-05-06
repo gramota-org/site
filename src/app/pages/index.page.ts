@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 /**
@@ -10,7 +11,7 @@ import { RouterLink } from '@angular/router';
  */
 @Component({
   selector: 'app-home',
-  imports: [RouterLink],
+  imports: [CommonModule, RouterLink],
   template: `
     <section class="hero">
       <div class="container">
@@ -83,8 +84,9 @@ import { RouterLink } from '@angular/router';
           <a href="https://gramota-org.github.io/demo-store/" target="_blank" rel="noreferrer">live demo</a>.
         </p>
 
-        <div class="how-video">
+        <div class="how-video" #videoWrap>
           <video
+            #demoVideo
             src="demo-reel/demo.mp4"
             poster="demo-reel/poster.jpg"
             autoplay
@@ -93,7 +95,35 @@ import { RouterLink } from '@angular/router';
             playsinline
             preload="metadata"
             aria-label="24-second demo: a customer buys an age-restricted product, proves their age with their phone, order completes."
+            (click)="toggleMute(demoVideo)"
           ></video>
+          <button
+            class="audio-toggle"
+            type="button"
+            [class.muted]="demoVideo.muted"
+            [attr.aria-label]="demoVideo.muted ? 'Unmute video' : 'Mute video'"
+            (click)="toggleMute(demoVideo)"
+          >
+            <svg
+              *ngIf="demoVideo.muted"
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              aria-hidden="true"
+            >
+              <path d="M3 9v6h4l5 4V5L7 9H3zm13.59 3l2.7-2.7-1.41-1.41L15.18 10.6 12.48 7.9 11.07 9.31l2.7 2.69-2.7 2.7 1.41 1.41 2.7-2.7 2.7 2.7 1.41-1.41-2.7-2.7z" fill="currentColor"/>
+            </svg>
+            <svg
+              *ngIf="!demoVideo.muted"
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              aria-hidden="true"
+            >
+              <path d="M3 9v6h4l5 4V5L7 9H3zm10.5 3a4.5 4.5 0 0 0-2.5-4.03v8.05a4.5 4.5 0 0 0 2.5-4.02zM14 3.23v2.06a7 7 0 0 1 0 13.41v2.06a9 9 0 0 0 0-17.53z" fill="currentColor"/>
+            </svg>
+            <span>{{ demoVideo.muted ? 'Unmute' : 'Mute' }}</span>
+          </button>
         </div>
 
         <ol class="how-steps">
@@ -336,6 +366,7 @@ import { RouterLink } from '@angular/router';
       text-underline-offset: 3px;
     }
     .how-video {
+      position: relative;
       max-width: 64rem;
       margin: 0 auto 4rem;
       border: 1px solid rgb(var(--border));
@@ -349,7 +380,41 @@ import { RouterLink } from '@angular/router';
       width: 100%;
       height: auto;
       aspect-ratio: 16 / 9;
+      cursor: pointer;
     }
+    .audio-toggle {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.875rem 0.5rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(15, 23, 42, 0.78);
+      color: white;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: background 120ms, transform 120ms;
+      z-index: 2;
+    }
+    .audio-toggle:hover { background: rgba(15, 23, 42, 0.92); }
+    .audio-toggle.muted {
+      background: linear-gradient(135deg, #4f46e5, #ec4899);
+      border-color: transparent;
+      animation: audio-toggle-pulse 2.4s ease-in-out infinite;
+    }
+    .audio-toggle.muted:hover {
+      filter: brightness(1.05);
+    }
+    @keyframes audio-toggle-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.55); }
+      50% { box-shadow: 0 0 0 10px rgba(236, 72, 153, 0); }
+    }
+    .audio-toggle svg { display: block; }
 
     .how-steps {
       list-style: none;
@@ -412,4 +477,13 @@ const verifier = new Verifier({
 });
 const result = await verifier.verify(token, { nonce });
 if (result.ok) console.log(result.claims);`;
+
+  toggleMute(video: HTMLVideoElement) {
+    video.muted = !video.muted;
+    if (!video.muted) {
+      // chrome may have paused the video when autoplay started muted —
+      // make sure it keeps playing once the user opts into audio.
+      void video.play().catch(() => undefined);
+    }
+  }
 }
