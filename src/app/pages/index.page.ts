@@ -29,15 +29,45 @@ import { RouterLink } from '@angular/router';
         <div class="cta">
           <a routerLink="/docs/getting-started" class="btn primary">Get started</a>
           <a
+            href="https://gramota-org.github.io/demo-store/"
+            class="btn ghost"
+            target="_blank"
+            rel="noreferrer"
+            >Try the live demo →</a
+          >
+          <a
             href="https://github.com/gramota-org/gramota"
             class="btn ghost"
             target="_blank"
             rel="noreferrer"
-            >Star on GitHub</a
+            >GitHub</a
           >
         </div>
 
         <pre class="code"><code>{{ sample }}</code></pre>
+      </div>
+    </section>
+
+    <!-- Live demo callout — full-bleed band with a screenshot-worthy
+         CTA. Sits between the hero and the "Why now" so the first
+         scroll lands on something interactive. -->
+    <section class="demo-callout">
+      <div class="container">
+        <p class="eyebrow eyebrow-on-dark">Live demo · no install</p>
+        <h2>Click through a real EUDIW verification flow.</h2>
+        <p class="lede">
+          Solnce — a fictional storefront powered by Gramota — runs every
+          checkout through a real OID4VP age, residency, or identity check
+          against the SaaS deployed in Falkenstein. Scan with an EU
+          wallet, or use the in-browser simulator.
+        </p>
+        <a
+          href="https://gramota-org.github.io/demo-store/"
+          class="btn primary"
+          target="_blank"
+          rel="noreferrer"
+          >Open the demo storefront →</a
+        >
       </div>
     </section>
 
@@ -200,6 +230,40 @@ import { RouterLink } from '@angular/router';
     table td:last-child { color: rgb(var(--muted)); }
 
     .cta-block { text-align: center; }
+
+    /* Demo-callout band — gradient background between hero and "Why now"
+       so the first scroll past the hero lands on something interactive. */
+    .demo-callout {
+      padding: 4rem 0;
+      text-align: center;
+      background: linear-gradient(135deg, #4f46e5, #ec4899);
+      color: white;
+      border-top: 0;
+      border-bottom: 0;
+    }
+    .demo-callout .container { max-width: 44rem; }
+    .demo-callout .eyebrow-on-dark {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    .demo-callout h2 {
+      color: white;
+      font-size: 2rem;
+      letter-spacing: -0.01em;
+      margin: 0 0 1rem;
+    }
+    .demo-callout .lede {
+      color: rgba(255, 255, 255, 0.9);
+      max-width: 36rem;
+      margin: 0 auto 2rem;
+      font-size: 1.0625rem;
+    }
+    .demo-callout .btn.primary {
+      background: white;
+      color: rgb(var(--accent));
+    }
+    .demo-callout .btn.primary:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+    }
   `,
 })
 export default class Home {
