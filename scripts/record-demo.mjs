@@ -47,12 +47,13 @@ const HEIGHT = 720;
 
 // Narrator track. Each line is `{ at, text }` where `at` is seconds into the loop.
 // Keep total speech under LOOP_SECONDS — anything that doesn't fit gets clipped.
+// Plain English on purpose — most viewers are non-developers.
 const NARRATION = [
-  { at: 0.5, text: "EU regulated checkout used to mean a six-week S D K integration." },
-  { at: 7.0, text: "The verifier mints a real OID4VP session — DPoP-bound, JAR-signed, x509 SAN DNS under the hood." },
-  { at: 13.0, text: "No EU wallet on hand? The simulator drives the same pipeline." },
-  { at: 17.5, text: "Twelve security checks. Audit-ready record. Claims minimised." },
-  { at: 22.0, text: "Gramota. Identity verification powered by your EU wallet." },
+  { at: 0.5, text: "Selling something age-restricted in Europe? You have to check IDs." },
+  { at: 7.0, text: "Show a code. Your customer scans it with their digital wallet on their phone." },
+  { at: 13.0, text: "No wallet handy? The simulator works the same way. Try it yourself." },
+  { at: 17.5, text: "They tap to share — only what you asked for. Nothing else leaves their phone." },
+  { at: 22.0, text: "Gramota. Age and identity checks for European checkout." },
 ];
 
 // ─────────────────────────────────────────────────────────────────────

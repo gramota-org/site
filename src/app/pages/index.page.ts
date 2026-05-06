@@ -79,7 +79,7 @@ import { RouterLink } from '@angular/router';
       <div class="container how-container">
         <h2>How it works</h2>
         <p class="how-lede">
-          One end-to-end flow, three screens. Mirrors what you see in the
+          Watch a real checkout in 24 seconds. Or try it yourself with the
           <a href="https://gramota-org.github.io/demo-store/" target="_blank" rel="noreferrer">live demo</a>.
         </p>
 
@@ -92,54 +92,27 @@ import { RouterLink } from '@angular/router';
             muted
             playsinline
             preload="metadata"
-            aria-label="24-second demo: storefront, wallet verification, verified order."
+            aria-label="24-second demo: a customer buys an age-restricted product, proves their age with their phone, order completes."
           ></video>
         </div>
 
-        <div class="how-grid">
-          <figure>
-            <div class="how-frame">
-              <img src="figures/01-storefront.svg" alt="Storefront with three product cards — rakia, festival ticket, CBD oil — each badged with the verification checks they require."/>
-            </div>
-            <figcaption>
-              <span class="step">1</span>
-              <h3>Browse the storefront</h3>
-              <p>
-                Each product carries badges for the EU-law checks that gate
-                its purchase: <strong>18+</strong>, <strong>EU resident</strong>,
-                <strong>ID required</strong>. Click any item to start checkout.
-              </p>
-            </figcaption>
-          </figure>
-          <figure>
-            <div class="how-frame">
-              <img src="figures/02-verifying.svg" alt="Verification screen with a QR code, a list of pulsing active checks, and a four-button simulator for screen-recording without a real wallet."/>
-            </div>
-            <figcaption>
-              <span class="step">2</span>
-              <h3>Scan with your wallet</h3>
-              <p>
-                The verifier mints a real OID4VP session. Either scan the QR
-                with the EU Digital Identity Wallet, or use the in-browser
-                simulator — same flow, no install needed.
-              </p>
-            </figcaption>
-          </figure>
-          <figure>
-            <div class="how-frame">
-              <img src="figures/03-verified.svg" alt="Result screen showing each check with a green check mark — age_over_18, residency_eu, identity_verified — and the disclosed claims footer."/>
-            </div>
-            <figcaption>
-              <span class="step">3</span>
-              <h3>Verified — order complete</h3>
-              <p>
-                Every check passes the verifier's 12-step pipeline. Result is
-                an audit-ready record: which check passed, what was disclosed,
-                what stayed private.
-              </p>
-            </figcaption>
-          </figure>
-        </div>
+        <ol class="how-steps">
+          <li>
+            <span class="step">1</span>
+            <strong>Customer picks an item</strong>
+            <span>Each product shows what's needed to buy it — for example "18+" or "EU resident".</span>
+          </li>
+          <li>
+            <span class="step">2</span>
+            <strong>They prove it on their phone</strong>
+            <span>One tap in their EU digital ID wallet. No password, no document upload, no waiting.</span>
+          </li>
+          <li>
+            <span class="step">3</span>
+            <strong>Checkout completes</strong>
+            <span>Only the bits you asked about are shared. Their full ID stays on their phone.</span>
+          </li>
+        </ol>
       </div>
     </section>
 
@@ -377,35 +350,28 @@ import { RouterLink } from '@angular/router';
       height: auto;
       aspect-ratio: 16 / 9;
     }
-    .how-grid {
+
+    .how-steps {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      max-width: 64rem;
+      margin: 0 auto;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 2.5rem;
+      gap: 1.5rem;
     }
-    .how-grid figure {
-      margin: 0;
-      display: flex;
-      flex-direction: column;
+    .how-steps li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto auto;
+      column-gap: 0.875rem;
+      row-gap: 0.25rem;
+      align-items: start;
     }
-    .how-frame {
-      border: 1px solid rgb(var(--border));
-      border-radius: 0.75rem;
-      overflow: hidden;
-      background: white;
-      aspect-ratio: 3 / 2;
-      box-shadow: 0 8px 24px -10px rgba(0, 0, 0, 0.1);
-    }
-    .how-frame img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .how-grid figcaption {
-      padding: 1.25rem 0 0;
-    }
-    .how-grid .step {
-      display: inline-block;
+    .how-steps .step {
+      grid-row: 1 / span 2;
+      align-self: start;
       width: 1.75rem;
       height: 1.75rem;
       line-height: 1.75rem;
@@ -415,25 +381,23 @@ import { RouterLink } from '@angular/router';
       color: white;
       font-weight: 800;
       font-size: 0.875rem;
-      margin-bottom: 0.75rem;
+      flex-shrink: 0;
     }
-    .how-grid h3 {
-      font-size: 1.125rem;
+    .how-steps strong {
       font-weight: 700;
-      margin: 0 0 0.5rem;
+      font-size: 1rem;
       letter-spacing: -0.01em;
     }
-    .how-grid figcaption p {
-      margin: 0;
+    .how-steps li > span:last-child {
       color: rgb(var(--muted));
-      font-size: 0.95rem;
-      line-height: 1.55;
+      font-size: 0.9rem;
+      line-height: 1.5;
     }
 
-    @media (max-width: 64rem) {
-      .how-grid {
+    @media (max-width: 48rem) {
+      .how-steps {
         grid-template-columns: 1fr;
-        gap: 3rem;
+        gap: 1.25rem;
       }
     }
   `,
