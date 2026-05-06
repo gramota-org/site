@@ -7,16 +7,21 @@
  *   2. Open the page in headless Chromium with video recording enabled,
  *      1280x720, 30fps. Wait one full 24s loop + 1s buffer.
  *   3. Convert the captured WebM → cropped MP4 with ffmpeg.
- *   4. Synthesize narration via macOS `say` (split into one wav per line),
- *      concatenate into a single AAC track aligned to the loop timing.
+ *   4. Synthesize narration. Two backends:
+ *        - ElevenLabs REST API (when ELEVENLABS_API_KEY is set)
+ *        - macOS `say` (fallback for local dev on a Mac)
+ *      One clip per line, layered into a single track at scheduled offsets.
  *   5. Generate a soft synth pad as the music bed using ffmpeg's sine
  *      generator + chorus / reverb filters (no third-party assets).
- *   6. Mix narration + bed + video into dist/demo-reel.mp4.
+ *   6. Mix narration + bed + video into public/demo-reel/demo.mp4.
  *
  * Run:
- *   pnpm run video        # builds dist/demo-reel.mp4
+ *   pnpm run video                                # uses macOS `say`
+ *   ELEVENLABS_API_KEY=sk-… pnpm run video        # uses ElevenLabs (Rachel)
+ *   ELEVENLABS_API_KEY=sk-… ELEVENLABS_VOICE_ID=… # custom voice
  *
- * Output is gitignored — re-run after editing public/demo-reel/index.html.
+ * Output ships with the site — re-run after editing the reel HTML or
+ * the NARRATION array below.
  */
 import { chromium } from "playwright";
 import { spawn, spawnSync } from "node:child_process";
@@ -168,24 +173,72 @@ async function convertWebmToMp4(webmPath) {
 }
 
 // ─────────────────────────────────────────────────────────────────────
-// Step 4: narration via macOS `say`
+// Step 4: narration
+//
+// Two TTS backends:
+//   - `elevenlabs` — used when ELEVENLABS_API_KEY is set. Calls the REST
+//     API directly (no SDK), one POST per line, mp3 → wav.
+//     Voice defaults to Rachel; override with ELEVENLABS_VOICE_ID.
+//   - `say`         — fallback for local dev on macOS. Robotic but free.
+
+const TTS_BACKEND = process.env.ELEVENLABS_API_KEY ? "elevenlabs" : "say";
+const ELEVENLABS_VOICE_ID = process.env.ELEVENLABS_VOICE_ID ?? "21m00Tcm4TlvDq8ikWAM"; // Rachel
+const ELEVENLABS_MODEL_ID = process.env.ELEVENLABS_MODEL_ID ?? "eleven_turbo_v2_5";
+
+async function ttsClipToFile(text, mp3Path) {
+  const url = `https://api.elevenlabs.io/v1/text-to-speech/${ELEVENLABS_VOICE_ID}?output_format=mp3_44100_128`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "xi-api-key": process.env.ELEVENLABS_API_KEY,
+      "Content-Type": "application/json",
+      Accept: "audio/mpeg",
+    },
+    body: JSON.stringify({
+      text,
+      model_id: ELEVENLABS_MODEL_ID,
+      voice_settings: {
+        stability: 0.4,
+        similarity_boost: 0.75,
+        style: 0.15,
+        use_speaker_boost: true,
+      },
+    }),
+  });
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`elevenlabs ${res.status}: ${body.slice(0, 200)}`);
+  }
+  const buf = Buffer.from(await res.arrayBuffer());
+  const { writeFileSync } = await import("node:fs");
+  writeFileSync(mp3Path, buf);
+}
 
 async function buildNarration() {
   const out = resolve(TMP, "voice.wav");
-  // Generate one wav per line, then layer them into a single mix
-  // anchored at the prescribed `at` timestamps.
+  console.log(`▸ tts backend: ${TTS_BACKEND}`);
+
   const inputs = [];
   const filters = [];
   for (let i = 0; i < NARRATION.length; i++) {
     const { at, text } = NARRATION[i];
-    const aiff = resolve(TMP, `voice-${i}.aiff`);
     const wav = resolve(TMP, `voice-${i}.wav`);
-    spawnSync("say", ["-v", "Samantha", "-r", "180", "-o", aiff, text]);
-    spawnSync("ffmpeg", ["-y", "-i", aiff, "-ar", "44100", "-ac", "2", wav], {
-      stdio: "ignore",
-    });
+
+    if (TTS_BACKEND === "elevenlabs") {
+      const mp3 = resolve(TMP, `voice-${i}.mp3`);
+      await ttsClipToFile(text, mp3);
+      spawnSync("ffmpeg", ["-y", "-i", mp3, "-ar", "44100", "-ac", "2", wav], {
+        stdio: "ignore",
+      });
+    } else {
+      const aiff = resolve(TMP, `voice-${i}.aiff`);
+      spawnSync("say", ["-v", "Samantha", "-r", "180", "-o", aiff, text]);
+      spawnSync("ffmpeg", ["-y", "-i", aiff, "-ar", "44100", "-ac", "2", wav], {
+        stdio: "ignore",
+      });
+    }
+
     inputs.push("-i", wav);
-    // delay each clip by its `at` offset (in ms), pad to LOOP_SECONDS
     filters.push(`[${i}:a]adelay=${Math.round(at * 1000)}|${Math.round(at * 1000)},volume=1.0[v${i}]`);
   }
   filters.push(NARRATION.map((_, i) => `[v${i}]`).join("") + `amix=inputs=${NARRATION.length}:duration=longest:dropout_transition=0,apad,atrim=0:${LOOP_SECONDS}[a]`);
@@ -264,8 +317,10 @@ async function main() {
   if (!spawnSync("ffmpeg", ["-version"]).pid) {
     throw new Error("ffmpeg not on PATH; brew install ffmpeg");
   }
-  if (!spawnSync("say", ["-?"]).pid && process.platform !== "darwin") {
-    throw new Error("`say` is macOS-only; run on a Mac or sub in another TTS");
+  if (TTS_BACKEND === "say" && process.platform !== "darwin") {
+    throw new Error(
+      "macOS `say` not available on this platform. Set ELEVENLABS_API_KEY to use ElevenLabs instead.",
+    );
   }
 
   console.log("▸ recording loop with Playwright…");
