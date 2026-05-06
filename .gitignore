@@ -46,3 +46,6 @@ Thumbs.db
 # Environment files
 .env*
 .tmp-typedoc/
+
+# Local Claude Code preview config
+.claude/

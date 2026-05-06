@@ -1,0 +1,876 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Gramota — Demo Reel</title>
+    <meta name="viewport" content="width=1280, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /*
+        Auto-playing demo reel — screen-record this at 1280x720 to produce
+        the explanatory video. Three stages crossfade in a 24s loop:
+          0.0s –  7.0s   storefront (cursor drifts to middle card)
+          7.0s – 15.0s   verifying (QR + pulsing checks + simulator click)
+         15.0s – 22.0s   verified (green check + claims)
+         22.0s – 24.0s   fade back to storefront
+        Animations are pure CSS — no JS — so OBS / QuickTime captures
+        deterministically.
+      */
+
+      * {
+        box-sizing: border-box;
+      }
+
+      :root {
+        --indigo: #4f46e5;
+        --pink: #ec4899;
+        --slate-900: #0f172a;
+        --slate-700: #334155;
+        --slate-600: #475569;
+        --slate-500: #64748b;
+        --slate-300: #cbd5e1;
+        --slate-200: #e2e8f0;
+        --slate-100: #f1f5f9;
+        --slate-50: #f8fafc;
+        --emerald-600: #059669;
+        --emerald-100: #d1fae5;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #ffffff;
+        font-family:
+          "Inter",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        color: var(--slate-900);
+        overflow: hidden;
+      }
+
+      .reel {
+        position: relative;
+        width: 1280px;
+        height: 720px;
+        margin: 0 auto;
+        background: #ffffff;
+        overflow: hidden;
+      }
+
+      /* —— shared sticky nav (same on every stage) —— */
+      .nav {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 56px;
+        background: #ffffff;
+        border-bottom: 1px solid var(--slate-200);
+        display: flex;
+        align-items: center;
+        padding: 0 80px;
+        z-index: 50;
+      }
+      .nav-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .nav-logo {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        background: linear-gradient(135deg, var(--indigo), var(--pink));
+        color: white;
+        font-weight: 800;
+        font-size: 14px;
+        display: grid;
+        place-items: center;
+      }
+      .nav-name {
+        font-weight: 700;
+        font-size: 16px;
+      }
+      .nav-tag {
+        margin-left: 8px;
+        color: var(--slate-500);
+        font-size: 13px;
+      }
+      .nav-right {
+        margin-left: auto;
+        display: inline-flex;
+        gap: 24px;
+        font-size: 13px;
+        color: var(--slate-500);
+      }
+      .nav-right b {
+        color: var(--slate-900);
+        text-decoration: underline;
+      }
+      .nav-right span {
+        color: var(--slate-900);
+        font-weight: 700;
+      }
+
+      /* —— stage scaffolding —— */
+      .stage {
+        position: absolute;
+        top: 56px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        opacity: 0;
+        animation-duration: 24s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+      }
+
+      /* Crossfade keyframes — each stage is fully opaque only during its window. */
+      @keyframes show-storefront {
+        0% { opacity: 1; }
+        25% { opacity: 1; }
+        29.2% { opacity: 0; } /* 7.0s end → fade complete */
+        91.7% { opacity: 0; } /* 22.0s */
+        100% { opacity: 1; } /* 24.0s — back to start */
+      }
+      @keyframes show-verifying {
+        0% { opacity: 0; }
+        25% { opacity: 0; } /* hidden until 6s */
+        29.2% { opacity: 1; } /* 7.0s — ramped in */
+        62.5% { opacity: 1; } /* 15.0s */
+        66.7% { opacity: 0; } /* 16.0s */
+        100% { opacity: 0; }
+      }
+      @keyframes show-verified {
+        0% { opacity: 0; }
+        62.5% { opacity: 0; }
+        66.7% { opacity: 1; } /* 16.0s */
+        91.7% { opacity: 1; } /* 22.0s */
+        95.8% { opacity: 0; } /* 23.0s */
+        100% { opacity: 0; }
+      }
+
+      .stage.storefront { animation-name: show-storefront; }
+      .stage.verifying { animation-name: show-verifying; }
+      .stage.verified { animation-name: show-verified; }
+
+      /* —— STAGE 1: storefront —— */
+      .hero {
+        position: relative;
+        height: 220px;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        overflow: hidden;
+      }
+      .hero::before,
+      .hero::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(40px);
+        opacity: 0.5;
+      }
+      .hero::before {
+        width: 720px;
+        height: 320px;
+        left: 80px;
+        top: 0;
+        background: radial-gradient(closest-side, var(--indigo), transparent);
+      }
+      .hero::after {
+        width: 640px;
+        height: 300px;
+        right: 80px;
+        top: 80px;
+        background: radial-gradient(closest-side, var(--pink), transparent);
+      }
+      .hero-eyebrow {
+        position: relative;
+        font-size: 11px;
+        letter-spacing: 2px;
+        color: var(--slate-500);
+        margin-bottom: 12px;
+        font-weight: 600;
+      }
+      .hero h1 {
+        position: relative;
+        margin: 0;
+        font-size: 36px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+      .hero h1 .grad {
+        background: linear-gradient(135deg, var(--indigo), var(--pink));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .tabs {
+        display: flex;
+        gap: 8px;
+        padding: 16px 80px 0;
+      }
+      .tab {
+        padding: 6px 14px;
+        border-radius: 16px;
+        font-size: 13px;
+        font-weight: 500;
+        background: var(--slate-50);
+        color: var(--slate-500);
+      }
+      .tab.active {
+        background: var(--indigo);
+        color: white;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        padding: 24px 80px;
+      }
+      .card {
+        background: white;
+        border: 1px solid var(--slate-200);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 6px 14px -8px rgba(0, 0, 0, 0.1);
+        position: relative;
+      }
+      .card.featured {
+        border-color: var(--indigo);
+        border-width: 2px;
+      }
+      .photo {
+        height: 130px;
+        display: grid;
+        place-items: center;
+        font-size: 60px;
+        position: relative;
+      }
+      .photo.rakia {
+        background: linear-gradient(135deg, #f59e0b, #b45309);
+      }
+      .photo.festival {
+        background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      }
+      .photo.cbd {
+        background: linear-gradient(135deg, #059669, #047857);
+      }
+      .badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--slate-900);
+      }
+      .card-body {
+        padding: 14px 18px 16px;
+      }
+      .vendor {
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.7px;
+        color: var(--slate-500);
+        margin: 0 0 4px;
+      }
+      .name {
+        font-weight: 600;
+        font-size: 15px;
+        margin: 0 0 4px;
+      }
+      .card.featured .name {
+        color: var(--indigo);
+      }
+      .desc {
+        font-size: 13px;
+        color: var(--slate-500);
+        margin: 0 0 12px;
+        line-height: 1.4;
+      }
+      .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid var(--slate-100);
+        padding-top: 10px;
+      }
+      .price {
+        font-size: 18px;
+        font-weight: 700;
+      }
+      .ship {
+        font-size: 12px;
+        color: var(--slate-500);
+      }
+
+      /* Cursor that drifts in to click the middle card */
+      .cursor {
+        position: absolute;
+        width: 22px;
+        height: 22px;
+        z-index: 60;
+        pointer-events: none;
+        animation: cursor-path 24s infinite linear;
+      }
+      .cursor svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+      }
+      @keyframes cursor-path {
+        0% {
+          left: 1080px;
+          top: 540px;
+          opacity: 1;
+        }
+        12.5% { /* 3s */
+          left: 920px;
+          top: 480px;
+          opacity: 1;
+        }
+        20.8% { /* 5.0s — over middle card */
+          left: 640px;
+          top: 460px;
+          opacity: 1;
+          transform: scale(1);
+        }
+        25% { /* 6.0s — click */
+          left: 640px;
+          top: 460px;
+          opacity: 1;
+          transform: scale(0.8);
+        }
+        29.2% { /* 7.0s — fade out for next stage */
+          left: 640px;
+          top: 460px;
+          opacity: 0;
+          transform: scale(1);
+        }
+        66.7% { /* 16.0s — reappear at simulator button */
+          left: 540px;
+          top: 580px;
+          opacity: 1;
+          transform: scale(1);
+        }
+        70.8% { /* 17.0s — click */
+          left: 540px;
+          top: 580px;
+          opacity: 1;
+          transform: scale(0.8);
+        }
+        75% { /* 18.0s — fade out into result */
+          opacity: 0;
+        }
+        100% {
+          left: 1080px;
+          top: 540px;
+          opacity: 0;
+        }
+      }
+
+      /* —— STAGE 2: verifying —— */
+      .verify-wrap {
+        padding: 40px 80px;
+      }
+      .verify-title {
+        text-align: center;
+      }
+      .verify-title h2 {
+        margin: 0 0 6px;
+        font-size: 28px;
+        font-weight: 700;
+      }
+      .verify-title p {
+        margin: 0 0 24px;
+        color: var(--slate-500);
+        font-size: 14px;
+      }
+      .verify-card {
+        margin: 0 auto;
+        max-width: 880px;
+        background: var(--slate-50);
+        border: 1px solid var(--slate-200);
+        border-radius: 16px;
+        padding: 28px;
+        display: grid;
+        grid-template-columns: 1fr 220px;
+        gap: 32px;
+        box-shadow: 0 4px 14px -8px rgba(0, 0, 0, 0.08);
+      }
+      .verify-left h3 {
+        margin: 0 0 4px;
+        font-size: 16px;
+        font-weight: 600;
+      }
+      .verify-left .item-meta {
+        font-size: 12px;
+        color: var(--slate-500);
+        margin: 0 0 16px;
+      }
+      .check-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .check {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        background: white;
+        border: 1px solid var(--slate-200);
+        border-radius: 10px;
+        font-size: 13px;
+      }
+      .check .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #fbbf24;
+        animation: pulse-dot 1.6s infinite ease-in-out;
+      }
+      @keyframes pulse-dot {
+        0%, 100% { opacity: 0.4; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.25); }
+      }
+      .check code {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        color: var(--slate-700);
+      }
+      .check .status {
+        margin-left: auto;
+        font-size: 11px;
+        color: var(--slate-500);
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+      }
+
+      .countdown {
+        margin-top: 20px;
+        font-size: 13px;
+        color: var(--slate-500);
+      }
+      .countdown strong {
+        color: var(--slate-900);
+      }
+
+      .verify-right {
+        background: white;
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+      }
+      .qr {
+        width: 188px;
+        height: 188px;
+        margin: 0 auto 8px;
+        display: grid;
+        grid-template-columns: repeat(21, 1fr);
+        gap: 1px;
+        background: white;
+      }
+      .qr i {
+        background: white;
+      }
+      .qr i.b {
+        background: var(--slate-900);
+      }
+      .qr-cap {
+        font-size: 11px;
+        color: var(--slate-500);
+      }
+
+      .simulator {
+        margin: 28px auto 0;
+        max-width: 880px;
+        border: 1.5px dashed var(--slate-300);
+        border-radius: 12px;
+        padding: 18px 20px;
+      }
+      .simulator h4 {
+        margin: 0 0 4px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--slate-700);
+      }
+      .simulator p {
+        margin: 0 0 12px;
+        color: var(--slate-500);
+        font-size: 12px;
+      }
+      .sim-btns {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+      .sim-btn {
+        padding: 10px 12px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 600;
+        text-align: center;
+        background: white;
+        border: 1px solid var(--slate-200);
+        position: relative;
+      }
+      .sim-btn.primary {
+        background: linear-gradient(135deg, var(--indigo), var(--pink));
+        color: white;
+        border-color: transparent;
+        animation: btn-pulse 2.2s infinite ease-in-out;
+      }
+      @keyframes btn-pulse {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.45); }
+        50% { box-shadow: 0 0 0 12px rgba(79, 70, 229, 0); }
+      }
+
+      /* —— STAGE 3: verified —— */
+      .verified-wrap {
+        padding: 60px 80px 40px;
+        text-align: center;
+      }
+      .checkmark {
+        position: relative;
+        width: 128px;
+        height: 128px;
+        margin: 0 auto 12px;
+      }
+      .checkmark .glow {
+        position: absolute;
+        inset: -60px;
+        border-radius: 50%;
+        background: radial-gradient(closest-side, rgba(16, 185, 129, 0.18), transparent);
+      }
+      .checkmark .ring {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: var(--emerald-100);
+      }
+      .checkmark svg {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+      .checkmark path {
+        stroke: var(--emerald-600);
+        stroke-width: 6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+        stroke-dasharray: 100;
+        stroke-dashoffset: 100;
+        animation: stroke-in 0.7s 16.1s infinite linear forwards;
+      }
+      @keyframes stroke-in {
+        0% { stroke-dashoffset: 100; }
+        70%, 100% { stroke-dashoffset: 0; }
+      }
+
+      .verified-wrap h2 {
+        margin: 12px 0 6px;
+        font-size: 32px;
+        font-weight: 700;
+      }
+      .verified-wrap > p {
+        margin: 0 0 28px;
+        color: var(--slate-500);
+        font-size: 15px;
+      }
+      .results {
+        margin: 0 auto;
+        max-width: 560px;
+        background: var(--slate-50);
+        border: 1px solid var(--slate-200);
+        border-radius: 16px;
+        padding: 18px 24px;
+        text-align: left;
+      }
+      .results-label {
+        font-size: 11px;
+        letter-spacing: 0.7px;
+        color: var(--slate-500);
+        font-weight: 500;
+        margin: 0 0 12px;
+      }
+      .result-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--slate-100);
+        font-size: 13px;
+      }
+      .result-row:last-child {
+        border-bottom: none;
+      }
+      .result-row code {
+        font-family: "JetBrains Mono", monospace;
+        color: var(--slate-900);
+      }
+      .result-row .ok {
+        color: var(--emerald-600);
+        font-weight: 600;
+      }
+      .claims {
+        margin-top: 10px;
+        font-size: 11px;
+        color: var(--slate-300);
+        letter-spacing: 0.4px;
+      }
+      .cta {
+        margin: 28px auto 0;
+        display: inline-block;
+        padding: 12px 28px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--indigo), var(--pink));
+        color: white;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      /* progress bar at the bottom of the reel — purely cosmetic for the recording */
+      .progress {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 3px;
+        background: var(--slate-100);
+        z-index: 60;
+      }
+      .progress::after {
+        content: "";
+        display: block;
+        height: 100%;
+        background: linear-gradient(135deg, var(--indigo), var(--pink));
+        animation: progress 24s infinite linear;
+      }
+      @keyframes progress {
+        from { width: 0; }
+        to { width: 100%; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reel">
+      <!-- nav (always visible) -->
+      <div class="nav">
+        <div class="nav-brand">
+          <div class="nav-logo">S</div>
+          <div class="nav-name">Solnce</div>
+          <div class="nav-tag">· Identity-verified shopping</div>
+        </div>
+        <div class="nav-right">
+          Powered by <b>Gramota</b><span>Docs →</span>
+        </div>
+      </div>
+
+      <!-- ─────── STAGE 1 — storefront ─────── -->
+      <div class="stage storefront">
+        <div class="hero">
+          <div class="hero-eyebrow">LIVE DEMO · GRAMOTA SDK</div>
+          <h1>
+            Identity-verified shopping<br />
+            <span class="grad">powered by your EU wallet.</span>
+          </h1>
+        </div>
+
+        <div class="tabs">
+          <div class="tab active">All</div>
+          <div class="tab">Drinks</div>
+          <div class="tab">Wellness</div>
+          <div class="tab">Tickets</div>
+          <div class="tab">Gaming</div>
+          <div class="tab">Finance</div>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <div class="photo rakia">🥃<span class="badge">18+</span></div>
+            <div class="card-body">
+              <p class="vendor">STARA PLANINA CELLARS</p>
+              <p class="name">Sliven Aged Rakia</p>
+              <p class="desc">Single-distillation grape rakia from a small Bulgarian estate.</p>
+              <div class="row">
+                <div class="price">€38</div>
+                <div class="ship">Ships in 2 days</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card featured">
+            <div class="photo festival">🎶<span class="badge">18+ · ID</span></div>
+            <div class="card-body">
+              <p class="vendor">AURORA LIVE</p>
+              <p class="name">Sunset Festival VIP Pass</p>
+              <p class="desc">Front-row access, backstage lounge. Belgrade, Aug 22-24.</p>
+              <div class="row">
+                <div class="price">€119</div>
+                <div class="ship">E-ticket instant</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="photo cbd">🌿<span class="badge">18+ · EU</span></div>
+            <div class="card-body">
+              <p class="vendor">GREENFIELD APOTHECARY</p>
+              <p class="name">CBD Wellness Tincture</p>
+              <p class="desc">EU-compliant broad-spectrum CBD oil. Lab-tested, vegan.</p>
+              <div class="row">
+                <div class="price">€42</div>
+                <div class="ship">Ships in 1-3 days</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─────── STAGE 2 — verifying ─────── -->
+      <div class="stage verifying">
+        <div class="verify-wrap">
+          <div class="verify-title">
+            <h2>Verifying your wallet</h2>
+            <p>Approve the disclosure in your EU Digital Identity Wallet to complete checkout.</p>
+          </div>
+
+          <div class="verify-card">
+            <div class="verify-left">
+              <h3>Sunset Festival VIP Pass · €119</h3>
+              <p class="item-meta">3 checks required · audit-ready record on completion</p>
+
+              <ul class="check-list">
+                <li class="check">
+                  <span class="dot"></span>
+                  <code>age_over_18</code>
+                  <span class="status">awaiting wallet</span>
+                </li>
+                <li class="check">
+                  <span class="dot" style="animation-delay: -0.4s;"></span>
+                  <code>residency_eu</code>
+                  <span class="status">awaiting wallet</span>
+                </li>
+                <li class="check">
+                  <span class="dot" style="animation-delay: -0.8s;"></span>
+                  <code>identity_verified</code>
+                  <span class="status">awaiting wallet</span>
+                </li>
+              </ul>
+
+              <div class="countdown">
+                Session expires in <strong>04:43</strong>
+              </div>
+            </div>
+
+            <div class="verify-right">
+              <!-- procedural QR (21x21 of black/white tiles) -->
+              <div class="qr" aria-hidden="true">
+                <!-- pattern emulates a finder-pattern QR; 441 cells -->
+                <!-- generated at build-time and inlined; cosmetic only -->
+                <!-- prettier-ignore -->
+                <i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i class="b"></i><i></i><i></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i>
+                <i class="b"></i><i></i><i></i><i></i><i></i><i></i><i class="b"></i><i></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i class="b"></i><i></i><i></i><i></i><i></i><i></i><i class="b"></i>
+                <i class="b"></i><i></i><i class="b"></i><i class="b"></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i class="b"></i><i class="b"></i><i></i><i></i><i class="b"></i>
+                <i class="b"></i><i></i><i class="b"></i><i class="b"></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i></i><i></i><i></i><i class="b"></i><i class="b"></i><i class="b"></i><i></i><i></i><i class="b"></i>
+                <i class="b"></i><i></i><i class="b"></i><i class="b"></i><i class="b"></i><i></i><i class="b"></i><i></i><i></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i></i><i class="b"></i><i class="b"></i><i class="b"></i><i></i><i></i><i class="b"></i>
+                <i class="b"></i><i></i><i></i><i></i><i></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i></i><i></i><i></i><i></i><i class="b"></i>
+                <i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i>
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                <i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i>
+                <i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i>
+                <i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i>
+                <i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i>
+                <i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i>
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i>
+                <i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="b"></i>
+                <i class="b"></i><i></i><i></i><i></i><i></i><i></i><i class="b"></i><i></i><i></i><i></i><i></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i>
+                <i class="b"></i><i></i><i class="b"></i><i class="b"></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i>
+                <i class="b"></i><i></i><i class="b"></i><i class="b"></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i>
+                <i class="b"></i><i></i><i class="b"></i><i class="b"></i><i class="b"></i><i></i><i class="b"></i><i></i><i></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i>
+                <i class="b"></i><i></i><i></i><i></i><i></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i>
+                <i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i><i></i><i class="b"></i>
+              </div>
+              <div class="qr-cap">Scan with your wallet</div>
+            </div>
+          </div>
+
+          <div class="simulator">
+            <h4>Simulator (no wallet needed)</h4>
+            <p>Click any outcome to drive the same backend pipeline a real wallet would.</p>
+            <div class="sim-btns">
+              <div class="sim-btn primary">Approve all checks</div>
+              <div class="sim-btn">Fail age</div>
+              <div class="sim-btn">Fail residency</div>
+              <div class="sim-btn">Fail all</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─────── STAGE 3 — verified ─────── -->
+      <div class="stage verified">
+        <div class="verified-wrap">
+          <div class="checkmark">
+            <div class="glow"></div>
+            <div class="ring"></div>
+            <svg viewBox="0 0 128 128" aria-hidden="true">
+              <path d="M 36 64 L 56 84 L 92 44" />
+            </svg>
+          </div>
+          <h2>Verified — order complete</h2>
+          <p>Your sunset festival VIP pass is on its way. E-ticket delivered instantly.</p>
+
+          <div class="results">
+            <p class="results-label">CHECK RESULTS</p>
+            <div class="result-row">
+              <code>age_over_18</code><span class="ok">✓ passed</span>
+            </div>
+            <div class="result-row">
+              <code>residency_eu</code><span class="ok">✓ passed</span>
+            </div>
+            <div class="result-row">
+              <code>identity_verified</code><span class="ok">✓ passed</span>
+            </div>
+            <div class="claims">
+              CLAIMS DISCLOSED · given_name: Greta · birth_date: 1990-04-15 · nationality: BG
+            </div>
+          </div>
+
+          <div class="cta">Back to store</div>
+        </div>
+      </div>
+
+      <!-- floating cursor -->
+      <div class="cursor" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 3 L3 18 L8 14 L11 21 L14 20 L11 13 L18 13 Z" fill="white" stroke="black" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <!-- progress bar -->
+      <div class="progress" aria-hidden="true"></div>
+    </div>
+  </body>
+</html>
