@@ -182,7 +182,7 @@ async function convertWebmToMp4(webmPath) {
 //   - `say`         — fallback for local dev on macOS. Robotic but free.
 
 const TTS_BACKEND = process.env.ELEVENLABS_API_KEY ? "elevenlabs" : "say";
-const ELEVENLABS_VOICE_ID = process.env.ELEVENLABS_VOICE_ID ?? "21m00Tcm4TlvDq8ikWAM"; // Rachel
+const ELEVENLABS_VOICE_ID = process.env.ELEVENLABS_VOICE_ID ?? "cjVigY5qzO86Huf0OWal"; // Eric — premade, free-tier accessible
 const ELEVENLABS_MODEL_ID = process.env.ELEVENLABS_MODEL_ID ?? "eleven_turbo_v2_5";
 
 async function ttsClipToFile(text, mp3Path) {
