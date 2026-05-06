@@ -71,6 +71,64 @@ import { RouterLink } from '@angular/router';
       </div>
     </section>
 
+    <!-- How it works — 3 figures mirroring the demo app's three screens.
+         The figures are SVG mockups of the live demo, not stylised
+         infographics: a screenshot of the demo and the figure should
+         read as the same UI. -->
+    <section class="how">
+      <div class="container how-container">
+        <h2>How it works</h2>
+        <p class="how-lede">
+          One end-to-end flow, three screens. Mirrors what you see in the
+          <a href="https://gramota-org.github.io/demo-store/" target="_blank" rel="noreferrer">live demo</a>.
+        </p>
+        <div class="how-grid">
+          <figure>
+            <div class="how-frame">
+              <img src="figures/01-storefront.svg" alt="Storefront with three product cards — rakia, festival ticket, CBD oil — each badged with the verification checks they require."/>
+            </div>
+            <figcaption>
+              <span class="step">1</span>
+              <h3>Browse the storefront</h3>
+              <p>
+                Each product carries badges for the EU-law checks that gate
+                its purchase: <strong>18+</strong>, <strong>EU resident</strong>,
+                <strong>ID required</strong>. Click any item to start checkout.
+              </p>
+            </figcaption>
+          </figure>
+          <figure>
+            <div class="how-frame">
+              <img src="figures/02-verifying.svg" alt="Verification screen with a QR code, a list of pulsing active checks, and a four-button simulator for screen-recording without a real wallet."/>
+            </div>
+            <figcaption>
+              <span class="step">2</span>
+              <h3>Scan with your wallet</h3>
+              <p>
+                The verifier mints a real OID4VP session. Either scan the QR
+                with the EU Digital Identity Wallet, or use the in-browser
+                simulator — same flow, no install needed.
+              </p>
+            </figcaption>
+          </figure>
+          <figure>
+            <div class="how-frame">
+              <img src="figures/03-verified.svg" alt="Result screen showing each check with a green check mark — age_over_18, residency_eu, identity_verified — and the disclosed claims footer."/>
+            </div>
+            <figcaption>
+              <span class="step">3</span>
+              <h3>Verified — order complete</h3>
+              <p>
+                Every check passes the verifier's 12-step pipeline. Result is
+                an audit-ready record: which check passed, what was disclosed,
+                what stayed private.
+              </p>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
     <section class="why">
       <div class="container">
         <h2>Why now</h2>
@@ -263,6 +321,91 @@ import { RouterLink } from '@angular/router';
     }
     .demo-callout .btn.primary:hover {
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+    }
+
+    /* "How it works" — three-column triptych mirroring the demo app.
+       Wider container than the rest so the figures can breathe. */
+    .how {
+      padding: 5rem 0;
+      border-top: 1px solid rgb(var(--border));
+    }
+    .how-container { max-width: 76rem; }
+    .how h2 {
+      font-size: 1.875rem;
+      letter-spacing: -0.01em;
+      font-weight: 700;
+      margin: 0 0 0.75rem;
+      text-align: center;
+    }
+    .how-lede {
+      text-align: center;
+      max-width: 32rem;
+      margin: 0 auto 3.5rem;
+      color: rgb(var(--muted));
+    }
+    .how-lede a {
+      color: rgb(var(--accent));
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+    }
+    .how-grid figure {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .how-frame {
+      border: 1px solid rgb(var(--border));
+      border-radius: 0.75rem;
+      overflow: hidden;
+      background: white;
+      aspect-ratio: 3 / 2;
+      box-shadow: 0 8px 24px -10px rgba(0, 0, 0, 0.1);
+    }
+    .how-frame img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .how-grid figcaption {
+      padding: 1.25rem 0 0;
+    }
+    .how-grid .step {
+      display: inline-block;
+      width: 1.75rem;
+      height: 1.75rem;
+      line-height: 1.75rem;
+      text-align: center;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #4f46e5, #ec4899);
+      color: white;
+      font-weight: 800;
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+    }
+    .how-grid h3 {
+      font-size: 1.125rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem;
+      letter-spacing: -0.01em;
+    }
+    .how-grid figcaption p {
+      margin: 0;
+      color: rgb(var(--muted));
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 64rem) {
+      .how-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
     }
   `,
 })

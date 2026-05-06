@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Image 2 — mirrors the Solnce demo's verifying view (`view = 'verifying'`
+  in App.tsx). Shows the two-column verification card (left: product +
+  active checks pulsing, right: QR in white frame) plus the dashed-border
+  "Demo simulator" panel underneath with the four outcome buttons.
+
+  Same nav as figure 1 so the three figures form a triptych at the same
+  visual scale.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title">
+  <title id="title">Step 2 — Scan with your wallet (or simulate)</title>
+
+  <defs>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4f46e5"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <pattern id="qr-noise" patternUnits="userSpaceOnUse" width="14" height="14">
+      <rect width="14" height="14" fill="white"/>
+    </pattern>
+    <filter id="card-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="800" fill="#ffffff"/>
+
+  <!-- Sticky nav (identical to figure 1) -->
+  <rect x="0" y="0" width="1200" height="56" fill="#ffffff"/>
+  <line x1="0" y1="56" x2="1200" y2="56" stroke="#e2e8f0" stroke-width="1"/>
+  <rect x="80" y="14" width="28" height="28" rx="6" fill="url(#brand)"/>
+  <text x="94" y="34" text-anchor="middle" fill="white" font-family="Inter, sans-serif" font-weight="800" font-size="14">S</text>
+  <text x="120" y="35" font-family="Inter, sans-serif" font-weight="700" font-size="16" fill="#111827">Solnce</text>
+  <text x="194" y="35" font-family="Inter, sans-serif" font-size="13" fill="#64748b">· Identity-verified shopping</text>
+  <text x="950" y="35" font-family="Inter, sans-serif" font-size="13" fill="#64748b">Powered by</text>
+  <text x="1024" y="35" font-family="Inter, sans-serif" font-weight="700" font-size="13" fill="#111827" text-decoration="underline">Gramota</text>
+  <text x="1100" y="35" font-family="Inter, sans-serif" font-weight="700" font-size="13" fill="#111827">Docs →</text>
+
+  <!-- Page heading -->
+  <text x="600" y="120" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="28" fill="#0f172a">Scan with your wallet</text>
+  <text x="600" y="150" text-anchor="middle" font-family="Inter, sans-serif" font-size="15" fill="#64748b">Open your EU Digital Identity Wallet on your phone and scan the QR.</text>
+
+  <!-- Main verification card (two-column) -->
+  <g filter="url(#card-shadow)">
+    <rect x="240" y="190" width="720" height="280" rx="16" fill="#f8fafc" stroke="#e2e8f0"/>
+
+    <!-- Left column: product info + active checks -->
+    <text x="280" y="232" font-family="Inter, sans-serif" font-weight="500" font-size="11" fill="#64748b" letter-spacing="0.7">VERIFYING FOR</text>
+    <text x="280" y="262" font-family="Inter, sans-serif" font-weight="600" font-size="17" fill="#111827">Sunset Festival VIP Pass</text>
+    <text x="280" y="284" font-family="Inter, sans-serif" font-size="14" fill="#64748b">Aurora Live</text>
+
+    <!-- Active checks (pulsing dots) -->
+    <g>
+      <circle cx="288" cy="332" r="3" fill="#4f46e5">
+        <animate attributeName="fill-opacity" values="1;0.3;1" dur="1.4s" repeatCount="indefinite"/>
+      </circle>
+      <text x="304" y="337" font-family="Inter, sans-serif" font-size="14" fill="#0f172a">18+ age verification</text>
+    </g>
+    <g>
+      <circle cx="288" cy="362" r="3" fill="#4f46e5">
+        <animate attributeName="fill-opacity" values="1;0.3;1" dur="1.4s" begin="0.4s" repeatCount="indefinite"/>
+      </circle>
+      <text x="304" y="367" font-family="Inter, sans-serif" font-size="14" fill="#0f172a">Identity attestation</text>
+    </g>
+
+    <!-- Countdown timer -->
+    <text x="280" y="412" font-family="Inter, sans-serif" font-size="11" fill="#64748b" letter-spacing="0.7">SESSION EXPIRES IN</text>
+    <text x="280" y="446" font-family="JetBrains Mono, monospace" font-weight="700" font-size="22" fill="#0f172a">04:43</text>
+
+    <!-- Right column: QR -->
+    <rect x="700" y="220" width="220" height="220" rx="12" fill="white" stroke="#e2e8f0" stroke-width="2"/>
+    <!-- QR matrix (deterministic procedural pattern) -->
+    <g fill="#0b1220">
+      <!-- Inner cells, 18×18 grid -->
+      <g transform="translate(720, 240)">
+        <!-- Programmatic-feeling pattern via individual cells. We use a
+             deterministic-ish pattern that reads as a QR at this size. -->
+        <rect x="0" y="0" width="48" height="48" rx="2"/>
+        <rect x="6" y="6" width="36" height="36" rx="1" fill="white"/>
+        <rect x="12" y="12" width="24" height="24" rx="1"/>
+
+        <rect x="132" y="0" width="48" height="48" rx="2"/>
+        <rect x="138" y="6" width="36" height="36" rx="1" fill="white"/>
+        <rect x="144" y="12" width="24" height="24" rx="1"/>
+
+        <rect x="0" y="132" width="48" height="48" rx="2"/>
+        <rect x="6" y="138" width="36" height="36" rx="1" fill="white"/>
+        <rect x="12" y="144" width="24" height="24" rx="1"/>
+
+        <!-- Body: pseudo-random cells -->
+        <g>
+          <rect x="60" y="0" width="12" height="12"/>
+          <rect x="84" y="0" width="12" height="12"/>
+          <rect x="108" y="0" width="12" height="12"/>
+          <rect x="60" y="24" width="12" height="12"/>
+          <rect x="96" y="36" width="12" height="12"/>
+          <rect x="120" y="60" width="12" height="12"/>
+          <rect x="60" y="60" width="12" height="12"/>
+          <rect x="0" y="60" width="12" height="12"/>
+          <rect x="24" y="60" width="12" height="12"/>
+          <rect x="36" y="84" width="12" height="12"/>
+          <rect x="60" y="84" width="12" height="12"/>
+          <rect x="84" y="84" width="12" height="12"/>
+          <rect x="120" y="84" width="12" height="12"/>
+          <rect x="156" y="84" width="12" height="12"/>
+          <rect x="0" y="108" width="12" height="12"/>
+          <rect x="48" y="108" width="12" height="12"/>
+          <rect x="72" y="108" width="12" height="12"/>
+          <rect x="96" y="108" width="12" height="12"/>
+          <rect x="156" y="108" width="12" height="12"/>
+          <rect x="60" y="132" width="12" height="12"/>
+          <rect x="84" y="132" width="12" height="12"/>
+          <rect x="120" y="132" width="12" height="12"/>
+          <rect x="156" y="132" width="12" height="12"/>
+          <rect x="60" y="156" width="12" height="12"/>
+          <rect x="96" y="156" width="12" height="12"/>
+          <rect x="132" y="156" width="12" height="12"/>
+          <rect x="60" y="60" width="12" height="12" fill="#4f46e5"/>
+          <rect x="72" y="48" width="12" height="12" fill="#4f46e5"/>
+          <rect x="84" y="60" width="12" height="12" fill="#4f46e5"/>
+          <rect x="72" y="72" width="12" height="12" fill="#4f46e5"/>
+          <rect x="72" y="60" width="12" height="12" fill="#4f46e5"/>
+        </g>
+      </g>
+    </g>
+
+    <!-- "Open in wallet" link -->
+    <text x="810" y="464" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#64748b">Open in wallet →</text>
+  </g>
+
+  <!-- Demo simulator panel (dashed border) -->
+  <g>
+    <rect x="240" y="500" width="720" height="200" rx="16" fill="white" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="6 5"/>
+    <text x="280" y="538" font-family="Inter, sans-serif" font-weight="500" font-size="11" fill="#64748b" letter-spacing="0.7">🤖 DEMO SIMULATOR (NO WALLET NEEDED)</text>
+    <text x="280" y="568" font-family="Inter, sans-serif" font-size="14" fill="#64748b">Pick a synthetic outcome to see how Gramota handles each case:</text>
+
+    <!-- Buttons row -->
+    <g font-family="Inter, sans-serif" font-weight="500" font-size="13">
+      <!-- Approve all (success tone) -->
+      <rect x="280" y="600" width="200" height="44" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+      <text x="380" y="628" text-anchor="middle" fill="#065f46">✓ Approve all checks</text>
+
+      <!-- Holder under 18 -->
+      <rect x="496" y="600" width="178" height="44" rx="10" fill="white" stroke="#e2e8f0"/>
+      <text x="585" y="628" text-anchor="middle" fill="#0f172a">Holder under 18</text>
+
+      <!-- Decline -->
+      <rect x="690" y="600" width="120" height="44" rx="10" fill="#fff1f2" stroke="#fecdd3"/>
+      <text x="750" y="628" text-anchor="middle" fill="#9f1239">✗ Decline</text>
+
+      <!-- ID required -->
+      <rect x="826" y="600" width="100" height="44" rx="10" fill="white" stroke="#e2e8f0"/>
+      <text x="876" y="628" text-anchor="middle" fill="#0f172a">No ID</text>
+    </g>
+
+    <!-- Cursor pulse on Approve all -->
+    <circle cx="380" cy="668" r="8" fill="#10b981"/>
+    <circle cx="380" cy="668" r="18" fill="#10b981" fill-opacity="0.3">
+      <animate attributeName="r" values="18;30;18" dur="1.6s" repeatCount="indefinite"/>
+      <animate attributeName="fill-opacity" values="0.3;0;0.3" dur="1.6s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- Footer hint -->
+  <text x="600" y="752" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#94a3b8">Real wallet on the QR · or skip the install with the simulator buttons.</text>
+</svg>
