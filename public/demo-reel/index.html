@@ -671,6 +671,97 @@
         from { width: 0; }
         to { width: 100%; }
       }
+
+      /* Hide progress + cursor when ?clean=1 (for camera-clean recordings) */
+      body.clean .progress,
+      body.clean .cursor { display: none; }
+
+      /* —— Caption / popup overlays ——
+         Each popup is positioned absolutely and gets a unique animation
+         that fades it in for a window of the 24s loop. Used by the
+         Playwright recorder; matches the timing of the VIDEO-SCRIPT.md
+         narrator copy so subtitles stay readable on muted autoplay. */
+      .pop {
+        position: absolute;
+        z-index: 70;
+        opacity: 0;
+        animation-duration: 24s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: both;
+        font-family: "Inter", sans-serif;
+        pointer-events: none;
+      }
+
+      .pop.caption {
+        bottom: 36px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(15, 23, 42, 0.92);
+        color: white;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 500;
+        max-width: 720px;
+        text-align: center;
+        line-height: 1.4;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.3);
+      }
+
+      .pop.toast {
+        background: white;
+        color: var(--slate-900);
+        padding: 10px 16px 10px 12px;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.18);
+        border: 1px solid var(--slate-200);
+      }
+      .pop.toast .icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, var(--indigo), var(--pink));
+        color: white;
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+      .pop.toast .meta {
+        font-weight: 400;
+        color: var(--slate-500);
+        font-size: 11px;
+        margin-top: 2px;
+      }
+
+      /* per-popup timing windows. Each pops in for ~3s with 0.4s ease at the edges. */
+      @keyframes pop-1 { 0% { opacity: 0; transform: translateX(-50%) translateY(8px); } 4.2%, 16.7% { opacity: 1; transform: translateX(-50%) translateY(0); } 20.8% { opacity: 0; transform: translateX(-50%) translateY(-4px); } 100% { opacity: 0; } }
+      @keyframes pop-2 { 0%, 25% { opacity: 0; transform: translateX(-50%) translateY(8px); } 29.2%, 41.7% { opacity: 1; transform: translateX(-50%) translateY(0); } 45.8% { opacity: 0; } 100% { opacity: 0; } }
+      @keyframes pop-3 { 0%, 50% { opacity: 0; transform: translateX(-50%) translateY(8px); } 54.2%, 62.5% { opacity: 1; transform: translateX(-50%) translateY(0); } 66.7% { opacity: 0; } 100% { opacity: 0; } }
+      @keyframes pop-4 { 0%, 70.8% { opacity: 0; transform: translateX(-50%) translateY(8px); } 75%, 87.5% { opacity: 1; transform: translateX(-50%) translateY(0); } 91.7% { opacity: 0; } 100% { opacity: 0; } }
+      @keyframes pop-5 { 0%, 91.7% { opacity: 0; transform: translateX(-50%) translateY(8px); } 95.8%, 99% { opacity: 1; transform: translateX(-50%) translateY(0); } 100% { opacity: 0; } }
+
+      .pop.cap-1 { animation-name: pop-1; }
+      .pop.cap-2 { animation-name: pop-2; }
+      .pop.cap-3 { animation-name: pop-3; }
+      .pop.cap-4 { animation-name: pop-4; }
+      .pop.cap-5 { animation-name: pop-5; }
+
+      /* a corner toast that pops in over the verifying stage */
+      @keyframes toast-in { 0%, 33.3% { opacity: 0; transform: translateY(-8px); } 35.4%, 60.4% { opacity: 1; transform: translateY(0); } 62.5%, 100% { opacity: 0; transform: translateY(-4px); } }
+      .pop.toast-deposit {
+        top: 96px;
+        right: 80px;
+        animation-name: toast-in;
+      }
     </style>
   </head>
   <body>
@@ -871,6 +962,22 @@
 
       <!-- progress bar -->
       <div class="progress" aria-hidden="true"></div>
+
+      <!-- ─────── caption popups (synced to narrator track) ─────── -->
+      <div class="pop caption cap-1">EU regulated checkout used to mean a six-week SDK integration.</div>
+      <div class="pop caption cap-2">The verifier mints a real OID4VP session — DPoP-bound, JAR-signed.</div>
+      <div class="pop caption cap-3">No EU wallet on hand? The simulator drives the same pipeline.</div>
+      <div class="pop caption cap-4">Twelve security checks. Audit-ready record. Claims minimised.</div>
+      <div class="pop caption cap-5">Gramota — TypeScript SDK for the EU Digital Identity Wallet.</div>
+
+      <!-- a small toast pops over the verifying stage to reinforce "real API" -->
+      <div class="pop toast toast-deposit">
+        <div class="icon">✓</div>
+        <div>
+          <div>Session minted</div>
+          <div class="meta">POST /demo/verifications · 142ms</div>
+        </div>
+      </div>
     </div>
   </body>
 </html>

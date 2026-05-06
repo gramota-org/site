@@ -82,6 +82,20 @@ import { RouterLink } from '@angular/router';
           One end-to-end flow, three screens. Mirrors what you see in the
           <a href="https://gramota-org.github.io/demo-store/" target="_blank" rel="noreferrer">live demo</a>.
         </p>
+
+        <div class="how-video">
+          <video
+            src="demo-reel/demo.mp4"
+            poster="demo-reel/poster.jpg"
+            autoplay
+            loop
+            muted
+            playsinline
+            preload="metadata"
+            aria-label="24-second demo: storefront, wallet verification, verified order."
+          ></video>
+        </div>
+
         <div class="how-grid">
           <figure>
             <div class="how-frame">
@@ -347,6 +361,21 @@ import { RouterLink } from '@angular/router';
       color: rgb(var(--accent));
       text-decoration: underline;
       text-underline-offset: 3px;
+    }
+    .how-video {
+      max-width: 64rem;
+      margin: 0 auto 4rem;
+      border: 1px solid rgb(var(--border));
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 24px 48px -16px rgba(15, 23, 42, 0.18);
+      background: white;
+    }
+    .how-video video {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
     }
     .how-grid {
       display: grid;

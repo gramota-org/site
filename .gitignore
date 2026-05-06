@@ -49,3 +49,6 @@ Thumbs.db
 
 # Local Claude Code preview config
 .claude/
+
+# Video recorder scratch files
+.tmp/

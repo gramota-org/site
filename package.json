@@ -15,7 +15,8 @@
     "gen:api": "node scripts/generate-api-docs.mjs",
     "watch": "vite build --watch",
     "test": "vitest",
-    "preview": "node dist/analog/server/index.mjs"
+    "preview": "node dist/analog/server/index.mjs",
+    "video": "node scripts/record-demo.mjs"
   },
   "dependencies": {
     "@analogjs/content": "^2.5.1-beta.2",
@@ -58,6 +59,7 @@
     "@gramota/verifier": "^0.2.0",
     "@tailwindcss/vite": "^4.0.0",
     "jsdom": "^22.0.0",
+    "playwright": "^1.59.1",
     "tailwindcss": "^4.0.0",
     "typedoc": "^0.28.19",
     "typedoc-plugin-markdown": "^4.11.0",
