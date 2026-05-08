@@ -9,7 +9,7 @@ marketing footage. Two raw assets feed it:
   with QuickTime / OBS.
 - **The live demo** at <https://gramota-org.github.io/demo-store/> — for
   any shot where you want a real cursor + a real network call hitting
-  `https://168-119-249-126.sslip.io/demo/*`.
+  `https://api.gramota.eu/demo/*`.
 
 Final cut target: **1080p, 60s, MP4 (H.264, AAC), under 8 MB.**
 
@@ -60,7 +60,7 @@ Tip: in Chrome DevTools → Rendering → "Emulate CSS prefers-reduced-motion: n
 
 ```bash
 # Open Chrome, network tab visible, throttling off
-open -a "Google Chrome" "https://gramota-org.github.io/demo-store/?api=https://168-119-249-126.sslip.io"
+open -a "Google Chrome" "https://gramota-org.github.io/demo-store/?api=https://api.gramota.eu"
 
 # Click the Sunset Festival card → simulator → "Approve all checks"
 # The QR mint and the simulator POST will both appear in DevTools
@@ -88,7 +88,7 @@ open -a "Google Chrome" "https://gramota-org.github.io/demo-store/?api=https://1
 
 ## Quality checks before publishing
 
-- [ ] Demo URL still resolves (`curl -I https://168-119-249-126.sslip.io/healthz`)
+- [ ] Demo URL still resolves (`curl -I https://api.gramota.eu/health`)
 - [ ] No personal email or org token visible in any DevTools panel
 - [ ] Narration script proofread by a native English speaker
 - [ ] CC-BY music attribution in description (if applicable)

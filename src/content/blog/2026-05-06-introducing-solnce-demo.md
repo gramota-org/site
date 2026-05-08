@@ -48,7 +48,7 @@ Two paths from here:
 - **Real wallet path** — scan the QR with the EU Digital Identity
   Wallet (or any OID4VP-compatible wallet). The verifier mints a
   session against our production API at
-  `https://168-119-249-126.sslip.io`. Your phone shows the disclosure
+  `https://api.gramota.eu`. Your phone shows the disclosure
   prompt. Tap "Share" and the order completes.
 
 - **Simulator path** — the dashed-border panel below the QR has four
@@ -99,10 +99,10 @@ Three reasons:
 
 The storefront is React 18 + Vite, deployed to GitHub Pages. The
 verification backend runs on a single Hetzner CAX11 ARM node in
-Falkenstein for €5.39/mo. Caddy handles HTTPS via Let's Encrypt
-against an sslip.io hostname (free, IP-encoded subdomain — `.eu` /
-`.app` domain coming once we like the brand enough). The whole
-thing is open-source and disposable.
+Falkenstein for €5.39/mo. Caddy handles HTTPS via Let's Encrypt with
+a wildcard cert covering every tenant subdomain at `*.gramota.eu`,
+issued via the DNS-01 challenge against Cloudflare's DNS API. The
+whole thing is open-source and disposable.
 
 `POST /demo/verifications` mints the session, `GET
 /demo/verifications/:id` polls status, and `POST
