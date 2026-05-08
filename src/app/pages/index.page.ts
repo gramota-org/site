@@ -474,7 +474,7 @@ const verifier = new Verifier({
   audience: "https://my-bank.com",
   trust: new StaticTrustResolver([issuerJwk]),
 });
-const result = await verifier.verify(token, { nonce });
+const result = await verifier.presentations.verify(token, { nonce });
 if (result.ok) console.log(result.claims);`;
 
   toggleMute(video: HTMLVideoElement) {

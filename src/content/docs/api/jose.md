@@ -3,7 +3,7 @@ title: "@gramota/jose"
 slug: api/jose
 description: "JWS sign + verify, x5c chain validation, pluggable Signer Strategy."
 section: API reference
-order: 8
+order: 9
 ---
 
 # @gramota/jose
@@ -112,11 +112,11 @@ Sign a "header.payload" string, return base64url(signature).
 
 ### JoseError
 
-Defined in: @gramota/jose/dist/types.d.ts:40
+Defined in: @gramota/jose/dist/types.d.ts:41
 
 #### Extends
 
-- `Error`
+- `GramotaError`
 
 #### Constructors
 
@@ -156,23 +156,28 @@ Defined in: @gramota/jose/dist/types.d.ts:43
 ###### Overrides
 
 ```ts
-Error.constructor
+GramotaError.constructor
 ```
 
 #### Properties
 
-##### name
+##### cause?
 
 ```ts
-readonly name: "JoseError" = "JoseError";
+readonly optional cause?: unknown;
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:41
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:44
 
-###### Overrides
+Optional original error that caused this one. Always set when the
+Gramota package is wrapping a thrown exception from a dependency
+(Web Crypto, JOSE, fetch). Survives `JSON.stringify(err)` only via
+the `cause` property — Node 16.9+ logs it natively.
+
+###### Inherited from
 
 ```ts
-Error.name
+GramotaError.cause
 ```
 
 ##### code
@@ -182,6 +187,31 @@ readonly code: JoseErrorCode;
 ```
 
 Defined in: @gramota/jose/dist/types.d.ts:42
+
+Stable string that identifies the failure mode. Subclasses narrow
+the type; at runtime it's always a string. Use for branching, logs,
+and metrics labels — never serialize [GramotaError.message](#message)
+for that purpose, message strings drift across versions.
+
+###### Overrides
+
+```ts
+GramotaError.code
+```
+
+##### name
+
+```ts
+name: string;
+```
+
+Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:1076
+
+###### Inherited from
+
+```ts
+GramotaError.name
+```
 
 ##### message
 
@@ -194,7 +224,7 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.message
+GramotaError.message
 ```
 
 ##### stack?
@@ -208,14 +238,14 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.stack
+GramotaError.stack
 ```
 
 ## Interfaces
 
 ### FetcherResponse
 
-Defined in: @gramota/jose/dist/fetcher.d.ts:30
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:35
 
 Subset of the Web `Response` shape that Gramota libraries actually
 consume.
@@ -235,7 +265,7 @@ without typing out every method.
 readonly ok: boolean;
 ```
 
-Defined in: @gramota/jose/dist/fetcher.d.ts:31
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:36
 
 ##### status
 
@@ -243,7 +273,7 @@ Defined in: @gramota/jose/dist/fetcher.d.ts:31
 readonly status: number;
 ```
 
-Defined in: @gramota/jose/dist/fetcher.d.ts:32
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:37
 
 ##### headers?
 
@@ -253,7 +283,7 @@ readonly optional headers?: {
 };
 ```
 
-Defined in: @gramota/jose/dist/fetcher.d.ts:36
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:41
 
 Optional, but if present must support case-insensitive header
 lookup per HTTP §3.2. Required by RFC 9449 §8 (DPoP-Nonce) and
@@ -283,7 +313,7 @@ get(name: string): string;
 json(): Promise<unknown>;
 ```
 
-Defined in: @gramota/jose/dist/fetcher.d.ts:39
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:44
 
 ###### Returns
 
@@ -295,7 +325,7 @@ Defined in: @gramota/jose/dist/fetcher.d.ts:39
 text(): Promise<string>;
 ```
 
-Defined in: @gramota/jose/dist/fetcher.d.ts:40
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:45
 
 ###### Returns
 
@@ -455,7 +485,7 @@ JWS alg.
 
 ### JsonWebKey
 
-Defined in: @gramota/jose/dist/types.d.ts:2
+Defined in: @gramota/jose/dist/types.d.ts:3
 
 JSON Web Key (RFC 7517). Minimum fields by key type.
 
@@ -473,7 +503,7 @@ JSON Web Key (RFC 7517). Minimum fields by key type.
 kty: "RSA" | "EC" | "OKP" | "oct";
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:3
+Defined in: @gramota/jose/dist/types.d.ts:4
 
 ##### alg?
 
@@ -481,7 +511,7 @@ Defined in: @gramota/jose/dist/types.d.ts:3
 optional alg?: string;
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:4
+Defined in: @gramota/jose/dist/types.d.ts:5
 
 ##### kid?
 
@@ -489,7 +519,7 @@ Defined in: @gramota/jose/dist/types.d.ts:4
 optional kid?: string;
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:5
+Defined in: @gramota/jose/dist/types.d.ts:6
 
 ##### use?
 
@@ -497,7 +527,7 @@ Defined in: @gramota/jose/dist/types.d.ts:5
 optional use?: string;
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:6
+Defined in: @gramota/jose/dist/types.d.ts:7
 
 ##### n?
 
@@ -505,7 +535,7 @@ Defined in: @gramota/jose/dist/types.d.ts:6
 optional n?: string;
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:7
+Defined in: @gramota/jose/dist/types.d.ts:8
 
 ##### e?
 
@@ -513,7 +543,7 @@ Defined in: @gramota/jose/dist/types.d.ts:7
 optional e?: string;
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:8
+Defined in: @gramota/jose/dist/types.d.ts:9
 
 ##### d?
 
@@ -521,7 +551,7 @@ Defined in: @gramota/jose/dist/types.d.ts:8
 optional d?: string;
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:9
+Defined in: @gramota/jose/dist/types.d.ts:10
 
 ##### p?
 
@@ -529,7 +559,7 @@ Defined in: @gramota/jose/dist/types.d.ts:9
 optional p?: string;
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:10
+Defined in: @gramota/jose/dist/types.d.ts:11
 
 ##### q?
 
@@ -537,7 +567,7 @@ Defined in: @gramota/jose/dist/types.d.ts:10
 optional q?: string;
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:11
+Defined in: @gramota/jose/dist/types.d.ts:12
 
 ##### dp?
 
@@ -545,7 +575,7 @@ Defined in: @gramota/jose/dist/types.d.ts:11
 optional dp?: string;
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:12
+Defined in: @gramota/jose/dist/types.d.ts:13
 
 ##### dq?
 
@@ -553,7 +583,7 @@ Defined in: @gramota/jose/dist/types.d.ts:12
 optional dq?: string;
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:13
+Defined in: @gramota/jose/dist/types.d.ts:14
 
 ##### qi?
 
@@ -561,7 +591,7 @@ Defined in: @gramota/jose/dist/types.d.ts:13
 optional qi?: string;
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:14
+Defined in: @gramota/jose/dist/types.d.ts:15
 
 ##### crv?
 
@@ -569,7 +599,7 @@ Defined in: @gramota/jose/dist/types.d.ts:14
 optional crv?: string;
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:15
+Defined in: @gramota/jose/dist/types.d.ts:16
 
 ##### x?
 
@@ -577,7 +607,7 @@ Defined in: @gramota/jose/dist/types.d.ts:15
 optional x?: string;
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:16
+Defined in: @gramota/jose/dist/types.d.ts:17
 
 ##### y?
 
@@ -585,7 +615,7 @@ Defined in: @gramota/jose/dist/types.d.ts:16
 optional y?: string;
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:17
+Defined in: @gramota/jose/dist/types.d.ts:18
 
 ##### k?
 
@@ -593,13 +623,13 @@ Defined in: @gramota/jose/dist/types.d.ts:17
 optional k?: string;
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:18
+Defined in: @gramota/jose/dist/types.d.ts:19
 
 ***
 
 ### VerifyJwsOptions
 
-Defined in: @gramota/jose/dist/types.d.ts:23
+Defined in: @gramota/jose/dist/types.d.ts:24
 
 #### Extended by
 
@@ -613,7 +643,7 @@ Defined in: @gramota/jose/dist/types.d.ts:23
 optional algorithms?: readonly SupportedAlg[];
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:25
+Defined in: @gramota/jose/dist/types.d.ts:26
 
 Algorithm allowlist. Defaults to all supported algorithms above.
 
@@ -621,7 +651,7 @@ Algorithm allowlist. Defaults to all supported algorithms above.
 
 ### VerifiedJws
 
-Defined in: @gramota/jose/dist/types.d.ts:27
+Defined in: @gramota/jose/dist/types.d.ts:28
 
 #### Extended by
 
@@ -638,7 +668,7 @@ header: {
 };
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:29
+Defined in: @gramota/jose/dist/types.d.ts:30
 
 Decoded JWS protected header.
 
@@ -660,7 +690,7 @@ alg: string;
 payload: Record<string, unknown>;
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:34
+Defined in: @gramota/jose/dist/types.d.ts:35
 
 Decoded JWS payload (parsed as JSON).
 
@@ -670,7 +700,7 @@ Decoded JWS payload (parsed as JSON).
 alg: SupportedAlg;
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:36
+Defined in: @gramota/jose/dist/types.d.ts:37
 
 The exact algorithm that verified successfully.
 
@@ -692,7 +722,7 @@ Defined in: @gramota/jose/dist/verify-x5c.d.ts:3
 optional algorithms?: readonly SupportedAlg[];
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:25
+Defined in: @gramota/jose/dist/types.d.ts:26
 
 Algorithm allowlist. Defaults to all supported algorithms above.
 
@@ -742,7 +772,7 @@ header: {
 };
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:29
+Defined in: @gramota/jose/dist/types.d.ts:30
 
 Decoded JWS protected header.
 
@@ -768,7 +798,7 @@ alg: string;
 payload: Record<string, unknown>;
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:34
+Defined in: @gramota/jose/dist/types.d.ts:35
 
 Decoded JWS payload (parsed as JSON).
 
@@ -782,7 +812,7 @@ Decoded JWS payload (parsed as JSON).
 alg: SupportedAlg;
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:36
+Defined in: @gramota/jose/dist/types.d.ts:37
 
 The exact algorithm that verified successfully.
 
@@ -874,7 +904,7 @@ The trust anchor that ultimately validated the chain.
 type Fetcher = (url: string, init?: RequestInit) => Promise<FetcherResponse>;
 ```
 
-Defined in: @gramota/jose/dist/fetcher.d.ts:44
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:49
 
 Adapter-friendly HTTP fetcher. Compatible with global `fetch`,
 `node-fetch`, `undici`, and test mocks.
@@ -911,7 +941,7 @@ type SupportedAlg =
   | "PS512";
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:22
+Defined in: @gramota/jose/dist/types.d.ts:23
 
 Algorithms we accept by default. `alg: "none"` is never permitted.
 
@@ -939,7 +969,7 @@ type JoseErrorCode =
   | "jose.x5c_no_trust_anchor";
 ```
 
-Defined in: @gramota/jose/dist/types.d.ts:39
+Defined in: @gramota/jose/dist/types.d.ts:40
 
 Stable machine-readable error codes for `JoseError`.
 
@@ -957,7 +987,7 @@ function mockFetcherResponse(input: {
 }): FetcherResponse;
 ```
 
-Defined in: @gramota/jose/dist/fetcher.d.ts:55
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:60
 
 Build a [FetcherResponse](#fetcherresponse) for tests / in-process adapters with
 minimal boilerplate. Both `json()` and `text()` are derived from the

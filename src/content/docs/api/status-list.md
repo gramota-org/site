@@ -3,7 +3,7 @@ title: "@gramota/status-list"
 slug: api/status-list
 description: "IETF Token Status List + StatusResolver Strategy for revocation / suspension."
 section: API reference
-order: 12
+order: 13
 ---
 
 # @gramota/status-list
@@ -81,11 +81,11 @@ Defined in: @gramota/status-list/dist/resolver.d.ts:60
 
 ### StatusListError
 
-Defined in: @gramota/status-list/dist/types.d.ts:72
+Defined in: @gramota/status-list/dist/types.d.ts:73
 
 #### Extends
 
-- `Error`
+- `GramotaError`
 
 #### Constructors
 
@@ -125,23 +125,28 @@ Defined in: @gramota/status-list/dist/types.d.ts:75
 ###### Overrides
 
 ```ts
-Error.constructor
+GramotaError.constructor
 ```
 
 #### Properties
 
-##### name
+##### cause?
 
 ```ts
-readonly name: "StatusListError" = "StatusListError";
+readonly optional cause?: unknown;
 ```
 
-Defined in: @gramota/status-list/dist/types.d.ts:73
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:44
 
-###### Overrides
+Optional original error that caused this one. Always set when the
+Gramota package is wrapping a thrown exception from a dependency
+(Web Crypto, JOSE, fetch). Survives `JSON.stringify(err)` only via
+the `cause` property — Node 16.9+ logs it natively.
+
+###### Inherited from
 
 ```ts
-Error.name
+GramotaError.cause
 ```
 
 ##### code
@@ -151,6 +156,31 @@ readonly code: StatusListErrorCode;
 ```
 
 Defined in: @gramota/status-list/dist/types.d.ts:74
+
+Stable string that identifies the failure mode. Subclasses narrow
+the type; at runtime it's always a string. Use for branching, logs,
+and metrics labels — never serialize [GramotaError.message](#message)
+for that purpose, message strings drift across versions.
+
+###### Overrides
+
+```ts
+GramotaError.code
+```
+
+##### name
+
+```ts
+name: string;
+```
+
+Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:1076
+
+###### Inherited from
+
+```ts
+GramotaError.name
+```
 
 ##### message
 
@@ -163,7 +193,7 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.message
+GramotaError.message
 ```
 
 ##### stack?
@@ -177,7 +207,7 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.stack
+GramotaError.stack
 ```
 
 ## Interfaces
@@ -503,7 +533,7 @@ Pre-fetched / cached list — skip the network when supplied. The
 
 ### StatusReference
 
-Defined in: @gramota/status-list/dist/types.d.ts:24
+Defined in: @gramota/status-list/dist/types.d.ts:25
 
 A reference to a credential's status — embedded as `status.status_list`
 in the credential payload.
@@ -516,7 +546,7 @@ in the credential payload.
 uri: string;
 ```
 
-Defined in: @gramota/status-list/dist/types.d.ts:26
+Defined in: @gramota/status-list/dist/types.d.ts:27
 
 URL where the wallet/verifier fetches the status list token.
 
@@ -526,7 +556,7 @@ URL where the wallet/verifier fetches the status list token.
 idx: number;
 ```
 
-Defined in: @gramota/status-list/dist/types.d.ts:28
+Defined in: @gramota/status-list/dist/types.d.ts:29
 
 0-based index into the list.
 
@@ -534,7 +564,7 @@ Defined in: @gramota/status-list/dist/types.d.ts:28
 
 ### StatusList
 
-Defined in: @gramota/status-list/dist/types.d.ts:33
+Defined in: @gramota/status-list/dist/types.d.ts:34
 
 A parsed (decoded + decompressed) status list.
 
@@ -546,7 +576,7 @@ A parsed (decoded + decompressed) status list.
 bits: StatusBits;
 ```
 
-Defined in: @gramota/status-list/dist/types.d.ts:35
+Defined in: @gramota/status-list/dist/types.d.ts:36
 
 Bit-width of each status entry.
 
@@ -556,7 +586,7 @@ Bit-width of each status entry.
 bytes: Uint8Array;
 ```
 
-Defined in: @gramota/status-list/dist/types.d.ts:38
+Defined in: @gramota/status-list/dist/types.d.ts:39
 
 Decompressed raw bitstring. Each byte holds 8/bits statuses
 (for bits=1, 8 statuses; bits=2, 4 statuses; etc.).
@@ -567,7 +597,7 @@ Decompressed raw bitstring. Each byte holds 8/bits statuses
 length: number;
 ```
 
-Defined in: @gramota/status-list/dist/types.d.ts:40
+Defined in: @gramota/status-list/dist/types.d.ts:41
 
 Total number of statuses encoded — derived from `bytes.length`.
 
@@ -577,7 +607,7 @@ Total number of statuses encoded — derived from `bytes.length`.
 issuer: string;
 ```
 
-Defined in: @gramota/status-list/dist/types.d.ts:42
+Defined in: @gramota/status-list/dist/types.d.ts:43
 
 Issuer of the list (`iss` claim of the status list token).
 
@@ -587,7 +617,7 @@ Issuer of the list (`iss` claim of the status list token).
 subject: string;
 ```
 
-Defined in: @gramota/status-list/dist/types.d.ts:45
+Defined in: @gramota/status-list/dist/types.d.ts:46
 
 The list's own URL / subject (`sub` claim — should match the URI
 used to fetch it).
@@ -598,7 +628,7 @@ used to fetch it).
 issuedAt: number;
 ```
 
-Defined in: @gramota/status-list/dist/types.d.ts:47
+Defined in: @gramota/status-list/dist/types.d.ts:48
 
 Issued-at, unix seconds.
 
@@ -608,7 +638,7 @@ Issued-at, unix seconds.
 optional expiresAt?: number;
 ```
 
-Defined in: @gramota/status-list/dist/types.d.ts:49
+Defined in: @gramota/status-list/dist/types.d.ts:50
 
 Expiry (unix seconds), if the issuer set one.
 
@@ -618,7 +648,7 @@ Expiry (unix seconds), if the issuer set one.
 optional ttl?: number;
 ```
 
-Defined in: @gramota/status-list/dist/types.d.ts:51
+Defined in: @gramota/status-list/dist/types.d.ts:52
 
 Caching hint (seconds), if set.
 
@@ -626,7 +656,7 @@ Caching hint (seconds), if set.
 
 ### CredentialStatusResult
 
-Defined in: @gramota/status-list/dist/types.d.ts:60
+Defined in: @gramota/status-list/dist/types.d.ts:61
 
 Result of resolving a credential's status.
 
@@ -638,7 +668,7 @@ Result of resolving a credential's status.
 code: number;
 ```
 
-Defined in: @gramota/status-list/dist/types.d.ts:62
+Defined in: @gramota/status-list/dist/types.d.ts:63
 
 Numeric status code.
 
@@ -648,7 +678,7 @@ Numeric status code.
 state: StatusState;
 ```
 
-Defined in: @gramota/status-list/dist/types.d.ts:64
+Defined in: @gramota/status-list/dist/types.d.ts:65
 
 Human-readable label.
 
@@ -658,7 +688,7 @@ Human-readable label.
 list: StatusList;
 ```
 
-Defined in: @gramota/status-list/dist/types.d.ts:66
+Defined in: @gramota/status-list/dist/types.d.ts:67
 
 The list that was consulted.
 
@@ -668,7 +698,7 @@ The list that was consulted.
 reference: StatusReference;
 ```
 
-Defined in: @gramota/status-list/dist/types.d.ts:68
+Defined in: @gramota/status-list/dist/types.d.ts:69
 
 The reference that pointed at the list.
 
@@ -680,7 +710,7 @@ The reference that pointed at the list.
 type Fetcher = (url: string, init?: RequestInit) => Promise<FetcherResponse>;
 ```
 
-Defined in: .pnpm/@gramota+jose@0.2.0/node\_modules/@gramota/jose/dist/fetcher.d.ts:44
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:49
 
 Adapter-friendly HTTP fetcher. Compatible with global `fetch`,
 `node-fetch`, `undici`, and test mocks.
@@ -707,7 +737,7 @@ Adapter-friendly HTTP fetcher. Compatible with global `fetch`,
 type StatusBits = 1 | 2 | 4 | 8;
 ```
 
-Defined in: @gramota/status-list/dist/types.d.ts:31
+Defined in: @gramota/status-list/dist/types.d.ts:32
 
 Permitted bit-widths per status (RFC requires one of these).
 
@@ -719,7 +749,7 @@ Permitted bit-widths per status (RFC requires one of these).
 type StatusState = "valid" | "invalid" | "suspended" | "application_specific" | "unknown";
 ```
 
-Defined in: @gramota/status-list/dist/types.d.ts:58
+Defined in: @gramota/status-list/dist/types.d.ts:59
 
 Friendly label for a status code.
 
@@ -742,7 +772,7 @@ type StatusListErrorCode =
   | "status_list.no_status_reference";
 ```
 
-Defined in: @gramota/status-list/dist/types.d.ts:71
+Defined in: @gramota/status-list/dist/types.d.ts:72
 
 Stable error codes for `StatusListError`.
 
@@ -754,7 +784,7 @@ Stable error codes for `StatusListError`.
 const STATUS_VALID: 0 = 0;
 ```
 
-Defined in: @gramota/status-list/dist/types.d.ts:54
+Defined in: @gramota/status-list/dist/types.d.ts:55
 
 Status code values defined by the spec.
 
@@ -766,7 +796,7 @@ Status code values defined by the spec.
 const STATUS_INVALID: 1 = 1;
 ```
 
-Defined in: @gramota/status-list/dist/types.d.ts:55
+Defined in: @gramota/status-list/dist/types.d.ts:56
 
 ***
 
@@ -776,7 +806,7 @@ Defined in: @gramota/status-list/dist/types.d.ts:55
 const STATUS_SUSPENDED: 2 = 2;
 ```
 
-Defined in: @gramota/status-list/dist/types.d.ts:56
+Defined in: @gramota/status-list/dist/types.d.ts:57
 
 ## Functions
 

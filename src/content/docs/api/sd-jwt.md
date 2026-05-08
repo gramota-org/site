@@ -3,7 +3,7 @@ title: "@gramota/sd-jwt"
 slug: api/sd-jwt
 description: "SD-JWT-VC parser, hash binding, KB-JWT issuance / verification."
 section: API reference
-order: 9
+order: 10
 ---
 
 # @gramota/sd-jwt
@@ -18,7 +18,7 @@ Source: [github.com/gramota-org/gramota/tree/main/packages/sd-jwt](https://githu
 
 ### SdJwtError
 
-Defined in: @gramota/sd-jwt/dist/types.d.ts:24
+Defined in: @gramota/sd-jwt/dist/types.d.ts:25
 
 Single error class for every failure mode in `@gramota/sd-jwt`.
 
@@ -30,7 +30,7 @@ a per-operation class. Replaces the older per-operation classes
 
 #### Extends
 
-- `Error`
+- `GramotaError`
 
 #### Constructors
 
@@ -70,23 +70,28 @@ Defined in: @gramota/sd-jwt/dist/types.d.ts:27
 ###### Overrides
 
 ```ts
-Error.constructor
+GramotaError.constructor
 ```
 
 #### Properties
 
-##### name
+##### cause?
 
 ```ts
-readonly name: "SdJwtError" = "SdJwtError";
+readonly optional cause?: unknown;
 ```
 
-Defined in: @gramota/sd-jwt/dist/types.d.ts:25
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:44
 
-###### Overrides
+Optional original error that caused this one. Always set when the
+Gramota package is wrapping a thrown exception from a dependency
+(Web Crypto, JOSE, fetch). Survives `JSON.stringify(err)` only via
+the `cause` property — Node 16.9+ logs it natively.
+
+###### Inherited from
 
 ```ts
-Error.name
+GramotaError.cause
 ```
 
 ##### code
@@ -96,6 +101,31 @@ readonly code: SdJwtErrorCode;
 ```
 
 Defined in: @gramota/sd-jwt/dist/types.d.ts:26
+
+Stable string that identifies the failure mode. Subclasses narrow
+the type; at runtime it's always a string. Use for branching, logs,
+and metrics labels — never serialize [GramotaError.message](#message)
+for that purpose, message strings drift across versions.
+
+###### Overrides
+
+```ts
+GramotaError.code
+```
+
+##### name
+
+```ts
+name: string;
+```
+
+Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:1076
+
+###### Inherited from
+
+```ts
+GramotaError.name
+```
 
 ##### message
 
@@ -108,7 +138,7 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.message
+GramotaError.message
 ```
 
 ##### stack?
@@ -122,7 +152,7 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.stack
+GramotaError.stack
 ```
 
 ## Interfaces
@@ -834,7 +864,7 @@ type SdJwtErrorCode =
   | "sd_jwt.issue.salt_generator_exhausted";
 ```
 
-Defined in: @gramota/sd-jwt/dist/types.d.ts:14
+Defined in: @gramota/sd-jwt/dist/types.d.ts:15
 
 Stable identifiers for every failure mode in `@gramota/sd-jwt`.
 

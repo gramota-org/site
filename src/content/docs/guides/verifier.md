@@ -131,7 +131,7 @@ app.post(
     const presentation = body.vp_token["pid"];
     if (!presentation) return reply.code(400).send({ error: "missing_pid" });
 
-    const result = await verifier.verify(presentation, {
+    const result = await verifier.presentations.verify(presentation, {
       nonce: session.nonce,
     });
 
@@ -155,7 +155,7 @@ issuer's published list. None of those change the verification core.
 
 ## What the 12 checks cover
 
-When `verifier.verify` returns `result.ok = true`, all of these passed:
+When `verifier.presentations.verify` returns `result.ok = true`, all of these passed:
 
 | # | Check | Failure mode |
 |---|---|---|

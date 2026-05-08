@@ -3,7 +3,7 @@ title: "@gramota/oid4vci"
 slug: api/oid4vci
 description: "OID4VCI client + server — Draft 13/15 normalized, PAR, DPoP both sides."
 section: API reference
-order: 5
+order: 6
 ---
 
 # @gramota/oid4vci
@@ -273,11 +273,11 @@ wallet should navigate the user to.
 
 ### Oid4vciError
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:153
+Defined in: @gramota/oid4vci/dist/types.d.ts:154
 
 #### Extends
 
-- `Error`
+- `GramotaError`
 
 #### Constructors
 
@@ -317,23 +317,28 @@ Defined in: @gramota/oid4vci/dist/types.d.ts:156
 ###### Overrides
 
 ```ts
-Error.constructor
+GramotaError.constructor
 ```
 
 #### Properties
 
-##### name
+##### cause?
 
 ```ts
-readonly name: "Oid4vciError" = "Oid4vciError";
+readonly optional cause?: unknown;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:154
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:44
 
-###### Overrides
+Optional original error that caused this one. Always set when the
+Gramota package is wrapping a thrown exception from a dependency
+(Web Crypto, JOSE, fetch). Survives `JSON.stringify(err)` only via
+the `cause` property — Node 16.9+ logs it natively.
+
+###### Inherited from
 
 ```ts
-Error.name
+GramotaError.cause
 ```
 
 ##### code
@@ -343,6 +348,31 @@ readonly code: Oid4vciErrorCode;
 ```
 
 Defined in: @gramota/oid4vci/dist/types.d.ts:155
+
+Stable string that identifies the failure mode. Subclasses narrow
+the type; at runtime it's always a string. Use for branching, logs,
+and metrics labels — never serialize [GramotaError.message](#message)
+for that purpose, message strings drift across versions.
+
+###### Overrides
+
+```ts
+GramotaError.code
+```
+
+##### name
+
+```ts
+name: string;
+```
+
+Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:1076
+
+###### Inherited from
+
+```ts
+GramotaError.name
+```
 
 ##### message
 
@@ -355,7 +385,7 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.message
+GramotaError.message
 ```
 
 ##### stack?
@@ -369,14 +399,14 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.stack
+GramotaError.stack
 ```
 
 ## Interfaces
 
 ### FetcherResponse
 
-Defined in: .pnpm/@gramota+jose@0.2.0/node\_modules/@gramota/jose/dist/fetcher.d.ts:30
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:35
 
 Subset of the Web `Response` shape that Gramota libraries actually
 consume.
@@ -396,7 +426,7 @@ without typing out every method.
 readonly ok: boolean;
 ```
 
-Defined in: .pnpm/@gramota+jose@0.2.0/node\_modules/@gramota/jose/dist/fetcher.d.ts:31
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:36
 
 ##### status
 
@@ -404,7 +434,7 @@ Defined in: .pnpm/@gramota+jose@0.2.0/node\_modules/@gramota/jose/dist/fetcher.d
 readonly status: number;
 ```
 
-Defined in: .pnpm/@gramota+jose@0.2.0/node\_modules/@gramota/jose/dist/fetcher.d.ts:32
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:37
 
 ##### headers?
 
@@ -414,7 +444,7 @@ readonly optional headers?: {
 };
 ```
 
-Defined in: .pnpm/@gramota+jose@0.2.0/node\_modules/@gramota/jose/dist/fetcher.d.ts:36
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:41
 
 Optional, but if present must support case-insensitive header
 lookup per HTTP §3.2. Required by RFC 9449 §8 (DPoP-Nonce) and
@@ -444,7 +474,7 @@ get(name: string): string;
 json(): Promise<unknown>;
 ```
 
-Defined in: .pnpm/@gramota+jose@0.2.0/node\_modules/@gramota/jose/dist/fetcher.d.ts:39
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:44
 
 ###### Returns
 
@@ -456,7 +486,7 @@ Defined in: .pnpm/@gramota+jose@0.2.0/node\_modules/@gramota/jose/dist/fetcher.d
 text(): Promise<string>;
 ```
 
-Defined in: .pnpm/@gramota+jose@0.2.0/node\_modules/@gramota/jose/dist/fetcher.d.ts:40
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:45
 
 ###### Returns
 
@@ -1784,7 +1814,7 @@ wallet should navigate the user to.
 
 ### CredentialOffer
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:18
+Defined in: @gramota/oid4vci/dist/types.d.ts:19
 
 A Credential Offer the issuer hands to the wallet, typically as a URL
 the wallet scans or follows. Per OID4VCI §4.1.
@@ -1797,7 +1827,7 @@ the wallet scans or follows. Per OID4VCI §4.1.
 credential_issuer: string;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:20
+Defined in: @gramota/oid4vci/dist/types.d.ts:21
 
 Issuer base URL (used as the audience for proofs).
 
@@ -1807,7 +1837,7 @@ Issuer base URL (used as the audience for proofs).
 credential_configuration_ids: readonly string[];
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:22
+Defined in: @gramota/oid4vci/dist/types.d.ts:23
 
 Identifiers of the credential configurations the issuer is offering.
 
@@ -1827,7 +1857,7 @@ optional grants?: {
 };
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:24
+Defined in: @gramota/oid4vci/dist/types.d.ts:25
 
 Which grant types are available. We support pre-authorized_code only.
 
@@ -1884,7 +1914,7 @@ optional authorization_server?: string;
 
 ### TxCodeRequirement
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:38
+Defined in: @gramota/oid4vci/dist/types.d.ts:39
 
 When the issuer requires a transaction code (e.g. PIN), this describes
 how the wallet should collect it from the user.
@@ -1897,7 +1927,7 @@ how the wallet should collect it from the user.
 optional input_mode?: "numeric" | "text";
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:39
+Defined in: @gramota/oid4vci/dist/types.d.ts:40
 
 ##### length?
 
@@ -1905,7 +1935,7 @@ Defined in: @gramota/oid4vci/dist/types.d.ts:39
 optional length?: number;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:40
+Defined in: @gramota/oid4vci/dist/types.d.ts:41
 
 ##### description?
 
@@ -1913,13 +1943,13 @@ Defined in: @gramota/oid4vci/dist/types.d.ts:40
 optional description?: string;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:41
+Defined in: @gramota/oid4vci/dist/types.d.ts:42
 
 ***
 
 ### IssuerMetadata
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:44
+Defined in: @gramota/oid4vci/dist/types.d.ts:45
 
 Issuer metadata published at `<issuer>/.well-known/openid-credential-issuer`.
 
@@ -1937,7 +1967,7 @@ Issuer metadata published at `<issuer>/.well-known/openid-credential-issuer`.
 credential_issuer: string;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:45
+Defined in: @gramota/oid4vci/dist/types.d.ts:46
 
 ##### credential\_endpoint
 
@@ -1945,7 +1975,7 @@ Defined in: @gramota/oid4vci/dist/types.d.ts:45
 credential_endpoint: string;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:46
+Defined in: @gramota/oid4vci/dist/types.d.ts:47
 
 ##### token\_endpoint?
 
@@ -1953,7 +1983,7 @@ Defined in: @gramota/oid4vci/dist/types.d.ts:46
 optional token_endpoint?: string;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:48
+Defined in: @gramota/oid4vci/dist/types.d.ts:49
 
 OAuth 2.0 token endpoint. May live on a separate authorization_server.
 
@@ -1963,7 +1993,7 @@ OAuth 2.0 token endpoint. May live on a separate authorization_server.
 optional authorization_servers?: readonly string[];
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:50
+Defined in: @gramota/oid4vci/dist/types.d.ts:51
 
 Authorization servers — when token_endpoint isn't on the issuer itself.
 
@@ -1973,7 +2003,7 @@ Authorization servers — when token_endpoint isn't on the issuer itself.
 credential_configurations_supported: Readonly<Record<string, CredentialConfiguration>>;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:52
+Defined in: @gramota/oid4vci/dist/types.d.ts:53
 
 Map of configuration id → details. The wallet picks one to request.
 
@@ -1983,7 +2013,7 @@ Map of configuration id → details. The wallet picks one to request.
 optional display?: readonly Readonly<Record<string, unknown>>[];
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:54
+Defined in: @gramota/oid4vci/dist/types.d.ts:55
 
 Display info for the issuer (name, logo, locale).
 
@@ -1991,7 +2021,7 @@ Display info for the issuer (name, logo, locale).
 
 ### CredentialConfiguration
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:57
+Defined in: @gramota/oid4vci/dist/types.d.ts:58
 
 #### Indexable
 
@@ -2007,7 +2037,7 @@ Defined in: @gramota/oid4vci/dist/types.d.ts:57
 format: string;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:59
+Defined in: @gramota/oid4vci/dist/types.d.ts:60
 
 "vc+sd-jwt" or similar. Must match what we can handle.
 
@@ -2017,7 +2047,7 @@ Defined in: @gramota/oid4vci/dist/types.d.ts:59
 optional scope?: string;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:61
+Defined in: @gramota/oid4vci/dist/types.d.ts:62
 
 OAuth scope for this credential, when using auth-code flow.
 
@@ -2027,7 +2057,7 @@ OAuth scope for this credential, when using auth-code flow.
 optional cryptographic_binding_methods_supported?: readonly string[];
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:63
+Defined in: @gramota/oid4vci/dist/types.d.ts:64
 
 "jwk" / "did:..." — for SD-JWT-VC, "jwk" is standard.
 
@@ -2037,7 +2067,7 @@ Defined in: @gramota/oid4vci/dist/types.d.ts:63
 optional credential_signing_alg_values_supported?: readonly string[];
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:65
+Defined in: @gramota/oid4vci/dist/types.d.ts:66
 
 Algorithms the issuer can sign credentials with.
 
@@ -2049,7 +2079,7 @@ optional proof_types_supported?: Readonly<Record<string, {
 }>>;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:67
+Defined in: @gramota/oid4vci/dist/types.d.ts:68
 
 Proof types the issuer accepts (we use jwt).
 
@@ -2059,7 +2089,7 @@ Proof types the issuer accepts (we use jwt).
 optional vct?: string;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:71
+Defined in: @gramota/oid4vci/dist/types.d.ts:72
 
 vc+sd-jwt-specific: the credential type identifier.
 
@@ -2069,13 +2099,13 @@ vc+sd-jwt-specific: the credential type identifier.
 optional display?: readonly Readonly<Record<string, unknown>>[];
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:72
+Defined in: @gramota/oid4vci/dist/types.d.ts:73
 
 ***
 
 ### TokenResponse
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:76
+Defined in: @gramota/oid4vci/dist/types.d.ts:77
 
 Token endpoint response per RFC 6749 + OID4VCI extensions.
 
@@ -2087,7 +2117,7 @@ Token endpoint response per RFC 6749 + OID4VCI extensions.
 access_token: string;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:77
+Defined in: @gramota/oid4vci/dist/types.d.ts:78
 
 ##### token\_type
 
@@ -2098,7 +2128,7 @@ token_type:
 };
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:78
+Defined in: @gramota/oid4vci/dist/types.d.ts:79
 
 ##### expires\_in?
 
@@ -2106,7 +2136,7 @@ Defined in: @gramota/oid4vci/dist/types.d.ts:78
 optional expires_in?: number;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:79
+Defined in: @gramota/oid4vci/dist/types.d.ts:80
 
 ##### c\_nonce?
 
@@ -2114,7 +2144,7 @@ Defined in: @gramota/oid4vci/dist/types.d.ts:79
 optional c_nonce?: string;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:81
+Defined in: @gramota/oid4vci/dist/types.d.ts:82
 
 Issuer-supplied nonce — bound into the proof JWT.
 
@@ -2124,7 +2154,7 @@ Issuer-supplied nonce — bound into the proof JWT.
 optional c_nonce_expires_in?: number;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:82
+Defined in: @gramota/oid4vci/dist/types.d.ts:83
 
 ##### scope?
 
@@ -2132,13 +2162,13 @@ Defined in: @gramota/oid4vci/dist/types.d.ts:82
 optional scope?: string;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:83
+Defined in: @gramota/oid4vci/dist/types.d.ts:84
 
 ***
 
 ### CredentialRequest
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:96
+Defined in: @gramota/oid4vci/dist/types.d.ts:97
 
 Credential request payload per OID4VCI §7.2.
 
@@ -2159,7 +2189,7 @@ form for issuers to consume:
 optional credential_configuration_id?: string;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:98
+Defined in: @gramota/oid4vci/dist/types.d.ts:99
 
 Draft 14+: identifies a row in `credential_configurations_supported`.
 
@@ -2169,7 +2199,7 @@ Draft 14+: identifies a row in `credential_configurations_supported`.
 optional credential_identifier?: string;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:100
+Defined in: @gramota/oid4vci/dist/types.d.ts:101
 
 Draft 15+: server-issued credential identifier (deferred / per-token).
 
@@ -2179,7 +2209,7 @@ Draft 15+: server-issued credential identifier (deferred / per-token).
 optional format?: string;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:102
+Defined in: @gramota/oid4vci/dist/types.d.ts:103
 
 Draft 13 (legacy): explicit format string.
 
@@ -2189,7 +2219,7 @@ Draft 13 (legacy): explicit format string.
 optional vct?: string;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:104
+Defined in: @gramota/oid4vci/dist/types.d.ts:105
 
 Draft 13 (legacy): vc+sd-jwt type.
 
@@ -2202,7 +2232,7 @@ optional proof?: {
 };
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:107
+Defined in: @gramota/oid4vci/dist/types.d.ts:108
 
 Single proof of possession — Draft 13 form. Wallet signs a JWT
 with the cnf-bound key.
@@ -2227,7 +2257,7 @@ optional proofs?: {
 };
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:115
+Defined in: @gramota/oid4vci/dist/types.d.ts:116
 
 Batch proofs of possession — Draft 14/15 form. The EU wallet
 (eudi-lib-jvm-openid4vci-kt 0.9+) sends this. Each entry is a
@@ -2244,7 +2274,7 @@ optional jwt?: readonly string[];
 
 ### CredentialResponse
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:138
+Defined in: @gramota/oid4vci/dist/types.d.ts:139
 
 Credential response per OID4VCI §7.3.
 
@@ -2256,7 +2286,7 @@ Credential response per OID4VCI §7.3.
 optional credential?: string;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:140
+Defined in: @gramota/oid4vci/dist/types.d.ts:141
 
 The credential, format-specific. For vc+sd-jwt this is the SD-JWT-VC string.
 
@@ -2269,7 +2299,7 @@ optional credentials?: readonly {
 }[];
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:141
+Defined in: @gramota/oid4vci/dist/types.d.ts:142
 
 ##### c\_nonce?
 
@@ -2277,7 +2307,7 @@ Defined in: @gramota/oid4vci/dist/types.d.ts:141
 optional c_nonce?: string;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:146
+Defined in: @gramota/oid4vci/dist/types.d.ts:147
 
 Fresh nonce for the next request, if any.
 
@@ -2287,7 +2317,7 @@ Fresh nonce for the next request, if any.
 optional c_nonce_expires_in?: number;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:147
+Defined in: @gramota/oid4vci/dist/types.d.ts:148
 
 ##### notification\_id?
 
@@ -2295,7 +2325,7 @@ Defined in: @gramota/oid4vci/dist/types.d.ts:147
 optional notification_id?: string;
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:149
+Defined in: @gramota/oid4vci/dist/types.d.ts:150
 
 Optional notification id for the wallet to acknowledge issuance.
 
@@ -2307,7 +2337,7 @@ Optional notification id for the wallet to acknowledge issuance.
 type Fetcher = (url: string, init?: RequestInit) => Promise<FetcherResponse>;
 ```
 
-Defined in: .pnpm/@gramota+jose@0.2.0/node\_modules/@gramota/jose/dist/fetcher.d.ts:44
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:49
 
 Adapter-friendly HTTP fetcher. Compatible with global `fetch`,
 `node-fetch`, `undici`, and test mocks.
@@ -2423,7 +2453,7 @@ type Oid4vciErrorCode =
   | "oid4vci.par_endpoint_missing";
 ```
 
-Defined in: @gramota/oid4vci/dist/types.d.ts:152
+Defined in: @gramota/oid4vci/dist/types.d.ts:153
 
 Stable codes for `Oid4vciError`.
 
@@ -3043,6 +3073,68 @@ optional length?: number;
 ```ts
 optional description?: string;
 ```
+
+***
+
+### buildCredentialOfferUrl()
+
+```ts
+function buildCredentialOfferUrl(offer: CredentialOffer, options?: {
+  scheme?: string;
+}): string;
+```
+
+Defined in: @gramota/oid4vci/dist/offer.d.ts:102
+
+Build a Credential Offer URL — the inverse of [parseCredentialOffer](#parsecredentialoffer).
+
+Produces the by-value form (`?credential_offer=<encoded JSON>`).
+For the by-reference form (`?credential_offer_uri=<URL>`), build it
+yourself — it's a one-line `URLSearchParams` call and the choice of
+whether to host the offer JSON behind a URL is yours, not the
+library's.
+
+The `scheme` defaults to `openid-credential-offer://` per OID4VCI §4.1
+but custom schemes (`haip://`, `eudi-openid4vci://`, etc.) are common
+— pass any URI scheme that includes `://` and the wallet's preferred
+authority.
+
+#### Parameters
+
+##### offer
+
+[`CredentialOffer`](#credentialoffer)
+
+##### options?
+
+###### scheme?
+
+`string`
+
+#### Returns
+
+`string`
+
+#### Example
+
+```ts
+const url = buildCredentialOfferUrl({
+  credential_issuer: "https://acme.gramota.dev",
+  credential_configuration_ids: ["urn:eudi:pid:1_sd_jwt_vc"],
+  grants: {
+    "urn:ietf:params:oauth:grant-type:pre-authorized_code": {
+      "pre-authorized_code": "abc123",
+    },
+  },
+});
+// → openid-credential-offer://?credential_offer=%7B%22credential_issuer%22%3A...
+```
+
+#### Throws
+
+[Oid4vciError](#oid4vcierror) with `oid4vci.invalid_input` if the offer
+  is missing required fields, or `oid4vci.invalid_url` if `scheme`
+  is not a valid URI authority.
 
 ***
 

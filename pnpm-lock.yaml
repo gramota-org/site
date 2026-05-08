@@ -81,42 +81,51 @@ importers:
       '@angular/compiler-cli':
         specifier: ^21.0.0
         version: 21.2.11(@angular/compiler@21.2.11)(typescript@5.9.3)
+      '@gramota/core':
+        specifier: ^0.2.0
+        version: 0.2.0
       '@gramota/credential-format':
-        specifier: ^0.1.1
-        version: 0.1.1
+        specifier: ^0.1.2
+        version: 0.1.2
       '@gramota/dcql':
-        specifier: ^0.1.1
-        version: 0.1.1
+        specifier: ^0.1.2
+        version: 0.1.2
       '@gramota/holder':
-        specifier: ^0.1.1
-        version: 0.1.1
+        specifier: ^0.1.2
+        version: 0.1.2
       '@gramota/issuer':
+        specifier: ^0.3.1
+        version: 0.3.1
+      '@gramota/jose':
+        specifier: ^0.2.1
+        version: 0.2.1
+      '@gramota/oid4vci':
         specifier: ^0.3.0
         version: 0.3.0
-      '@gramota/jose':
-        specifier: ^0.2.0
-        version: 0.2.0
-      '@gramota/oid4vci':
-        specifier: ^0.2.0
-        version: 0.2.0
       '@gramota/oid4vp':
-        specifier: ^0.2.0
-        version: 0.2.0
+        specifier: ^0.2.1
+        version: 0.2.1
       '@gramota/presentation-exchange':
-        specifier: ^0.1.1
-        version: 0.1.1
+        specifier: ^0.1.2
+        version: 0.1.2
+      '@gramota/qr':
+        specifier: ^0.3.0
+        version: 0.3.0
       '@gramota/sd-jwt':
+        specifier: ^0.2.1
+        version: 0.2.1
+      '@gramota/sdk':
         specifier: ^0.2.0
         version: 0.2.0
       '@gramota/status-list':
-        specifier: ^0.1.1
-        version: 0.1.1
+        specifier: ^0.1.2
+        version: 0.1.2
       '@gramota/trust':
-        specifier: ^0.1.1
-        version: 0.1.1
+        specifier: ^0.1.2
+        version: 0.1.2
       '@gramota/verifier':
-        specifier: ^0.2.0
-        version: 0.2.0
+        specifier: ^0.4.0
+        version: 0.4.0
       '@tailwindcss/vite':
         specifier: ^4.0.0
         version: 4.2.4(vite@8.0.10(esbuild@0.28.0)(jiti@2.6.1)(sass@1.97.3)(terser@5.46.2)(yaml@2.8.4))
@@ -1016,52 +1025,64 @@ packages:
   '@gerrit0/mini-shiki@3.23.0':
     resolution: {integrity: sha512-bEMORlG0cqdjVyCEuU0cDQbORWX+kYCeo0kV1lbxF5bt4r7SID2l9bqsxJEM0zndaxpOUT7riCyIVEuqq/Ynxg==}
 
-  '@gramota/credential-format@0.1.1':
-    resolution: {integrity: sha512-xsfCK6YEeFy1DhEkk1zc8puKKMwQGKYjcnWYEyYZvBNS0c2BWkwv+iMr/B2RLmRYUHYzCsVZZ7PR3l2nk62ZvQ==}
+  '@gramota/core@0.2.0':
+    resolution: {integrity: sha512-Er+foFUQmxEUKD+5VPzRS5G2/k+1Ea0qbslaIC5jv6JY3E7/qXYbdklv1x8GojVcHZKMd8cPiJO1vFFmIxIUdg==}
     engines: {node: '>=20'}
 
-  '@gramota/dcql@0.1.1':
-    resolution: {integrity: sha512-SEJQ2BpSYZqZgylXMWORzN5w6gPraCvWDTDIYnUNdy41SJWf3Zx470WllUp4gjG2uRPdGMnTiLs1XfG1igbqCA==}
+  '@gramota/credential-format@0.1.2':
+    resolution: {integrity: sha512-75u6+VUPt9GYkeRcBy/CWwHczNxyo9N7ADB0R0G7l5c0/ATJPjytAmHkHVsKDypVfTMknwKiFKcGizxqskiIVQ==}
     engines: {node: '>=20'}
 
-  '@gramota/holder@0.1.1':
-    resolution: {integrity: sha512-fBB2tG9IhtpFWqf8nhljwUqZLinWjS3Mr+5CUBi72cc12l348IX5GTxmyyTOnOZkf09K4OYVIHOEcPZ4SneUMg==}
+  '@gramota/dcql@0.1.2':
+    resolution: {integrity: sha512-qu6odasJJ+VW+Eedb0dnSp7I/W2Yvz/wIP2AWuiBwjwsucBOUBOJSV2eE0m3Oiim7di6lfvQTPnS3XXCZAJQ4A==}
     engines: {node: '>=20'}
 
-  '@gramota/issuer@0.3.0':
-    resolution: {integrity: sha512-0IFF+wNp8jHH7D10pB8J8+segv8AUlf827WzVxQQjmPtaCzm4SOzAxa8Skz2bw5PQTXwEjk6gewFwwF7jQ4mcg==}
+  '@gramota/holder@0.1.2':
+    resolution: {integrity: sha512-5PNE6LTtNlIafI5yffX5mr2HIt4J4dP6oTV2XwONV3p/nd1NoVlw/yefyyuMDPbqZw94+7wMAV58Qhhaf2EIAQ==}
     engines: {node: '>=20'}
 
-  '@gramota/jose@0.2.0':
-    resolution: {integrity: sha512-5+Ae6/jIVEOgkGFd5W5SFtOEeUH1yTFGangSQgu8Ot+ToVwgwFYl75aEYT4lBMnGhJb/FrryNcz9UigJdd9BLg==}
+  '@gramota/issuer@0.3.1':
+    resolution: {integrity: sha512-V0KgKJjFrJWAMdoDkW94Qz53RriFb4mnrMkI94d9rmd391auCYoltyqhxYb4fERDeRzZ+epRZfyaP5qz1UqLKQ==}
     engines: {node: '>=20'}
 
-  '@gramota/oid4vci@0.2.0':
-    resolution: {integrity: sha512-5Xn2OadL638msSgH+2zgdWE/AlX5kZP0qfITMroSIVCDgsCn3ID8z+z6/kNMNEHVcPDXbvepRHmDxWKP/o419w==}
+  '@gramota/jose@0.2.1':
+    resolution: {integrity: sha512-n/8myf3tNrbqoV4vYOSu3Hb33qivV1VQaCEmBZ8Oj32xizx3ra0RA4twR0IlrCN2omYNdtvJbEWV7ecwOY/0TQ==}
     engines: {node: '>=20'}
 
-  '@gramota/oid4vp@0.2.0':
-    resolution: {integrity: sha512-YYL0pRwWVRyAv7t2MYASG8pAZrIgGWv7hRnXiLkBKGBSAAmVTuB5+gNw43dHGckHxFDeU06LGDPNRayPvR87og==}
+  '@gramota/oid4vci@0.3.0':
+    resolution: {integrity: sha512-4WriRxAalLtI/sE0eMrTGEAObL58rbp6KTQOhaVzr/LmUZGZCjrBC+tdQYBT9ZNGdFglVBcpBZPovZsonAK3sw==}
     engines: {node: '>=20'}
 
-  '@gramota/presentation-exchange@0.1.1':
-    resolution: {integrity: sha512-usedSNQzc+Pj3AikKOS+5DbqlY8I8oHYRM5MV7qUzUUUuEHdeJwvTVYkmcCRcsuHy6ArE/J1NsxFn4tBz5/fIA==}
+  '@gramota/oid4vp@0.2.1':
+    resolution: {integrity: sha512-iA4QHHISJnez7m852N6Gzdzvs7XVJo0JWsMDipTStPdxkbkWh05NVx6zWRtaKTlbQG60rbk2wV6oO0nKTmboQQ==}
     engines: {node: '>=20'}
 
-  '@gramota/sd-jwt@0.2.0':
-    resolution: {integrity: sha512-UY5HZjIm0YmkUPFs+SKSK1FJu0pA2Ez8Q950+E7eNeX8LM9DgYrLks5vj4/M+B5HgUTHNUxb3oeVPXBr6A4G9w==}
+  '@gramota/presentation-exchange@0.1.2':
+    resolution: {integrity: sha512-Ts7HjHdPqTpBTbWDfWdOYssrTzw73vllwRRx1EGTVl6xc53an4ULvyXdB0K8sy1YcFMn5D2ZebS4PYqqGldJYA==}
     engines: {node: '>=20'}
 
-  '@gramota/status-list@0.1.1':
-    resolution: {integrity: sha512-/0kVpiQJS/y2ZLcNjUplx9cVpLTyGf53zZFmWVlI2keQGTS+l+AsVPwc0xSf5Ao57HPQnYJ05o6sfm1SF5YJew==}
+  '@gramota/qr@0.3.0':
+    resolution: {integrity: sha512-lu3oKnAyP30wsgcoNbZ+DgKKMbbxYDBJGNuVghXAK/Cd7PRW7iRIQnXv7w4+n3fXgm6kKVS317yvTOxdS1r4rQ==}
     engines: {node: '>=20'}
 
-  '@gramota/trust@0.1.1':
-    resolution: {integrity: sha512-Q4li1WfR3O4DVS4Mv8GTBzioPtJweEvGXw/v47cIkd7Ht+WT8t7EnB8x1jyvKFJkgLhEM6fRpqibQIZm41ThRg==}
+  '@gramota/sd-jwt@0.2.1':
+    resolution: {integrity: sha512-fcilbgVDgcL61AoNOdgy7c/JhcXIHA2zZn15Wu2TKDuK5QYvvDkraLZGKFE4r8uTu5Z5MiTPADu0ouLi8wo9Xg==}
     engines: {node: '>=20'}
 
-  '@gramota/verifier@0.2.0':
-    resolution: {integrity: sha512-t4S1vy9IbmEUIbDxcDS968kaw5xSPJsHt0CtAxN+k0uKUnLmPFM+5sX52SKCCBJZTiTx9yVWUXwveA434MHRYg==}
+  '@gramota/sdk@0.2.0':
+    resolution: {integrity: sha512-o/yS+pT8wODBRgahFTAjn/uDD78dQfX3k23GHpNxREX4fMK5jY19rSmOBfpWT+sNrgaRMnlhMQo9ffPchpcs2g==}
+    engines: {node: '>=20'}
+
+  '@gramota/status-list@0.1.2':
+    resolution: {integrity: sha512-IkAxAEWWKl/CoM52lm8shu8aAj8T9eCZWDv5ICbfQtAAUBIuzF8Dk2RZAYbjU91kbrV8PS67n9PZEuzBQU3ZVQ==}
+    engines: {node: '>=20'}
+
+  '@gramota/trust@0.1.2':
+    resolution: {integrity: sha512-3UqGzBAKr4ZMXsqGfx6c+0JIkacBxGdWUwJwEc58pvTjzZ3aK9E1gqKsqc+kqI06g63xcS9l0nzn/6P/Bc3VWA==}
+    engines: {node: '>=20'}
+
+  '@gramota/verifier@0.4.0':
+    resolution: {integrity: sha512-yVIVQdQcshBqPeOh0+mxvQ9pEmaW/NBL0G/VDMu0cV9jFr7ZKgFCp6rHfSTR93RMdQn8d8fY7lQbIwOKonFsvw==}
     engines: {node: '>=20'}
 
   '@harperfast/extended-iterable@1.0.3':
@@ -2681,6 +2702,10 @@ packages:
     resolution: {integrity: sha512-+ys997U96po4Kx/ABpBCqhA9EuxJaQWDQg7295H4hBphv3IZg0boBKuwYpt4YXp6MZ5AmZQnU/tyMTlRpaSejg==}
     engines: {node: '>= 0.4'}
 
+  camelcase@5.3.1:
+    resolution: {integrity: sha512-L28STB170nwWS63UjtlEOE3dldQApaJXZkOI1uMFfzf3rRuPegHaHesyee+YxQ+W6SvRDQV6UrdOdRiR153wJg==}
+    engines: {node: '>=6'}
+
   caniuse-lite@1.0.30001791:
     resolution: {integrity: sha512-yk0l/YSrOnFZk3UROpDLQD9+kC1l4meK/wed583AXrzoarMGJcbRi2Q4RaUYbKxYAsZ8sWmaSa/DsLmdBeI1vQ==}
 
@@ -2737,6 +2762,9 @@ packages:
   cli-width@4.1.0:
     resolution: {integrity: sha512-ouuZd4/dm2Sw5Gmqy6bGyNNNe1qt9RpmxveLSO7KcgsTnU7RXfsw+/bukWGo1abgBiMAic068rclZsO4IWmmxQ==}
     engines: {node: '>= 12'}
+
+  cliui@6.0.0:
+    resolution: {integrity: sha512-t6wbgtoCXvAzst7QgXxJYqPt0usEfbgQdftEPbLL/cvv6HPE5VgvqCuAIDR0NgU52ds6rFwqrgakNLrHEjCbrQ==}
 
   cliui@9.0.1:
     resolution: {integrity: sha512-k7ndgKhwoQveBL+/1tqGJYNz097I7WOvwbmmU2AR5+magtbjPWQTS1C5vzGkBC8Ym8UWRzfKUzUUqFLypY4Q+w==}
@@ -2894,6 +2922,10 @@ packages:
       supports-color:
         optional: true
 
+  decamelize@1.2.0:
+    resolution: {integrity: sha512-z2S+W9X73hAUUki+N+9Za2lBlun89zigOyGrsax+KUQ6wKW4ZoWpEYBkGhQjwAjjDCkWxhY0VKEhk8wzY7F5cA==}
+    engines: {node: '>=0.10.0'}
+
   decimal.js@10.6.0:
     resolution: {integrity: sha512-YpgQiITW3JXGntzdUmyUR1V812Hn8T1YVXhCu+wO3OpS4eU9l4YdD3qjyiKdV6mvV29zapkMeD390UVEf2lkUg==}
 
@@ -2941,6 +2973,9 @@ packages:
 
   devlop@1.1.0:
     resolution: {integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==}
+
+  dijkstrajs@1.0.3:
+    resolution: {integrity: sha512-qiSlmBq9+BCdCA/L46dw8Uy93mloxsPSbwnm5yrKn2vMPiy8KyAskTF6zuV/j5BMsmOGZDPs7KjU+mjb670kfA==}
 
   dom-serializer@2.0.0:
     resolution: {integrity: sha512-wIkAryiqt/nV5EQKqQpo3SToSOV9J0DnbJqwK7Wv/Trc92zIAYZ4FlMu+JPFW1DfGFt81ZTCGgDEabffXeLyJg==}
@@ -3171,6 +3206,10 @@ packages:
   finalhandler@2.1.1:
     resolution: {integrity: sha512-S8KoZgRZN+a5rNwqTxlZZePjT/4cnm0ROV70LedRHZ0p8u9fRID0hJUZQpkKLzro8LfmC8sx23bY6tVNxv8pQA==}
     engines: {node: '>= 18.0.0'}
+
+  find-up@4.1.0:
+    resolution: {integrity: sha512-PpOwAdQ/YlXQ2vj8a3h8IipDuYRi3wceVQQGYWxNINccq40Anw7BlsEXCMbt1Zt+OLA6Fq9suIpIWD0OsnISlw==}
+    engines: {node: '>=8'}
 
   foreground-child@3.3.1:
     resolution: {integrity: sha512-gIXjKqtFuWEgzFRJA9WCQeSJLZDjgJUOMCMzxtvFq/37KojM1BFGufqsCy0r4qSQmYLsZYMeyRqzIWOMup03sw==}
@@ -3651,6 +3690,10 @@ packages:
     resolution: {integrity: sha512-arhlxbFRmoQHl33a0Zkle/YWlmNwoyt6QNZEIJcqNbdrsix5Lvc4HyyI3EnwxTYlZYc32EbYrQ8SzEZ7dqgg9A==}
     engines: {node: '>=14'}
 
+  locate-path@5.0.0:
+    resolution: {integrity: sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g==}
+    engines: {node: '>=8'}
+
   lodash.defaults@4.2.0:
     resolution: {integrity: sha512-qjxPLHd3r5DnsdGacqOMU6pb/avJzdh9tFX2ymgoZE27BmjXrNy/y4LoaiTeAb+O3gL8AfpJGtqfX/ae2leYYQ==}
 
@@ -4011,9 +4054,21 @@ packages:
     resolution: {integrity: sha512-ek9o58+SCv6AV7nchiAcUJy1DNE2CC5WRdBcO0mF+W4oRjNQfPO7b3pLjTHSFECpHkKGOZSQxx3hk8viIL5YCg==}
     engines: {node: ^20.19.0 || >=22.12.0}
 
+  p-limit@2.3.0:
+    resolution: {integrity: sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==}
+    engines: {node: '>=6'}
+
+  p-locate@4.1.0:
+    resolution: {integrity: sha512-R79ZZ/0wAxKGu3oYMlz8jy/kbhsNrS7SKZ7PxEHBgJ5+F2mtFW2fK2cOtBh1cHYkQsbzFV7I+EoRKe6Yt0oK7A==}
+    engines: {node: '>=8'}
+
   p-map@7.0.4:
     resolution: {integrity: sha512-tkAQEw8ysMzmkhgw8k+1U/iPhWNhykKnSk4Rd5zLoPJCuJaGRPo6YposrZgaxHKzDHdDWWZvE/Sk7hsL2X/CpQ==}
     engines: {node: '>=18'}
+
+  p-try@2.2.0:
+    resolution: {integrity: sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==}
+    engines: {node: '>=6'}
 
   package-json-from-dist@1.0.1:
     resolution: {integrity: sha512-UEZIS3/by4OC8vL3P2dTXRETpebLI2NiI5vIrjaD/5UtrkFX/tNbwjTSRAGC/+7CAo2pIcBaRgWmcBBHcsaCIw==}
@@ -4041,6 +4096,10 @@ packages:
 
   path-browserify@1.0.1:
     resolution: {integrity: sha512-b7uo2UCUOYZcnF/3ID0lulOJi/bafxa1xPe7ZPsammBSpjSWQkjNxlt635YGS2MiR9GjvuXCtz2emr3jbsz98g==}
+
+  path-exists@4.0.0:
+    resolution: {integrity: sha512-ak9Qy5Q7jYb2Wwcey5Fpvg2KoAc/ZIhLSLOSBmRmygPsGwkVVt0fZa0qrtMz+m6tJTAHfZQ8FnmB4MG4LWy7/w==}
+    engines: {node: '>=8'}
 
   path-key@3.1.1:
     resolution: {integrity: sha512-ojmeN0qd+y0jszEtoY48r0Peq5dwMEkIlCOu6Q5f41lfkswXuKtYrhgoTpLnyIcHm24Uhqx+5Tqm2InSwLhE6Q==}
@@ -4103,6 +4162,10 @@ packages:
     resolution: {integrity: sha512-C8oWjPR3F81yljW9o5OxcWzfh6avkVwDD2VYdwIGqTkl+OGFISgypqzfu7dOe4QNLL2aqcWBmI3PMtLIK233lw==}
     engines: {node: '>=18'}
     hasBin: true
+
+  pngjs@5.0.0:
+    resolution: {integrity: sha512-40QW5YalBNfQo5yRYmiw7Yz6TKKVr3h6970B2YE+3fQpsWcrbj1PzJgxeJ19DRQjhMbKPIuMY8rFaXc8moolVw==}
+    engines: {node: '>=10.13.0'}
 
   postcss-media-query-parser@0.2.3:
     resolution: {integrity: sha512-3sOlxmbKcSHMjlUXQZKQ06jOswE7oVkXPxmZdoB1r5l0q6gTFTQSHxNxOrCccElbW7dxNytifNEo8qidX2Vsig==}
@@ -4169,6 +4232,11 @@ packages:
     resolution: {integrity: sha512-KTqnxsgGiQ6ZAzZCVlJH5eOjSnvlyEgx1m8bkRJfOhmGRqfo5KLvmAlACQkrjEtOQ4B7wF9TdSLIs9O90MX9xA==}
     engines: {node: '>=16.0.0'}
 
+  qrcode@1.5.4:
+    resolution: {integrity: sha512-1ca71Zgiu6ORjHqFBDpnSMTR2ReToX4l1Au1VFLyVeBTFavzQnv5JxMFr3ukHVKpSrSA2MCk0lNJSykjUfz7Zg==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
+
   qs@6.15.1:
     resolution: {integrity: sha512-6YHEFRL9mfgcAvql/XhwTvf5jKcOiiupt2FiJxHkiX1z4j7WL8J/jRHYLluORvc1XxB5rV20KoeK00gVJamspg==}
     engines: {node: '>=0.6'}
@@ -4234,9 +4302,16 @@ packages:
   regex@5.1.1:
     resolution: {integrity: sha512-dN5I359AVGPnwzJm2jN1k0W9LPZ+ePvoOeVMMfqIMFz53sSwXkxaJoxr50ptnsC771lK95BnTrVSZxq0b9yCGw==}
 
+  require-directory@2.1.1:
+    resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
+    engines: {node: '>=0.10.0'}
+
   require-from-string@2.0.2:
     resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
     engines: {node: '>=0.10.0'}
+
+  require-main-filename@2.0.0:
+    resolution: {integrity: sha512-NKN5kMDylKuldxYLSUfrbo5Tuzh4hd+2E8NPPX02mZtn1VuREQToYe/ZdlJy+J3uCpfaiGF05e7B8W0iXbQHmg==}
 
   requires-port@1.0.0:
     resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
@@ -4354,6 +4429,9 @@ packages:
   serve-static@2.2.1:
     resolution: {integrity: sha512-xRXBn0pPqQTVQiC8wyQrKs2MOlX24zQ0POGaj0kultvoOCstBQM5yvOhAVSUwOMjQtTvsPWoNCHfPGwaaQJhTw==}
     engines: {node: '>= 18'}
+
+  set-blocking@2.0.0:
+    resolution: {integrity: sha512-KiKBS8AnWGEyLzofFfmvKwpdPzqiy16LvQfK3yv/fVH7Bj13/wl3JSR1J+rfgRE9q7xUJK4qvgS8raSOeLUehw==}
 
   setprototypeof@1.2.0:
     resolution: {integrity: sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==}
@@ -5005,6 +5083,9 @@ packages:
   whatwg-url@5.0.0:
     resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==}
 
+  which-module@2.0.1:
+    resolution: {integrity: sha512-iBdZ57RDvnOR9AGBhML2vFZf7h8vmBjhoaZqODJBFWHVtKkDmKuHai3cx5PgVMrX5YDNp27AofYbAwctSS+vhQ==}
+
   which@2.0.2:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
     engines: {node: '>= 8'}
@@ -5070,6 +5151,9 @@ packages:
   xmlchars@2.2.0:
     resolution: {integrity: sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==}
 
+  y18n@4.0.3:
+    resolution: {integrity: sha512-JKhqTOwSrqNA1NY5lSztJ1GrBiUodLMmIZuLiDaMRJ+itFd+ABVE8XBjOvIWL+rSqNDC74LCSFmlb/U4UZ4hJQ==}
+
   y18n@5.0.8:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
     engines: {node: '>=10'}
@@ -5089,9 +5173,17 @@ packages:
     engines: {node: '>= 14.6'}
     hasBin: true
 
+  yargs-parser@18.1.3:
+    resolution: {integrity: sha512-o50j0JeToy/4K6OZcaQmW6lyXXKhq7csREXcDwk2omFPJEwUNOVtJKvmDr9EI1fAJZUyZcRF7kxGBWmRXudrCQ==}
+    engines: {node: '>=6'}
+
   yargs-parser@22.0.0:
     resolution: {integrity: sha512-rwu/ClNdSMpkSrUb+d6BRsSkLUq1fmfsY6TOpYzTwvwkg1/NRG85KBy3kq++A8LKQwX6lsu+aWad+2khvuXrqw==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=23}
+
+  yargs@15.4.1:
+    resolution: {integrity: sha512-aePbxDmcYW++PaqBsJ+HYUFwCdv4LVvdnhBy78E57PIor8/OVvhMrADFFEDh8DHDFRv/O9i3lPhsENjO7QX0+A==}
+    engines: {node: '>=8'}
 
   yargs@18.0.0:
     resolution: {integrity: sha512-4UEqdc2RYGHZc7Doyqkrqiln3p9X2DZVxaGbwhn2pi7MrRagKaOcIKe8L3OxYcbhXLgLFUS3zAYuQjKBQgmuNg==}
@@ -5905,65 +5997,97 @@ snapshots:
       '@shikijs/types': 3.23.0
       '@shikijs/vscode-textmate': 10.0.2
 
-  '@gramota/credential-format@0.1.1': {}
+  '@gramota/core@0.2.0': {}
 
-  '@gramota/dcql@0.1.1':
+  '@gramota/credential-format@0.1.2':
     dependencies:
-      '@gramota/sd-jwt': 0.2.0
+      '@gramota/core': 0.2.0
 
-  '@gramota/holder@0.1.1':
+  '@gramota/dcql@0.1.2':
     dependencies:
-      '@gramota/jose': 0.2.0
-      '@gramota/oid4vci': 0.2.0
-      '@gramota/oid4vp': 0.2.0
-      '@gramota/presentation-exchange': 0.1.1
-      '@gramota/sd-jwt': 0.2.0
+      '@gramota/core': 0.2.0
+      '@gramota/sd-jwt': 0.2.1
 
-  '@gramota/issuer@0.3.0':
+  '@gramota/holder@0.1.2':
     dependencies:
-      '@gramota/jose': 0.2.0
-      '@gramota/sd-jwt': 0.2.0
+      '@gramota/core': 0.2.0
+      '@gramota/jose': 0.2.1
+      '@gramota/oid4vci': 0.3.0
+      '@gramota/oid4vp': 0.2.1
+      '@gramota/presentation-exchange': 0.1.2
+      '@gramota/sd-jwt': 0.2.1
 
-  '@gramota/jose@0.2.0':
+  '@gramota/issuer@0.3.1':
     dependencies:
+      '@gramota/core': 0.2.0
+      '@gramota/jose': 0.2.1
+      '@gramota/sd-jwt': 0.2.1
+
+  '@gramota/jose@0.2.1':
+    dependencies:
+      '@gramota/core': 0.2.0
       jose: 5.10.0
 
-  '@gramota/oid4vci@0.2.0':
+  '@gramota/oid4vci@0.3.0':
     dependencies:
-      '@gramota/credential-format': 0.1.1
-      '@gramota/jose': 0.2.0
+      '@gramota/core': 0.2.0
+      '@gramota/credential-format': 0.1.2
+      '@gramota/jose': 0.2.1
 
-  '@gramota/oid4vp@0.2.0':
+  '@gramota/oid4vp@0.2.1':
     dependencies:
-      '@gramota/jose': 0.2.0
+      '@gramota/core': 0.2.0
+      '@gramota/jose': 0.2.1
       '@peculiar/x509': 2.0.0
       jose: 5.10.0
       reflect-metadata: 0.2.2
 
-  '@gramota/presentation-exchange@0.1.1':
+  '@gramota/presentation-exchange@0.1.2':
     dependencies:
-      '@gramota/sd-jwt': 0.2.0
+      '@gramota/core': 0.2.0
+      '@gramota/sd-jwt': 0.2.1
 
-  '@gramota/sd-jwt@0.2.0':
+  '@gramota/qr@0.3.0':
     dependencies:
-      '@gramota/jose': 0.2.0
+      '@gramota/core': 0.2.0
+      '@gramota/oid4vci': 0.3.0
+      '@gramota/oid4vp': 0.2.1
+      qrcode: 1.5.4
 
-  '@gramota/status-list@0.1.1':
+  '@gramota/sd-jwt@0.2.1':
     dependencies:
-      '@gramota/jose': 0.2.0
-      '@gramota/sd-jwt': 0.2.0
+      '@gramota/core': 0.2.0
+      '@gramota/jose': 0.2.1
 
-  '@gramota/trust@0.1.1':
+  '@gramota/sdk@0.2.0':
     dependencies:
-      '@gramota/jose': 0.2.0
+      '@gramota/core': 0.2.0
+      '@gramota/holder': 0.1.2
+      '@gramota/issuer': 0.3.1
+      '@gramota/jose': 0.2.1
+      '@gramota/qr': 0.3.0
+      '@gramota/trust': 0.1.2
+      '@gramota/verifier': 0.4.0
 
-  '@gramota/verifier@0.2.0':
+  '@gramota/status-list@0.1.2':
     dependencies:
-      '@gramota/jose': 0.2.0
-      '@gramota/oid4vp': 0.2.0
-      '@gramota/sd-jwt': 0.2.0
-      '@gramota/status-list': 0.1.1
-      '@gramota/trust': 0.1.1
+      '@gramota/core': 0.2.0
+      '@gramota/jose': 0.2.1
+      '@gramota/sd-jwt': 0.2.1
+
+  '@gramota/trust@0.1.2':
+    dependencies:
+      '@gramota/core': 0.2.0
+      '@gramota/jose': 0.2.1
+
+  '@gramota/verifier@0.4.0':
+    dependencies:
+      '@gramota/core': 0.2.0
+      '@gramota/jose': 0.2.1
+      '@gramota/oid4vp': 0.2.1
+      '@gramota/sd-jwt': 0.2.1
+      '@gramota/status-list': 0.1.2
+      '@gramota/trust': 0.1.2
 
   '@harperfast/extended-iterable@1.0.3':
     optional: true
@@ -7394,6 +7518,8 @@ snapshots:
       call-bind-apply-helpers: 1.0.2
       get-intrinsic: 1.3.0
 
+  camelcase@5.3.1: {}
+
   caniuse-lite@1.0.30001791: {}
 
   ccount@2.0.1: {}
@@ -7436,6 +7562,12 @@ snapshots:
       string-width: 8.2.1
 
   cli-width@4.1.0: {}
+
+  cliui@6.0.0:
+    dependencies:
+      string-width: 4.2.3
+      strip-ansi: 6.0.1
+      wrap-ansi: 6.2.0
 
   cliui@9.0.1:
     dependencies:
@@ -7551,6 +7683,8 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
+  decamelize@1.2.0: {}
+
   decimal.js@10.6.0: {}
 
   deepmerge@4.3.1: {}
@@ -7581,6 +7715,8 @@ snapshots:
   devlop@1.1.0:
     dependencies:
       dequal: 2.0.3
+
+  dijkstrajs@1.0.3: {}
 
   dom-serializer@2.0.0:
     dependencies:
@@ -7875,6 +8011,11 @@ snapshots:
       statuses: 2.0.2
     transitivePeerDependencies:
       - supports-color
+
+  find-up@4.1.0:
+    dependencies:
+      locate-path: 5.0.0
+      path-exists: 4.0.0
 
   foreground-child@3.3.1:
     dependencies:
@@ -8378,6 +8519,10 @@ snapshots:
       mlly: 1.8.2
       pkg-types: 2.3.1
       quansync: 0.2.11
+
+  locate-path@5.0.0:
+    dependencies:
+      p-locate: 4.1.0
 
   lodash.defaults@4.2.0: {}
 
@@ -8888,7 +9033,17 @@ snapshots:
       - '@emnapi/core'
       - '@emnapi/runtime'
 
+  p-limit@2.3.0:
+    dependencies:
+      p-try: 2.2.0
+
+  p-locate@4.1.0:
+    dependencies:
+      p-limit: 2.3.0
+
   p-map@7.0.4: {}
+
+  p-try@2.2.0: {}
 
   package-json-from-dist@1.0.1: {}
 
@@ -8935,6 +9090,8 @@ snapshots:
   parseurl@1.3.3: {}
 
   path-browserify@1.0.1: {}
+
+  path-exists@4.0.0: {}
 
   path-key@3.1.1: {}
 
@@ -8990,6 +9147,8 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.2
 
+  pngjs@5.0.0: {}
+
   postcss-media-query-parser@0.2.3: {}
 
   postcss-safe-parser@7.0.1(postcss@8.5.14):
@@ -9039,6 +9198,12 @@ snapshots:
       tslib: 2.8.1
 
   pvutils@1.1.5: {}
+
+  qrcode@1.5.4:
+    dependencies:
+      dijkstrajs: 1.0.3
+      pngjs: 5.0.0
+      yargs: 15.4.1
 
   qs@6.15.1:
     dependencies:
@@ -9111,7 +9276,11 @@ snapshots:
     dependencies:
       regex-utilities: 2.3.0
 
+  require-directory@2.1.1: {}
+
   require-from-string@2.0.2: {}
+
+  require-main-filename@2.0.0: {}
 
   requires-port@1.0.0: {}
 
@@ -9295,6 +9464,8 @@ snapshots:
       send: 1.2.1
     transitivePeerDependencies:
       - supports-color
+
+  set-blocking@2.0.0: {}
 
   setprototypeof@1.2.0: {}
 
@@ -9884,6 +10055,8 @@ snapshots:
       tr46: 0.0.3
       webidl-conversions: 3.0.1
 
+  which-module@2.0.1: {}
+
   which@2.0.2:
     dependencies:
       isexe: 2.0.0
@@ -9943,6 +10116,8 @@ snapshots:
 
   xmlchars@2.2.0: {}
 
+  y18n@4.0.3: {}
+
   y18n@5.0.8: {}
 
   yallist@3.1.1: {}
@@ -9953,7 +10128,26 @@ snapshots:
 
   yaml@2.8.4: {}
 
+  yargs-parser@18.1.3:
+    dependencies:
+      camelcase: 5.3.1
+      decamelize: 1.2.0
+
   yargs-parser@22.0.0: {}
+
+  yargs@15.4.1:
+    dependencies:
+      cliui: 6.0.0
+      decamelize: 1.2.0
+      find-up: 4.1.0
+      get-caller-file: 2.0.5
+      require-directory: 2.1.1
+      require-main-filename: 2.0.0
+      set-blocking: 2.0.0
+      string-width: 4.2.3
+      which-module: 2.0.1
+      y18n: 4.0.3
+      yargs-parser: 18.1.3
 
   yargs@18.0.0:
     dependencies:

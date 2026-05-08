@@ -3,7 +3,7 @@ title: "@gramota/presentation-exchange"
 slug: api/presentation-exchange
 description: "DIF Presentation Exchange v2 — legacy OID4VP 1.0 query format."
 section: API reference
-order: 6
+order: 7
 ---
 
 # @gramota/presentation-exchange
@@ -114,11 +114,11 @@ names this descriptor would require, or `null` if no match.
 
 ### PresentationExchangeError
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:112
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:113
 
 #### Extends
 
-- `Error`
+- `GramotaError`
 
 #### Constructors
 
@@ -158,23 +158,28 @@ Defined in: @gramota/presentation-exchange/dist/types.d.ts:115
 ###### Overrides
 
 ```ts
-Error.constructor
+GramotaError.constructor
 ```
 
 #### Properties
 
-##### name
+##### cause?
 
 ```ts
-readonly name: "PresentationExchangeError" = "PresentationExchangeError";
+readonly optional cause?: unknown;
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:113
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:44
 
-###### Overrides
+Optional original error that caused this one. Always set when the
+Gramota package is wrapping a thrown exception from a dependency
+(Web Crypto, JOSE, fetch). Survives `JSON.stringify(err)` only via
+the `cause` property — Node 16.9+ logs it natively.
+
+###### Inherited from
 
 ```ts
-Error.name
+GramotaError.cause
 ```
 
 ##### code
@@ -184,6 +189,31 @@ readonly code: PresentationExchangeErrorCode;
 ```
 
 Defined in: @gramota/presentation-exchange/dist/types.d.ts:114
+
+Stable string that identifies the failure mode. Subclasses narrow
+the type; at runtime it's always a string. Use for branching, logs,
+and metrics labels — never serialize [GramotaError.message](#message)
+for that purpose, message strings drift across versions.
+
+###### Overrides
+
+```ts
+GramotaError.code
+```
+
+##### name
+
+```ts
+name: string;
+```
+
+Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:1076
+
+###### Inherited from
+
+```ts
+GramotaError.name
+```
 
 ##### message
 
@@ -196,7 +226,7 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.message
+GramotaError.message
 ```
 
 ##### stack?
@@ -210,7 +240,7 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.stack
+GramotaError.stack
 ```
 
 ## Interfaces
@@ -543,7 +573,7 @@ Defined in: @gramota/presentation-exchange/dist/select.d.ts:33
 
 ### PresentationDefinition
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:11
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:12
 
 DIF Presentation Exchange v2 types — what the verifier asks for, and how
 the holder responds.
@@ -562,7 +592,7 @@ Schema), frame.
 id: string;
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:12
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:13
 
 ##### name?
 
@@ -570,7 +600,7 @@ Defined in: @gramota/presentation-exchange/dist/types.d.ts:12
 optional name?: string;
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:13
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:14
 
 ##### purpose?
 
@@ -578,7 +608,7 @@ Defined in: @gramota/presentation-exchange/dist/types.d.ts:13
 optional purpose?: string;
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:14
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:15
 
 ##### format?
 
@@ -586,7 +616,7 @@ Defined in: @gramota/presentation-exchange/dist/types.d.ts:14
 optional format?: FormatMap;
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:17
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:18
 
 Acceptable credential formats and their algorithms, applied at the PD
 level (overridable per input_descriptor).
@@ -597,13 +627,13 @@ level (overridable per input_descriptor).
 input_descriptors: readonly InputDescriptor[];
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:18
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:19
 
 ***
 
 ### InputDescriptor
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:25
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:26
 
 #### Properties
 
@@ -613,7 +643,7 @@ Defined in: @gramota/presentation-exchange/dist/types.d.ts:25
 id: string;
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:26
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:27
 
 ##### name?
 
@@ -621,7 +651,7 @@ Defined in: @gramota/presentation-exchange/dist/types.d.ts:26
 optional name?: string;
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:27
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:28
 
 ##### purpose?
 
@@ -629,7 +659,7 @@ Defined in: @gramota/presentation-exchange/dist/types.d.ts:27
 optional purpose?: string;
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:28
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:29
 
 ##### format?
 
@@ -637,7 +667,7 @@ Defined in: @gramota/presentation-exchange/dist/types.d.ts:28
 optional format?: FormatMap;
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:30
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:31
 
 Per-descriptor format override.
 
@@ -647,13 +677,13 @@ Per-descriptor format override.
 constraints: Constraints;
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:31
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:32
 
 ***
 
 ### Constraints
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:33
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:34
 
 #### Properties
 
@@ -663,7 +693,7 @@ Defined in: @gramota/presentation-exchange/dist/types.d.ts:33
 optional fields?: readonly Field[];
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:34
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:35
 
 ##### limit\_disclosure?
 
@@ -671,7 +701,7 @@ Defined in: @gramota/presentation-exchange/dist/types.d.ts:34
 optional limit_disclosure?: "required" | "preferred";
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:37
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:38
 
 When "required", the holder MUST limit disclosure to only the requested
 fields (selective disclosure mandatory). When "preferred", it's a hint.
@@ -680,7 +710,7 @@ fields (selective disclosure mandatory). When "preferred", it's a hint.
 
 ### Field
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:39
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:40
 
 #### Properties
 
@@ -690,7 +720,7 @@ Defined in: @gramota/presentation-exchange/dist/types.d.ts:39
 path: readonly string[];
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:42
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:43
 
 JSONPath expressions; the verifier's query into the credential. The
 field is satisfied if ANY of the paths match.
@@ -701,7 +731,7 @@ field is satisfied if ANY of the paths match.
 optional id?: string;
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:44
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:45
 
 Optional friendly id for audit logs.
 
@@ -711,7 +741,7 @@ Optional friendly id for audit logs.
 optional optional?: boolean;
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:46
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:47
 
 When true, missing field doesn't fail the descriptor.
 
@@ -723,7 +753,7 @@ optional filter?: {
 };
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:49
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:50
 
 JSON Schema fragment to validate the matched value. v1 supports
 `{ type: "..." }` only.
@@ -740,13 +770,13 @@ optional type?: "string" | "number" | "boolean" | "integer";
 optional purpose?: string;
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:52
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:53
 
 ***
 
 ### PresentationSubmission
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:56
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:57
 
 A holder-built mapping of which credentials satisfy which descriptors,
 per DIF PE §6 — the wallet's response to a Presentation Definition.
@@ -759,7 +789,7 @@ per DIF PE §6 — the wallet's response to a Presentation Definition.
 id: string;
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:57
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:58
 
 ##### definition\_id
 
@@ -767,7 +797,7 @@ Defined in: @gramota/presentation-exchange/dist/types.d.ts:57
 definition_id: string;
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:58
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:59
 
 ##### descriptor\_map
 
@@ -775,13 +805,13 @@ Defined in: @gramota/presentation-exchange/dist/types.d.ts:58
 descriptor_map: readonly DescriptorMap[];
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:59
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:60
 
 ***
 
 ### DescriptorMap
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:61
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:62
 
 #### Properties
 
@@ -791,7 +821,7 @@ Defined in: @gramota/presentation-exchange/dist/types.d.ts:61
 id: string;
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:62
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:63
 
 ##### format
 
@@ -799,7 +829,7 @@ Defined in: @gramota/presentation-exchange/dist/types.d.ts:62
 format: string;
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:64
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:65
 
 e.g. "vc+sd-jwt", "jwt_vp", "ldp_vp", "mso_mdoc".
 
@@ -809,7 +839,7 @@ e.g. "vc+sd-jwt", "jwt_vp", "ldp_vp", "mso_mdoc".
 path: string;
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:66
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:67
 
 JSONPath into the vp_token (`$` for single-credential responses).
 
@@ -819,7 +849,7 @@ JSONPath into the vp_token (`$` for single-credential responses).
 optional path_nested?: DescriptorMap;
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:67
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:68
 
 ## Type Aliases
 
@@ -867,7 +897,7 @@ type FormatMap = Readonly<Record<string, {
 }>>;
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:22
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:23
 
 Maps a credential format identifier (e.g. "vc+sd-jwt") to algorithm
 constraints. Per DIF PE §5.5.
@@ -886,7 +916,7 @@ type PresentationExchangeErrorCode =
   | "dcql.invalid_path";
 ```
 
-Defined in: @gramota/presentation-exchange/dist/types.d.ts:70
+Defined in: @gramota/presentation-exchange/dist/types.d.ts:71
 
 Stable codes for `PresentationExchangeError`.
 

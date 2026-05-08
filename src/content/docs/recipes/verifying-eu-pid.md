@@ -66,7 +66,7 @@ const verifier = new Verifier({
   trust: new SdJwtVcIssuerTrustResolver({ cacheMs: 60 * 60 * 1000 }),
 });
 
-const result = await verifier.verify(presentation, { nonce });
+const result = await verifier.presentations.verify(presentation, { nonce });
 console.log(result.metadata.issuer);  // https://dev.issuer-backend.eudiw.dev
 console.log(result.claims);
 //   {

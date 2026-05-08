@@ -3,7 +3,7 @@ title: "@gramota/oid4vp"
 slug: api/oid4vp
 description: "OID4VP wire format — request, response, signed JAR (RFC 9101), x509_san_dns cert helpers."
 section: API reference
-order: 4
+order: 5
 ---
 
 # @gramota/oid4vp
@@ -18,11 +18,11 @@ Source: [github.com/gramota-org/gramota/tree/main/packages/oid4vp](https://githu
 
 ### Oid4vpError
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:111
+Defined in: @gramota/oid4vp/dist/types.d.ts:112
 
 #### Extends
 
-- `Error`
+- `GramotaError`
 
 #### Constructors
 
@@ -62,23 +62,28 @@ Defined in: @gramota/oid4vp/dist/types.d.ts:114
 ###### Overrides
 
 ```ts
-Error.constructor
+GramotaError.constructor
 ```
 
 #### Properties
 
-##### name
+##### cause?
 
 ```ts
-readonly name: "Oid4vpError" = "Oid4vpError";
+readonly optional cause?: unknown;
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:112
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:44
 
-###### Overrides
+Optional original error that caused this one. Always set when the
+Gramota package is wrapping a thrown exception from a dependency
+(Web Crypto, JOSE, fetch). Survives `JSON.stringify(err)` only via
+the `cause` property — Node 16.9+ logs it natively.
+
+###### Inherited from
 
 ```ts
-Error.name
+GramotaError.cause
 ```
 
 ##### code
@@ -88,6 +93,31 @@ readonly code: Oid4vpErrorCode;
 ```
 
 Defined in: @gramota/oid4vp/dist/types.d.ts:113
+
+Stable string that identifies the failure mode. Subclasses narrow
+the type; at runtime it's always a string. Use for branching, logs,
+and metrics labels — never serialize [GramotaError.message](#message)
+for that purpose, message strings drift across versions.
+
+###### Overrides
+
+```ts
+GramotaError.code
+```
+
+##### name
+
+```ts
+name: string;
+```
+
+Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:1076
+
+###### Inherited from
+
+```ts
+GramotaError.name
+```
 
 ##### message
 
@@ -100,7 +130,7 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.message
+GramotaError.message
 ```
 
 ##### stack?
@@ -114,7 +144,7 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.stack
+GramotaError.stack
 ```
 
 ## Interfaces
@@ -215,7 +245,7 @@ or supplied externally.
 
 ### AuthorizationRequest
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:18
+Defined in: @gramota/oid4vp/dist/types.d.ts:19
 
 OID4VP §5 — Authorization Request, the bundle a verifier sends to a wallet.
 
@@ -231,7 +261,7 @@ structure once and let serialisation handle the rest.
 response_type: "vp_token";
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:20
+Defined in: @gramota/oid4vp/dist/types.d.ts:21
 
 MUST be `vp_token` per OID4VP §5.
 
@@ -241,7 +271,7 @@ MUST be `vp_token` per OID4VP §5.
 client_id: string;
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:22
+Defined in: @gramota/oid4vp/dist/types.d.ts:23
 
 Identifier of the verifier — meaning depends on `client_id_scheme`.
 
@@ -251,7 +281,7 @@ Identifier of the verifier — meaning depends on `client_id_scheme`.
 optional client_id_scheme?: ClientIdScheme;
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:25
+Defined in: @gramota/oid4vp/dist/types.d.ts:26
 
 How the wallet should resolve and trust `client_id`. Default
 `pre-registered` — for HAIP/EUDIW the spec mandates explicit.
@@ -262,7 +292,7 @@ How the wallet should resolve and trust `client_id`. Default
 optional response_mode?: ResponseMode;
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:27
+Defined in: @gramota/oid4vp/dist/types.d.ts:28
 
 How the wallet returns the response. HAIP requires `direct_post`.
 
@@ -272,7 +302,7 @@ How the wallet returns the response. HAIP requires `direct_post`.
 optional response_uri?: string;
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:29
+Defined in: @gramota/oid4vp/dist/types.d.ts:30
 
 Where to POST the response when `response_mode=direct_post`.
 
@@ -282,7 +312,7 @@ Where to POST the response when `response_mode=direct_post`.
 optional redirect_uri?: string;
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:31
+Defined in: @gramota/oid4vp/dist/types.d.ts:32
 
 Where to redirect the response for legacy modes.
 
@@ -292,7 +322,7 @@ Where to redirect the response for legacy modes.
 nonce: string;
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:33
+Defined in: @gramota/oid4vp/dist/types.d.ts:34
 
 Cryptographic challenge — bound into KB-JWT to prevent replay.
 
@@ -302,7 +332,7 @@ Cryptographic challenge — bound into KB-JWT to prevent replay.
 optional state?: string;
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:35
+Defined in: @gramota/oid4vp/dist/types.d.ts:36
 
 Opaque verifier-controlled correlation token, echoed back unchanged.
 
@@ -312,7 +342,7 @@ Opaque verifier-controlled correlation token, echoed back unchanged.
 optional presentation_definition?: Readonly<Record<string, unknown>>;
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:38
+Defined in: @gramota/oid4vp/dist/types.d.ts:39
 
 Inline DIF Presentation Definition JSON — what the verifier wants
 (OID4VP 1.0 query shape).
@@ -323,7 +353,7 @@ Inline DIF Presentation Definition JSON — what the verifier wants
 optional presentation_definition_uri?: string;
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:40
+Defined in: @gramota/oid4vp/dist/types.d.ts:41
 
 Or a URL the wallet can fetch the PD from. Mutually exclusive with above.
 
@@ -333,7 +363,7 @@ Or a URL the wallet can fetch the PD from. Mutually exclusive with above.
 optional dcql_query?: Readonly<Record<string, unknown>>;
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:43
+Defined in: @gramota/oid4vp/dist/types.d.ts:44
 
 DCQL query (OID4VP 2.0 — Digital Credentials Query Language).
 Mutually exclusive with `presentation_definition`.
@@ -344,7 +374,7 @@ Mutually exclusive with `presentation_definition`.
 optional client_metadata?: Readonly<Record<string, unknown>>;
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:45
+Defined in: @gramota/oid4vp/dist/types.d.ts:46
 
 Wallet metadata transparency parameter.
 
@@ -354,7 +384,7 @@ Wallet metadata transparency parameter.
 optional scope?: string;
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:48
+Defined in: @gramota/oid4vp/dist/types.d.ts:49
 
 Subset of the wallet's supported response formats / curves the verifier
 is willing to accept.
@@ -363,7 +393,7 @@ is willing to accept.
 
 ### AuthorizationResponse
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:64
+Defined in: @gramota/oid4vp/dist/types.d.ts:65
 
 OID4VP §6 — Authorization Response from wallet to verifier.
 
@@ -390,7 +420,7 @@ vp_token:
 | Readonly<Record<string, string>>;
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:71
+Defined in: @gramota/oid4vp/dist/types.d.ts:72
 
 The presentation(s).
 
@@ -404,7 +434,7 @@ The presentation(s).
 optional presentation_submission?: Readonly<Record<string, unknown>>;
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:74
+Defined in: @gramota/oid4vp/dist/types.d.ts:75
 
 DIF Presentation Submission mapping descriptors → vp_token positions.
 Required for PEX responses; absent for DCQL responses.
@@ -415,7 +445,7 @@ Required for PEX responses; absent for DCQL responses.
 optional state?: string;
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:76
+Defined in: @gramota/oid4vp/dist/types.d.ts:77
 
 Echoes the verifier's `state` from the request.
 
@@ -425,7 +455,7 @@ Echoes the verifier's `state` from the request.
 optional iss?: string;
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:78
+Defined in: @gramota/oid4vp/dist/types.d.ts:79
 
 OID4VP §6.4 — the wallet's identifier (e.g. issuer URL).
 
@@ -433,7 +463,7 @@ OID4VP §6.4 — the wallet's identifier (e.g. issuer URL).
 
 ### SigningCert
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:96
+Defined in: @gramota/oid4vp/dist/types.d.ts:97
 
 X.509 signing material for an OID4VP verifier.
 
@@ -458,7 +488,7 @@ issued cert (ACME, corporate CA) — same shape, different origin.
 readonly privateKeyPem: string;
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:98
+Defined in: @gramota/oid4vp/dist/types.d.ts:99
 
 PEM-encoded PKCS#8 private key.
 
@@ -468,7 +498,7 @@ PEM-encoded PKCS#8 private key.
 readonly certificatePem: string;
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:100
+Defined in: @gramota/oid4vp/dist/types.d.ts:101
 
 PEM-encoded leaf certificate.
 
@@ -478,7 +508,7 @@ PEM-encoded leaf certificate.
 readonly x5c: readonly string[];
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:103
+Defined in: @gramota/oid4vp/dist/types.d.ts:104
 
 Base64-encoded DER certs in chain order, suitable for the JWS `x5c`
 header per RFC 7515 §4.1.6. Length 1 for self-signed leaves.
@@ -489,7 +519,7 @@ header per RFC 7515 §4.1.6. Length 1 for self-signed leaves.
 readonly sanDns: string;
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:107
+Defined in: @gramota/oid4vp/dist/types.d.ts:108
 
 DNS name in the cert's Subject Alternative Name. The wallet
 compares this against the OID4VP `client_id` value (with the
@@ -512,7 +542,7 @@ type ClientIdScheme =
 };
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:10
+Defined in: @gramota/oid4vp/dist/types.d.ts:11
 
 OID4VP §5.4 — `client_id_scheme` enumerated values.
 
@@ -524,7 +554,7 @@ OID4VP §5.4 — `client_id_scheme` enumerated values.
 type ResponseMode = "direct_post" | "direct_post.jwt" | "fragment" | "query";
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:12
+Defined in: @gramota/oid4vp/dist/types.d.ts:13
 
 OID4VP §6.2 — `response_mode` for the authorization response.
 
@@ -547,7 +577,7 @@ type Oid4vpErrorCode =
   | "oid4vp.jar_signing_failed";
 ```
 
-Defined in: @gramota/oid4vp/dist/types.d.ts:110
+Defined in: @gramota/oid4vp/dist/types.d.ts:111
 
 Stable codes for `Oid4vpError`.
 

@@ -56,6 +56,11 @@ Specific scenarios with concrete code.
 
 Auto-generated from each `@gramota/*` package's TypeScript declarations.
 
+### Top-level
+
+- [**`@gramota/sdk`**](/docs/api/sdk) — Stripe-shaped facade. One
+  config object, lazy-instantiated `verifier`, `issuer`, `holder`, `qr`.
+
 ### High-level
 
 - [**`@gramota/verifier`**](/docs/api/verifier) — relying-party
@@ -64,6 +69,8 @@ Auto-generated from each `@gramota/*` package's TypeScript declarations.
   SD-JWT-VC issuance.
 - [**`@gramota/holder`**](/docs/api/holder) — headless wallet:
   store, receive, present.
+- [**`@gramota/qr`**](/docs/api/qr) — QR rendering for EUDIW deep
+  links. Strategy-pluggable renderer.
 
 ### Protocol & transport
 
@@ -91,3 +98,9 @@ Auto-generated from each `@gramota/*` package's TypeScript declarations.
   JwksUrl, SdJwtVcIssuer (`.well-known/jwt-vc-issuer`).
 - [**`@gramota/status-list`**](/docs/api/status-list) — IETF Token
   Status List + `StatusResolver` Strategy.
+
+### Foundation
+
+- [**`@gramota/core`**](/docs/api/core) — `Fetcher` transport
+  interface + `GramotaError` base class. Imported by every other
+  `@gramota/*` package.

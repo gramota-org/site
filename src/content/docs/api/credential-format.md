@@ -3,7 +3,7 @@ title: "@gramota/credential-format"
 slug: api/credential-format
 description: "Pluggable format-handler registry (SD-JWT-VC ships; mDoc plugs in)."
 section: API reference
-order: 10
+order: 11
 ---
 
 # @gramota/credential-format
@@ -278,11 +278,11 @@ matches `this.formats` via the registry.
 
 ### CredentialFormatError
 
-Defined in: @gramota/credential-format/dist/types.d.ts:54
+Defined in: @gramota/credential-format/dist/types.d.ts:55
 
 #### Extends
 
-- `Error`
+- `GramotaError`
 
 #### Constructors
 
@@ -322,23 +322,28 @@ Defined in: @gramota/credential-format/dist/types.d.ts:57
 ###### Overrides
 
 ```ts
-Error.constructor
+GramotaError.constructor
 ```
 
 #### Properties
 
-##### name
+##### cause?
 
 ```ts
-readonly name: "CredentialFormatError" = "CredentialFormatError";
+readonly optional cause?: unknown;
 ```
 
-Defined in: @gramota/credential-format/dist/types.d.ts:55
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:44
 
-###### Overrides
+Optional original error that caused this one. Always set when the
+Gramota package is wrapping a thrown exception from a dependency
+(Web Crypto, JOSE, fetch). Survives `JSON.stringify(err)` only via
+the `cause` property — Node 16.9+ logs it natively.
+
+###### Inherited from
 
 ```ts
-Error.name
+GramotaError.cause
 ```
 
 ##### code
@@ -348,6 +353,31 @@ readonly code: CredentialFormatErrorCode;
 ```
 
 Defined in: @gramota/credential-format/dist/types.d.ts:56
+
+Stable string that identifies the failure mode. Subclasses narrow
+the type; at runtime it's always a string. Use for branching, logs,
+and metrics labels — never serialize [GramotaError.message](#message)
+for that purpose, message strings drift across versions.
+
+###### Overrides
+
+```ts
+GramotaError.code
+```
+
+##### name
+
+```ts
+name: string;
+```
+
+Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:1076
+
+###### Inherited from
+
+```ts
+GramotaError.name
+```
 
 ##### message
 
@@ -360,7 +390,7 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.message
+GramotaError.message
 ```
 
 ##### stack?
@@ -374,14 +404,14 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.stack
+GramotaError.stack
 ```
 
 ## Interfaces
 
 ### CredentialFormatHandler
 
-Defined in: @gramota/credential-format/dist/types.d.ts:27
+Defined in: @gramota/credential-format/dist/types.d.ts:28
 
 Base — every format handler advertises which format strings it claims.
 
@@ -401,7 +431,7 @@ future `MDocFormatHandler` in `@gramota/credential-format-mdoc`).
 readonly formats: readonly string[];
 ```
 
-Defined in: @gramota/credential-format/dist/types.d.ts:29
+Defined in: @gramota/credential-format/dist/types.d.ts:30
 
 Format identifiers this handler claims, e.g. ["vc+sd-jwt", "dc+sd-jwt"].
 
@@ -413,7 +443,7 @@ Format identifiers this handler claims, e.g. ["vc+sd-jwt", "dc+sd-jwt"].
 supports(format: string): boolean;
 ```
 
-Defined in: @gramota/credential-format/dist/types.d.ts:31
+Defined in: @gramota/credential-format/dist/types.d.ts:32
 
 True iff `format` is in [formats](#formats-1). Strict equality.
 
@@ -431,7 +461,7 @@ True iff `format` is in [formats](#formats-1). Strict equality.
 
 ### IssuanceCapableHandler
 
-Defined in: @gramota/credential-format/dist/types.d.ts:41
+Defined in: @gramota/credential-format/dist/types.d.ts:42
 
 Issuance capability — the handler can validate a token returned by an
 OID4VCI credential endpoint of this format.
@@ -452,7 +482,7 @@ encoded CBOR `IssuerSigned` structure.
 readonly formats: readonly string[];
 ```
 
-Defined in: @gramota/credential-format/dist/types.d.ts:29
+Defined in: @gramota/credential-format/dist/types.d.ts:30
 
 Format identifiers this handler claims, e.g. ["vc+sd-jwt", "dc+sd-jwt"].
 
@@ -466,7 +496,7 @@ Format identifiers this handler claims, e.g. ["vc+sd-jwt", "dc+sd-jwt"].
 readonly canReceiveIssuance: true;
 ```
 
-Defined in: @gramota/credential-format/dist/types.d.ts:43
+Defined in: @gramota/credential-format/dist/types.d.ts:44
 
 Brand bit — see file header.
 
@@ -478,7 +508,7 @@ Brand bit — see file header.
 supports(format: string): boolean;
 ```
 
-Defined in: @gramota/credential-format/dist/types.d.ts:31
+Defined in: @gramota/credential-format/dist/types.d.ts:32
 
 True iff `format` is in [formats](#formats-1). Strict equality.
 
@@ -502,7 +532,7 @@ True iff `format` is in [formats](#formats-1). Strict equality.
 validateIssuanceToken(token: string): void;
 ```
 
-Defined in: @gramota/credential-format/dist/types.d.ts:51
+Defined in: @gramota/credential-format/dist/types.d.ts:52
 
 Validate a credential token returned by an OID4VCI credential
 endpoint. Throws if the token is malformed for this format.
@@ -532,7 +562,7 @@ type CredentialFormatErrorCode =
   | "credential_format.invalid_token";
 ```
 
-Defined in: @gramota/credential-format/dist/types.d.ts:53
+Defined in: @gramota/credential-format/dist/types.d.ts:54
 
 ## Functions
 

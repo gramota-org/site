@@ -3,7 +3,7 @@ title: "@gramota/dcql"
 slug: api/dcql
 description: "Digital Credentials Query Language — OID4VP 2.0 query format."
 section: API reference
-order: 7
+order: 8
 ---
 
 # @gramota/dcql
@@ -89,11 +89,11 @@ Defined in: @gramota/dcql/dist/sd-jwt-vc-matcher.d.ts:31
 
 ### DcqlError
 
-Defined in: @gramota/dcql/dist/types.d.ts:50
+Defined in: @gramota/dcql/dist/types.d.ts:51
 
 #### Extends
 
-- `Error`
+- `GramotaError`
 
 #### Constructors
 
@@ -133,23 +133,28 @@ Defined in: @gramota/dcql/dist/types.d.ts:53
 ###### Overrides
 
 ```ts
-Error.constructor
+GramotaError.constructor
 ```
 
 #### Properties
 
-##### name
+##### cause?
 
 ```ts
-readonly name: "DcqlError" = "DcqlError";
+readonly optional cause?: unknown;
 ```
 
-Defined in: @gramota/dcql/dist/types.d.ts:51
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:44
 
-###### Overrides
+Optional original error that caused this one. Always set when the
+Gramota package is wrapping a thrown exception from a dependency
+(Web Crypto, JOSE, fetch). Survives `JSON.stringify(err)` only via
+the `cause` property — Node 16.9+ logs it natively.
+
+###### Inherited from
 
 ```ts
-Error.name
+GramotaError.cause
 ```
 
 ##### code
@@ -159,6 +164,31 @@ readonly code: DcqlErrorCode;
 ```
 
 Defined in: @gramota/dcql/dist/types.d.ts:52
+
+Stable string that identifies the failure mode. Subclasses narrow
+the type; at runtime it's always a string. Use for branching, logs,
+and metrics labels — never serialize [GramotaError.message](#message)
+for that purpose, message strings drift across versions.
+
+###### Overrides
+
+```ts
+GramotaError.code
+```
+
+##### name
+
+```ts
+name: string;
+```
+
+Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:1076
+
+###### Inherited from
+
+```ts
+GramotaError.name
+```
 
 ##### message
 
@@ -171,7 +201,7 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.message
+GramotaError.message
 ```
 
 ##### stack?
@@ -185,7 +215,7 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.stack
+GramotaError.stack
 ```
 
 ## Interfaces
@@ -485,7 +515,7 @@ are present, every credentials[] entry is matched).
 
 ### DcqlQuery
 
-Defined in: @gramota/dcql/dist/types.d.ts:9
+Defined in: @gramota/dcql/dist/types.d.ts:10
 
 DCQL — Digital Credentials Query Language (OID4VP 2.0).
 Spec: OID4VP 2.0 §6 (DCQL).
@@ -502,7 +532,7 @@ whichever your verifier or wallet ecosystem speaks.
 credentials: readonly DcqlCredentialQuery[];
 ```
 
-Defined in: @gramota/dcql/dist/types.d.ts:11
+Defined in: @gramota/dcql/dist/types.d.ts:12
 
 Credential queries the wallet must satisfy.
 
@@ -512,7 +542,7 @@ Credential queries the wallet must satisfy.
 optional credential_sets?: readonly DcqlCredentialSet[];
 ```
 
-Defined in: @gramota/dcql/dist/types.d.ts:14
+Defined in: @gramota/dcql/dist/types.d.ts:15
 
 Optional sets describing which combinations of credentials are
 acceptable (OR/AND logic across credentials).
@@ -521,7 +551,7 @@ acceptable (OR/AND logic across credentials).
 
 ### DcqlCredentialQuery
 
-Defined in: @gramota/dcql/dist/types.d.ts:16
+Defined in: @gramota/dcql/dist/types.d.ts:17
 
 #### Properties
 
@@ -531,7 +561,7 @@ Defined in: @gramota/dcql/dist/types.d.ts:16
 id: string;
 ```
 
-Defined in: @gramota/dcql/dist/types.d.ts:17
+Defined in: @gramota/dcql/dist/types.d.ts:18
 
 ##### format
 
@@ -539,7 +569,7 @@ Defined in: @gramota/dcql/dist/types.d.ts:17
 format: string;
 ```
 
-Defined in: @gramota/dcql/dist/types.d.ts:19
+Defined in: @gramota/dcql/dist/types.d.ts:20
 
 Credential format: "vc+sd-jwt", "dc+sd-jwt", "mso_mdoc", "ldp_vc", …
 
@@ -549,7 +579,7 @@ Credential format: "vc+sd-jwt", "dc+sd-jwt", "mso_mdoc", "ldp_vc", …
 optional meta?: Readonly<Record<string, unknown>>;
 ```
 
-Defined in: @gramota/dcql/dist/types.d.ts:22
+Defined in: @gramota/dcql/dist/types.d.ts:23
 
 Format-specific filters. For SD-JWT-VC: `{ vct_values: string[] }`.
 For mDoc: `{ doctype_value: string }`.
@@ -560,7 +590,7 @@ For mDoc: `{ doctype_value: string }`.
 optional claims?: readonly DcqlClaimQuery[];
 ```
 
-Defined in: @gramota/dcql/dist/types.d.ts:24
+Defined in: @gramota/dcql/dist/types.d.ts:25
 
 Claims the wallet must reveal.
 
@@ -570,7 +600,7 @@ Claims the wallet must reveal.
 optional claim_sets?: readonly readonly string[][];
 ```
 
-Defined in: @gramota/dcql/dist/types.d.ts:26
+Defined in: @gramota/dcql/dist/types.d.ts:27
 
 Named groups of claims, when the verifier accepts alternate sets.
 
@@ -578,7 +608,7 @@ Named groups of claims, when the verifier accepts alternate sets.
 
 ### DcqlClaimQuery
 
-Defined in: @gramota/dcql/dist/types.d.ts:28
+Defined in: @gramota/dcql/dist/types.d.ts:29
 
 #### Properties
 
@@ -588,7 +618,7 @@ Defined in: @gramota/dcql/dist/types.d.ts:28
 optional id?: string;
 ```
 
-Defined in: @gramota/dcql/dist/types.d.ts:30
+Defined in: @gramota/dcql/dist/types.d.ts:31
 
 Optional identifier for use in `claim_sets`.
 
@@ -598,7 +628,7 @@ Optional identifier for use in `claim_sets`.
 path: readonly (string | number)[];
 ```
 
-Defined in: @gramota/dcql/dist/types.d.ts:36
+Defined in: @gramota/dcql/dist/types.d.ts:37
 
 Path segments to the claim. Strings = property keys; numbers = array
 indices; null = "any element of an array". E.g.
@@ -612,7 +642,7 @@ indices; null = "any element of an array". E.g.
 optional values?: readonly unknown[];
 ```
 
-Defined in: @gramota/dcql/dist/types.d.ts:38
+Defined in: @gramota/dcql/dist/types.d.ts:39
 
 Optional value constraint — claim must equal one of these.
 
@@ -620,7 +650,7 @@ Optional value constraint — claim must equal one of these.
 
 ### DcqlCredentialSet
 
-Defined in: @gramota/dcql/dist/types.d.ts:40
+Defined in: @gramota/dcql/dist/types.d.ts:41
 
 #### Properties
 
@@ -630,7 +660,7 @@ Defined in: @gramota/dcql/dist/types.d.ts:40
 options: readonly readonly string[][];
 ```
 
-Defined in: @gramota/dcql/dist/types.d.ts:43
+Defined in: @gramota/dcql/dist/types.d.ts:44
 
 Each option is a list of credential ids. The wallet picks one option
 whose credentials it can all supply.
@@ -641,7 +671,7 @@ whose credentials it can all supply.
 optional required?: boolean;
 ```
 
-Defined in: @gramota/dcql/dist/types.d.ts:45
+Defined in: @gramota/dcql/dist/types.d.ts:46
 
 When `false`, the verifier accepts the request without this set.
 
@@ -651,7 +681,7 @@ When `false`, the verifier accepts the request without this set.
 optional purpose?: string;
 ```
 
-Defined in: @gramota/dcql/dist/types.d.ts:46
+Defined in: @gramota/dcql/dist/types.d.ts:47
 
 ## Type Aliases
 
@@ -688,7 +718,7 @@ type DcqlErrorCode =
   | "dcql.format_unsupported";
 ```
 
-Defined in: @gramota/dcql/dist/types.d.ts:49
+Defined in: @gramota/dcql/dist/types.d.ts:50
 
 Stable codes for `DcqlError`.
 

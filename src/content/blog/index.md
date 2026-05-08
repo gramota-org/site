@@ -11,6 +11,11 @@ verification reports, and the occasional release announcement.
 
 ---
 
+## 2026-05-08 — [@gramota/sdk, @gramota/core, and Stripe-shaped namespaces across every package](/blog/2026-05-08-stripe-shape-release)
+
+A structural release. New top-level facade, new shared base, every
+client now reads as one product instead of fifteen.
+
 ## 2026-05-06 — [Introducing Solnce — the live demo for Gramota](/blog/2026-05-06-introducing-solnce-demo)
 
 A pretend EU storefront that runs against our production verification

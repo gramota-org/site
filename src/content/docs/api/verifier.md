@@ -18,11 +18,11 @@ Source: [github.com/gramota-org/gramota/tree/main/packages/verifier](https://git
 
 ### VerifierError
 
-Defined in: @gramota/verifier/dist/types.d.ts:116
+Defined in: @gramota/verifier/dist/types.d.ts:167
 
 #### Extends
 
-- `Error`
+- `GramotaError`
 
 #### Constructors
 
@@ -32,7 +32,7 @@ Defined in: @gramota/verifier/dist/types.d.ts:116
 new VerifierError(message: string, result: FailureResult): VerifierError;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:123
+Defined in: @gramota/verifier/dist/types.d.ts:173
 
 ###### Parameters
 
@@ -53,10 +53,29 @@ The full failure record — stable for logging.
 ###### Overrides
 
 ```ts
-Error.constructor
+GramotaError.constructor
 ```
 
 #### Properties
+
+##### cause?
+
+```ts
+readonly optional cause?: unknown;
+```
+
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:44
+
+Optional original error that caused this one. Always set when the
+Gramota package is wrapping a thrown exception from a dependency
+(Web Crypto, JOSE, fetch). Survives `JSON.stringify(err)` only via
+the `cause` property — Node 16.9+ logs it natively.
+
+###### Inherited from
+
+```ts
+GramotaError.cause
+```
 
 ##### result
 
@@ -64,23 +83,9 @@ Error.constructor
 readonly result: FailureResult;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:118
+Defined in: @gramota/verifier/dist/types.d.ts:169
 
 The full failure record — stable for logging.
-
-##### name
-
-```ts
-readonly name: "VerifierError" = "VerifierError";
-```
-
-Defined in: @gramota/verifier/dist/types.d.ts:119
-
-###### Overrides
-
-```ts
-Error.name
-```
 
 ##### code
 
@@ -88,10 +93,30 @@ Error.name
 readonly code: SecurityCheckName;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:122
+Defined in: @gramota/verifier/dist/types.d.ts:172
 
 Equal to `result.failedCheck` — stable identifier for log filters,
 alerts, and dashboards. Same shape as the codes used by other packages.
+
+###### Overrides
+
+```ts
+GramotaError.code
+```
+
+##### name
+
+```ts
+name: string;
+```
+
+Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:1076
+
+###### Inherited from
+
+```ts
+GramotaError.name
+```
 
 ##### message
 
@@ -104,7 +129,7 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.message
+GramotaError.message
 ```
 
 ##### stack?
@@ -118,7 +143,7 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.stack
+GramotaError.stack
 ```
 
 ***
@@ -147,15 +172,121 @@ Defined in: @gramota/verifier/dist/verifier.d.ts:11
 
 [`Verifier`](#verifier)
 
-#### Methods
+#### Properties
 
-##### verify()
+##### presentations
 
 ```ts
-verify<TClaims>(presentationToken: string, options: VerifyOptions): Promise<VerifyResult<TClaims>>;
+readonly presentations: {
+  verify: Promise<VerifyResult<TClaims>>;
+};
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:19
+Defined in: @gramota/verifier/dist/verifier.d.ts:13
+
+Verify a presentation token. Stripe-shaped surface.
+
+###### verify()
+
+```ts
+verify<TClaims>(presentationToken: string, options: VerifyOptions<TClaims>): Promise<VerifyResult<TClaims>>;
+```
+
+###### Type Parameters
+
+###### TClaims
+
+`TClaims` = `Record`\<`string`, `unknown`\>
+
+###### Parameters
+
+###### presentationToken
+
+`string`
+
+###### options
+
+[`VerifyOptions`](#verifyoptions)\<`TClaims`\>
+
+###### Returns
+
+`Promise`\<[`VerifyResult`](#verifyresult)\<`TClaims`\>\>
+
+##### responses
+
+```ts
+readonly responses: {
+  verify: Promise<VerifyResponseResult<TClaims>>;
+};
+```
+
+Defined in: @gramota/verifier/dist/verifier.d.ts:17
+
+Verify an OID4VP authorization response body. Stripe-shaped surface.
+
+###### verify()
+
+```ts
+verify<TClaims>(rawBody: string | URLSearchParams | Record<string, string>, options: VerifyResponseOptions<TClaims>): Promise<VerifyResponseResult<TClaims>>;
+```
+
+###### Type Parameters
+
+###### TClaims
+
+`TClaims` = `Record`\<`string`, `unknown`\>
+
+###### Parameters
+
+###### rawBody
+
+`string` \| `URLSearchParams` \| `Record`\<`string`, `string`\>
+
+###### options
+
+[`VerifyResponseOptions`](#verifyresponseoptions)\<`TClaims`\>
+
+###### Returns
+
+`Promise`\<[`VerifyResponseResult`](#verifyresponseresult)\<`TClaims`\>\>
+
+##### requests
+
+```ts
+readonly requests: {
+  create: PresentationRequest;
+};
+```
+
+Defined in: @gramota/verifier/dist/verifier.d.ts:21
+
+Build a signed presentation request for the wallet. Stripe-shaped surface.
+
+###### create()
+
+```ts
+create(options: PresentationRequestOptions): PresentationRequest;
+```
+
+###### Parameters
+
+###### options
+
+[`PresentationRequestOptions`](#presentationrequestoptions)
+
+###### Returns
+
+[`PresentationRequest`](#presentationrequest)
+
+#### Methods
+
+##### ~~verify()~~
+
+```ts
+verify<TClaims>(presentationToken: string, options: VerifyOptions<TClaims>): Promise<VerifyResult<TClaims>>;
+```
+
+Defined in: @gramota/verifier/dist/verifier.d.ts:35
 
 Verify an SD-JWT-VC presentation token end-to-end.
 
@@ -177,19 +308,25 @@ protocol metadata plus the full audit trail of checks performed.
 
 ###### options
 
-[`VerifyOptions`](#verifyoptions)
+[`VerifyOptions`](#verifyoptions)\<`TClaims`\>
 
 ###### Returns
 
 `Promise`\<[`VerifyResult`](#verifyresult)\<`TClaims`\>\>
 
-##### request()
+###### Deprecated
+
+Use `verifier.presentations.verify(token, opts)` instead.
+  Removed in 1.0. The flat shape predates Gramota's Stripe-style
+  namespacing — the namespaced version is the supported surface.
+
+##### ~~request()~~
 
 ```ts
 request(options: PresentationRequestOptions): PresentationRequest;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:21
+Defined in: @gramota/verifier/dist/verifier.d.ts:41
 
 Build an OID4VP Authorization Request URL to share with the wallet.
 
@@ -203,13 +340,17 @@ Build an OID4VP Authorization Request URL to share with the wallet.
 
 [`PresentationRequest`](#presentationrequest)
 
-##### response()
+###### Deprecated
+
+Use `verifier.requests.create(opts)` instead. Removed in 1.0.
+
+##### ~~response()~~
 
 ```ts
-response<TClaims>(rawBody: string | URLSearchParams | Record<string, string>, options: VerifyResponseOptions): Promise<VerifyResponseResult<TClaims>>;
+response<TClaims>(rawBody: string | URLSearchParams | Record<string, string>, options: VerifyResponseOptions<TClaims>): Promise<VerifyResponseResult<TClaims>>;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:28
+Defined in: @gramota/verifier/dist/verifier.d.ts:51
 
 Process an OID4VP Authorization Response body end-to-end:
 parse the form body, enforce CSRF state matching, and verify the
@@ -230,17 +371,22 @@ plus the parsed transport envelope.
 
 ###### options
 
-[`VerifyResponseOptions`](#verifyresponseoptions)
+[`VerifyResponseOptions`](#verifyresponseoptions)\<`TClaims`\>
 
 ###### Returns
 
 `Promise`\<[`VerifyResponseResult`](#verifyresponseresult)\<`TClaims`\>\>
 
+###### Deprecated
+
+Use `verifier.responses.verify(rawBody, opts)` instead.
+  Removed in 1.0.
+
 ## Interfaces
 
 ### VerifierConfig
 
-Defined in: @gramota/verifier/dist/types.d.ts:5
+Defined in: @gramota/verifier/dist/types.d.ts:6
 
 Configuration for a Verifier instance.
 
@@ -252,7 +398,7 @@ Configuration for a Verifier instance.
 audience: string;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:9
+Defined in: @gramota/verifier/dist/types.d.ts:10
 
 The verifier's identifier. The KB-JWT's `aud` claim MUST equal this
 (or any of `additionalAudiences`). Cross-verifier replay protection —
@@ -264,7 +410,7 @@ pick a stable, app-specific URL.
 optional additionalAudiences?: readonly string[];
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:15
+Defined in: @gramota/verifier/dist/types.d.ts:16
 
 Additional accepted `aud` values. Useful when wallets in the wild
 disagree about what the KB-JWT audience should be. The OID4VP
@@ -278,7 +424,7 @@ in `aud` instead of the verifier audience URL.
 optional issuerKey?: JsonWebKey;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:18
+Defined in: @gramota/verifier/dist/types.d.ts:19
 
 Exactly one of `issuerKey` (shorthand) OR `trust` (full resolver) is
 required.
@@ -289,7 +435,7 @@ required.
 optional trust?: TrustResolver;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:22
+Defined in: @gramota/verifier/dist/types.d.ts:23
 
 Pluggable trust resolution. Use `StaticTrustResolver` for hard-coded
 keys, `JwksUrlTrustResolver` for runtime JWKS fetching, or any custom
@@ -301,7 +447,7 @@ implementation of the `TrustResolver` interface.
 optional statusResolver?: StatusResolver;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:33
+Defined in: @gramota/verifier/dist/types.d.ts:34
 
 Pluggable revocation/suspension resolution (Strategy pattern).
 
@@ -318,7 +464,7 @@ deny-lists) implement the `StatusResolver` interface and plug in here.
 optional algorithms?: readonly SupportedAlg[];
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:37
+Defined in: @gramota/verifier/dist/types.d.ts:38
 
 JWS algorithm allowlist for both issuer and KB-JWT signatures.
 Default: every IETF asymmetric algorithm we support.
@@ -330,7 +476,7 @@ Default: every IETF asymmetric algorithm we support.
 optional maxKbJwtAgeSeconds?: number;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:39
+Defined in: @gramota/verifier/dist/types.d.ts:40
 
 Maximum acceptable age of the KB-JWT, in seconds. Default 60.
 
@@ -340,18 +486,91 @@ Maximum acceptable age of the KB-JWT, in seconds. Default 60.
 optional maxClockSkewSeconds?: number;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:42
+Defined in: @gramota/verifier/dist/types.d.ts:43
 
 Maximum acceptable clock skew (KB-JWT `iat` in the future), in seconds.
 Default 30.
 
 ***
 
+### RequireInput
+
+Defined in: @gramota/verifier/dist/types.d.ts:46
+
+Input passed to [VerifyOptions.require](#require) predicates.
+
+#### Type Parameters
+
+##### TClaims
+
+`TClaims` = `Record`\<`string`, `unknown`\>
+
+#### Properties
+
+##### claims
+
+```ts
+readonly claims: TClaims;
+```
+
+Defined in: @gramota/verifier/dist/types.d.ts:48
+
+The disclosed claims — same shape as `result.claims` on success.
+
+##### metadata
+
+```ts
+readonly metadata: VerificationMetadata;
+```
+
+Defined in: @gramota/verifier/dist/types.d.ts:50
+
+Protocol metadata — same shape as `result.metadata` on success.
+
+***
+
+### RequireResult
+
+Defined in: @gramota/verifier/dist/types.d.ts:57
+
+Return shape for [VerifyOptions.require](#require) when the caller wants
+to attach a human-readable reason. Plain `boolean` is also accepted
+for the common case.
+
+#### Properties
+
+##### passed
+
+```ts
+readonly passed: boolean;
+```
+
+Defined in: @gramota/verifier/dist/types.d.ts:58
+
+##### reason?
+
+```ts
+readonly optional reason?: string;
+```
+
+Defined in: @gramota/verifier/dist/types.d.ts:61
+
+Shown in `result.reason` and the audit trail when `passed: false`.
+Default: `"require predicate returned false"`.
+
+***
+
 ### VerifyOptions
 
-Defined in: @gramota/verifier/dist/types.d.ts:45
+Defined in: @gramota/verifier/dist/types.d.ts:64
 
 Per-call options for `verifier.verify(...)`.
+
+#### Type Parameters
+
+##### TClaims
+
+`TClaims` = `Record`\<`string`, `unknown`\>
 
 #### Properties
 
@@ -361,7 +580,7 @@ Per-call options for `verifier.verify(...)`.
 nonce: string;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:48
+Defined in: @gramota/verifier/dist/types.d.ts:67
 
 The challenge the verifier sent to the wallet. The KB-JWT's `nonce`
 claim MUST equal this. Within-verifier replay protection.
@@ -372,7 +591,7 @@ claim MUST equal this. Within-verifier replay protection.
 optional now?: () => number;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:51
+Defined in: @gramota/verifier/dist/types.d.ts:70
 
 Override "now" — used for tests and time-frozen environments. Returns
 Unix seconds. Default: `Math.floor(Date.now() / 1000)`.
@@ -387,7 +606,7 @@ Unix seconds. Default: `Math.floor(Date.now() / 1000)`.
 optional requireStatus?: boolean;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:63
+Defined in: @gramota/verifier/dist/types.d.ts:82
 
 Status-check policy for THIS verification.
 
@@ -399,11 +618,60 @@ Status-check policy for THIS verification.
 
 Has no effect when no `statusResolver` is configured on the Verifier.
 
+##### require?
+
+```ts
+optional require?: (input: RequireInput<TClaims>) => 
+  | boolean
+  | RequireResult
+| Promise<boolean | RequireResult>;
+```
+
+Defined in: @gramota/verifier/dist/types.d.ts:109
+
+Application-level predicate. Runs AFTER all crypto + status checks
+pass; receives the disclosed claims + protocol metadata; returns
+a boolean (or `{ passed, reason }` for a custom failure reason).
+
+If the predicate returns `false` (or `{ passed: false }`), the
+verification fails with `failedCheck: "require.predicate"` and the
+predicate's `reason` (or a default) becomes `result.reason`. The
+`require.predicate` entry is appended to `result.checks` either
+way, so audit dashboards see the same shape as for any other check.
+
+If the predicate throws, the throw propagates — the verifier does
+NOT silently treat exceptions as "passed: false". This is so
+caller bugs surface as crashes during dev, not as accepted
+presentations in production.
+
+###### Parameters
+
+###### input
+
+[`RequireInput`](#requireinput)\<`TClaims`\>
+
+###### Returns
+
+  \| `boolean`
+  \| [`RequireResult`](#requireresult)
+  \| `Promise`\<`boolean` \| [`RequireResult`](#requireresult)\>
+
+###### Example
+
+```ts
+await verifier.verify(token, {
+  nonce,
+  require: ({ claims }) =>
+    claims.age_over_18 === true &&
+    EU_COUNTRIES.has(claims.nationality as string),
+});
+```
+
 ***
 
 ### SecurityCheck
 
-Defined in: @gramota/verifier/dist/types.d.ts:68
+Defined in: @gramota/verifier/dist/types.d.ts:114
 
 A single security check, recorded for observability. Every check is
 present in the result regardless of pass/fail, so customers can build
@@ -417,7 +685,7 @@ audit dashboards.
 name: SecurityCheckName;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:70
+Defined in: @gramota/verifier/dist/types.d.ts:116
 
 Stable identifier — useful for logs and dashboards.
 
@@ -427,7 +695,7 @@ Stable identifier — useful for logs and dashboards.
 passed: boolean;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:71
+Defined in: @gramota/verifier/dist/types.d.ts:117
 
 ##### message?
 
@@ -435,7 +703,7 @@ Defined in: @gramota/verifier/dist/types.d.ts:71
 optional message?: string;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:73
+Defined in: @gramota/verifier/dist/types.d.ts:119
 
 Human-readable detail when the check fails.
 
@@ -443,7 +711,7 @@ Human-readable detail when the check fails.
 
 ### VerificationMetadata
 
-Defined in: @gramota/verifier/dist/types.d.ts:78
+Defined in: @gramota/verifier/dist/types.d.ts:129
 
 Protocol metadata extracted alongside the user-facing claims.
 
@@ -455,7 +723,7 @@ Protocol metadata extracted alongside the user-facing claims.
 issuer: string;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:79
+Defined in: @gramota/verifier/dist/types.d.ts:130
 
 ##### audience
 
@@ -463,7 +731,7 @@ Defined in: @gramota/verifier/dist/types.d.ts:79
 audience: string;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:80
+Defined in: @gramota/verifier/dist/types.d.ts:131
 
 ##### issuedAt
 
@@ -471,7 +739,7 @@ Defined in: @gramota/verifier/dist/types.d.ts:80
 issuedAt: number;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:81
+Defined in: @gramota/verifier/dist/types.d.ts:132
 
 ##### expiresAt
 
@@ -479,7 +747,7 @@ Defined in: @gramota/verifier/dist/types.d.ts:81
 expiresAt: number;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:82
+Defined in: @gramota/verifier/dist/types.d.ts:133
 
 ##### holderKey
 
@@ -487,7 +755,7 @@ Defined in: @gramota/verifier/dist/types.d.ts:82
 holderKey: Readonly<Record<string, unknown>>;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:86
+Defined in: @gramota/verifier/dist/types.d.ts:137
 
 The holder's bound public JWK from cnf.jwk in the parent SD-JWT. After
 verification this is guaranteed to be a well-formed JWK that successfully
@@ -497,7 +765,7 @@ verified the KB-JWT signature.
 
 ### SuccessResult
 
-Defined in: @gramota/verifier/dist/types.d.ts:89
+Defined in: @gramota/verifier/dist/types.d.ts:140
 
 #### Type Parameters
 
@@ -513,7 +781,7 @@ Defined in: @gramota/verifier/dist/types.d.ts:89
 ok: true;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:90
+Defined in: @gramota/verifier/dist/types.d.ts:141
 
 ##### claims
 
@@ -521,7 +789,7 @@ Defined in: @gramota/verifier/dist/types.d.ts:90
 claims: TClaims;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:93
+Defined in: @gramota/verifier/dist/types.d.ts:144
 
 The selectively-disclosed user claims with `_sd` / `_sd_alg` / `cnf`
 stripped — this is what the application actually consumes.
@@ -532,7 +800,7 @@ stripped — this is what the application actually consumes.
 metadata: VerificationMetadata;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:95
+Defined in: @gramota/verifier/dist/types.d.ts:146
 
 Protocol-level metadata that's not part of the user claims.
 
@@ -542,7 +810,7 @@ Protocol-level metadata that's not part of the user claims.
 checks: readonly SecurityCheck[];
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:97
+Defined in: @gramota/verifier/dist/types.d.ts:148
 
 Every check we ran, all passed. Useful for audit trails.
 
@@ -552,7 +820,7 @@ Every check we ran, all passed. Useful for audit trails.
 optional status?: CredentialStatusResult | "skipped";
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:101
+Defined in: @gramota/verifier/dist/types.d.ts:152
 
 When `options.status` was supplied, the resolved status (or
 "skipped" if the credential carried no status reference). Absent
@@ -566,7 +834,7 @@ when status checking wasn't requested.
 unwrap(): TClaims;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:103
+Defined in: @gramota/verifier/dist/types.d.ts:154
 
 Returns claims; never throws on success.
 
@@ -578,7 +846,7 @@ Returns claims; never throws on success.
 
 ### FailureResult
 
-Defined in: @gramota/verifier/dist/types.d.ts:105
+Defined in: @gramota/verifier/dist/types.d.ts:156
 
 #### Properties
 
@@ -588,7 +856,7 @@ Defined in: @gramota/verifier/dist/types.d.ts:105
 ok: false;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:106
+Defined in: @gramota/verifier/dist/types.d.ts:157
 
 ##### reason
 
@@ -596,7 +864,7 @@ Defined in: @gramota/verifier/dist/types.d.ts:106
 reason: string;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:108
+Defined in: @gramota/verifier/dist/types.d.ts:159
 
 Human-readable reason — surfaces the message from the failed check.
 
@@ -606,7 +874,7 @@ Human-readable reason — surfaces the message from the failed check.
 failedCheck: SecurityCheckName;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:110
+Defined in: @gramota/verifier/dist/types.d.ts:161
 
 Stable identifier of the first check that failed.
 
@@ -616,7 +884,7 @@ Stable identifier of the first check that failed.
 checks: readonly SecurityCheck[];
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:112
+Defined in: @gramota/verifier/dist/types.d.ts:163
 
 Every check up to and including the one that failed.
 
@@ -628,7 +896,7 @@ Every check up to and including the one that failed.
 unwrap(): never;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:114
+Defined in: @gramota/verifier/dist/types.d.ts:165
 
 Throws `VerifierError` carrying this result.
 
@@ -640,7 +908,7 @@ Throws `VerifierError` carrying this result.
 
 ### PresentationRequestOptions
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:36
+Defined in: @gramota/verifier/dist/verifier.d.ts:59
 
 Options for `verifier.request()`.
 
@@ -652,7 +920,7 @@ Options for `verifier.request()`.
 baseUrl: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:38
+Defined in: @gramota/verifier/dist/verifier.d.ts:61
 
 Base URL or scheme: `openid4vp://authorize`, `https://wallet.example.com/...`
 
@@ -662,7 +930,7 @@ Base URL or scheme: `openid4vp://authorize`, `https://wallet.example.com/...`
 nonce: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:40
+Defined in: @gramota/verifier/dist/verifier.d.ts:63
 
 OID4VP nonce.
 
@@ -672,7 +940,7 @@ OID4VP nonce.
 optional state?: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:42
+Defined in: @gramota/verifier/dist/verifier.d.ts:65
 
 Optional opaque CSRF state echoed back unchanged in the response.
 
@@ -682,7 +950,7 @@ Optional opaque CSRF state echoed back unchanged in the response.
 optional responseUri?: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:44
+Defined in: @gramota/verifier/dist/verifier.d.ts:67
 
 `direct_post` callback URL (required when response_mode=direct_post).
 
@@ -692,7 +960,7 @@ Defined in: @gramota/verifier/dist/verifier.d.ts:44
 optional presentationDefinition?: Readonly<Record<string, unknown>>;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:46
+Defined in: @gramota/verifier/dist/verifier.d.ts:69
 
 Inline DIF Presentation Definition.
 
@@ -702,7 +970,7 @@ Inline DIF Presentation Definition.
 optional presentationDefinitionUri?: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:48
+Defined in: @gramota/verifier/dist/verifier.d.ts:71
 
 Or a URL the wallet can fetch the PD from. Mutually exclusive with above.
 
@@ -712,7 +980,7 @@ Or a URL the wallet can fetch the PD from. Mutually exclusive with above.
 optional responseMode?: "direct_post" | "direct_post.jwt" | "fragment" | "query";
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:51
+Defined in: @gramota/verifier/dist/verifier.d.ts:74
 
 Override response_mode (default: direct_post when responseUri is set,
 otherwise undefined).
@@ -723,7 +991,7 @@ otherwise undefined).
 optional clientIdScheme?: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:53
+Defined in: @gramota/verifier/dist/verifier.d.ts:76
 
 client_id_scheme (default: redirect_uri).
 
@@ -733,7 +1001,7 @@ client_id_scheme (default: redirect_uri).
 optional clientId?: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:55
+Defined in: @gramota/verifier/dist/verifier.d.ts:78
 
 Override the client_id (defaults to the verifier's audience).
 
@@ -741,7 +1009,7 @@ Override the client_id (defaults to the verifier's audience).
 
 ### PresentationRequest
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:58
+Defined in: @gramota/verifier/dist/verifier.d.ts:81
 
 Result of `verifier.request()`.
 
@@ -753,7 +1021,7 @@ Result of `verifier.request()`.
 url: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:60
+Defined in: @gramota/verifier/dist/verifier.d.ts:83
 
 The full URL to share with the wallet (QR / deep link).
 
@@ -763,7 +1031,7 @@ The full URL to share with the wallet (QR / deep link).
 request: AuthorizationRequest;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:62
+Defined in: @gramota/verifier/dist/verifier.d.ts:85
 
 The structured AuthorizationRequest, useful for storage and logging.
 
@@ -773,7 +1041,7 @@ The structured AuthorizationRequest, useful for storage and logging.
 nonce: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:64
+Defined in: @gramota/verifier/dist/verifier.d.ts:87
 
 Echoes the nonce so callers can persist it for later verification.
 
@@ -783,7 +1051,7 @@ Echoes the nonce so callers can persist it for later verification.
 state: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:66
+Defined in: @gramota/verifier/dist/verifier.d.ts:89
 
 Echoes the state if one was supplied.
 
@@ -791,9 +1059,15 @@ Echoes the state if one was supplied.
 
 ### VerifyResponseOptions
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:69
+Defined in: @gramota/verifier/dist/verifier.d.ts:92
 
 Options for `verifier.response()`.
+
+#### Type Parameters
+
+##### TClaims
+
+`TClaims` = `Record`\<`string`, `unknown`\>
 
 #### Properties
 
@@ -803,7 +1077,7 @@ Options for `verifier.response()`.
 expectedNonce: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:71
+Defined in: @gramota/verifier/dist/verifier.d.ts:94
 
 Required — the nonce used in the original request.
 
@@ -813,7 +1087,7 @@ Required — the nonce used in the original request.
 optional expectedState?: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:73
+Defined in: @gramota/verifier/dist/verifier.d.ts:96
 
 Optional — when supplied, response.state MUST equal this.
 
@@ -823,7 +1097,7 @@ Optional — when supplied, response.state MUST equal this.
 optional now?: () => number;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:75
+Defined in: @gramota/verifier/dist/verifier.d.ts:98
 
 Override "now" — for tests.
 
@@ -837,11 +1111,37 @@ Override "now" — for tests.
 optional requireStatus?: boolean;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:79
+Defined in: @gramota/verifier/dist/verifier.d.ts:102
 
 Forwarded to `verify()` — fail when credential has no resolvable
 status. Has effect only when the Verifier was constructed with a
 `statusResolver`.
+
+##### require?
+
+```ts
+optional require?: (input: RequireInput<TClaims>) => 
+  | boolean
+  | RequireResult
+| Promise<boolean | RequireResult>;
+```
+
+Defined in: @gramota/verifier/dist/verifier.d.ts:105
+
+Forwarded to `verify()` — application-level predicate that runs
+after all crypto + status checks pass. See [VerifyOptions.require](#require).
+
+###### Parameters
+
+###### input
+
+[`RequireInput`](#requireinput)\<`TClaims`\>
+
+###### Returns
+
+  \| `boolean`
+  \| [`RequireResult`](#requireresult)
+  \| `Promise`\<`boolean` \| [`RequireResult`](#requireresult)\>
 
 ## Type Aliases
 
@@ -860,10 +1160,11 @@ type SecurityCheckName =
   | "kb-jwt.nonce"
   | "kb-jwt.time"
   | "kb-jwt.transcript"
-  | "status.check";
+  | "status.check"
+  | "require.predicate";
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:76
+Defined in: @gramota/verifier/dist/types.d.ts:122
 
 Stable identifiers for the security checks we run, in execution order.
 
@@ -877,7 +1178,7 @@ type VerifyResult<TClaims> =
   | FailureResult;
 ```
 
-Defined in: @gramota/verifier/dist/types.d.ts:88
+Defined in: @gramota/verifier/dist/types.d.ts:139
 
 #### Type Parameters
 
@@ -895,7 +1196,7 @@ type VerifyResponseResult<TClaims> = VerifyResult<TClaims> & {
 };
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:32
+Defined in: @gramota/verifier/dist/verifier.d.ts:55
 
 Result of `verifier.responses.verify()` — same shape as `VerifyResult`
 plus the parsed OID4VP transport envelope.

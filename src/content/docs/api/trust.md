@@ -3,7 +3,7 @@ title: "@gramota/trust"
 slug: api/trust
 description: "TrustResolver Strategy — Static, JwksUrl, SdJwtVcIssuer (.well-known/jwt-vc-issuer)."
 section: API reference
-order: 11
+order: 12
 ---
 
 # @gramota/trust
@@ -257,11 +257,11 @@ can be produced — that's a trust-resolution failure.
 
 ### TrustResolutionError
 
-Defined in: @gramota/trust/dist/types.d.ts:22
+Defined in: @gramota/trust/dist/types.d.ts:23
 
 #### Extends
 
-- `Error`
+- `GramotaError`
 
 #### Constructors
 
@@ -301,23 +301,28 @@ Defined in: @gramota/trust/dist/types.d.ts:25
 ###### Overrides
 
 ```ts
-Error.constructor
+GramotaError.constructor
 ```
 
 #### Properties
 
-##### name
+##### cause?
 
 ```ts
-readonly name: "TrustResolutionError" = "TrustResolutionError";
+readonly optional cause?: unknown;
 ```
 
-Defined in: @gramota/trust/dist/types.d.ts:23
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:44
 
-###### Overrides
+Optional original error that caused this one. Always set when the
+Gramota package is wrapping a thrown exception from a dependency
+(Web Crypto, JOSE, fetch). Survives `JSON.stringify(err)` only via
+the `cause` property — Node 16.9+ logs it natively.
+
+###### Inherited from
 
 ```ts
-Error.name
+GramotaError.cause
 ```
 
 ##### code
@@ -327,6 +332,31 @@ readonly code: TrustErrorCode;
 ```
 
 Defined in: @gramota/trust/dist/types.d.ts:24
+
+Stable string that identifies the failure mode. Subclasses narrow
+the type; at runtime it's always a string. Use for branching, logs,
+and metrics labels — never serialize [GramotaError.message](#message)
+for that purpose, message strings drift across versions.
+
+###### Overrides
+
+```ts
+GramotaError.code
+```
+
+##### name
+
+```ts
+name: string;
+```
+
+Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:1076
+
+###### Inherited from
+
+```ts
+GramotaError.name
+```
 
 ##### message
 
@@ -339,7 +369,7 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.message
+GramotaError.message
 ```
 
 ##### stack?
@@ -353,7 +383,7 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.stack
+GramotaError.stack
 ```
 
 ## Interfaces
@@ -486,7 +516,7 @@ Override `Date.now()` — for tests.
 
 ### TrustContext
 
-Defined in: @gramota/trust/dist/types.d.ts:3
+Defined in: @gramota/trust/dist/types.d.ts:4
 
 Inputs the resolver gets to make a decision.
 
@@ -498,7 +528,7 @@ Inputs the resolver gets to make a decision.
 iss: string;
 ```
 
-Defined in: @gramota/trust/dist/types.d.ts:5
+Defined in: @gramota/trust/dist/types.d.ts:6
 
 The `iss` claim from the JWT payload, if any.
 
@@ -508,7 +538,7 @@ The `iss` claim from the JWT payload, if any.
 kid: string;
 ```
 
-Defined in: @gramota/trust/dist/types.d.ts:7
+Defined in: @gramota/trust/dist/types.d.ts:8
 
 The `kid` claim from the JWT protected header, if any.
 
@@ -518,7 +548,7 @@ The `kid` claim from the JWT protected header, if any.
 header: Readonly<Record<string, unknown>>;
 ```
 
-Defined in: @gramota/trust/dist/types.d.ts:9
+Defined in: @gramota/trust/dist/types.d.ts:10
 
 The full protected header — useful for `x5c`, `jwk`, custom params.
 
@@ -526,7 +556,7 @@ The full protected header — useful for `x5c`, `jwk`, custom params.
 
 ### TrustResolver
 
-Defined in: @gramota/trust/dist/types.d.ts:14
+Defined in: @gramota/trust/dist/types.d.ts:15
 
 A pluggable strategy for figuring out which JWK(s) should verify an
 issuer's JWS. Strategy + Repository pattern: implementations can be a
@@ -540,7 +570,7 @@ static list, a JWKS URL fetch, an EU Trusted List, or anything custom.
 resolveIssuerKeys(context: TrustContext): Promise<readonly JsonWebKey[]>;
 ```
 
-Defined in: @gramota/trust/dist/types.d.ts:18
+Defined in: @gramota/trust/dist/types.d.ts:19
 
 Return all candidate JWKs that might verify this issuer's JWS. The
 verifier will try each in order until one succeeds. Throw if no candidate
@@ -564,7 +594,7 @@ can be produced — that's a trust-resolution failure.
 type Fetcher = (url: string, init?: RequestInit) => Promise<FetcherResponse>;
 ```
 
-Defined in: .pnpm/@gramota+jose@0.2.0/node\_modules/@gramota/jose/dist/fetcher.d.ts:44
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:49
 
 Adapter-friendly HTTP fetcher. Compatible with global `fetch`,
 `node-fetch`, `undici`, and test mocks.
@@ -611,6 +641,6 @@ type TrustErrorCode =
   | "trust.invalid_input";
 ```
 
-Defined in: @gramota/trust/dist/types.d.ts:21
+Defined in: @gramota/trust/dist/types.d.ts:22
 
 Stable codes for `TrustResolutionError`.

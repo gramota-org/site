@@ -253,11 +253,11 @@ Defined in: @gramota/holder/dist/store/memory.d.ts:9
 
 ### HolderError
 
-Defined in: @gramota/holder/dist/types.d.ts:86
+Defined in: @gramota/holder/dist/types.d.ts:87
 
 #### Extends
 
-- `Error`
+- `GramotaError`
 
 #### Constructors
 
@@ -297,23 +297,28 @@ Defined in: @gramota/holder/dist/types.d.ts:89
 ###### Overrides
 
 ```ts
-Error.constructor
+GramotaError.constructor
 ```
 
 #### Properties
 
-##### name
+##### cause?
 
 ```ts
-readonly name: "HolderError" = "HolderError";
+readonly optional cause?: unknown;
 ```
 
-Defined in: @gramota/holder/dist/types.d.ts:87
+Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:44
 
-###### Overrides
+Optional original error that caused this one. Always set when the
+Gramota package is wrapping a thrown exception from a dependency
+(Web Crypto, JOSE, fetch). Survives `JSON.stringify(err)` only via
+the `cause` property — Node 16.9+ logs it natively.
+
+###### Inherited from
 
 ```ts
-Error.name
+GramotaError.cause
 ```
 
 ##### code
@@ -323,6 +328,31 @@ readonly code: HolderErrorCode;
 ```
 
 Defined in: @gramota/holder/dist/types.d.ts:88
+
+Stable string that identifies the failure mode. Subclasses narrow
+the type; at runtime it's always a string. Use for branching, logs,
+and metrics labels — never serialize [GramotaError.message](#message)
+for that purpose, message strings drift across versions.
+
+###### Overrides
+
+```ts
+GramotaError.code
+```
+
+##### name
+
+```ts
+name: string;
+```
+
+Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:1076
+
+###### Inherited from
+
+```ts
+GramotaError.name
+```
 
 ##### message
 
@@ -335,7 +365,7 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.message
+GramotaError.message
 ```
 
 ##### stack?
@@ -349,7 +379,7 @@ Defined in: .pnpm/typescript@5.9.3/node\_modules/typescript/lib/lib.es5.d.ts:107
 ###### Inherited from
 
 ```ts
-Error.stack
+GramotaError.stack
 ```
 
 ## Interfaces
@@ -493,7 +523,7 @@ against. The credential is rejected if it does not.
 optional txCode?: string;
 ```
 
-Defined in: .pnpm/@gramota+oid4vci@0.2.0/node\_modules/@gramota/oid4vci/dist/client.d.ts:69
+Defined in: .pnpm/@gramota+oid4vci@0.3.0/node\_modules/@gramota/oid4vci/dist/client.d.ts:69
 
 Transaction code (PIN) — supplied when the offer's tx_code requires it.
 
@@ -509,7 +539,7 @@ AcceptOfferOptions.txCode
 optional credentialConfigurationId?: string;
 ```
 
-Defined in: .pnpm/@gramota+oid4vci@0.2.0/node\_modules/@gramota/oid4vci/dist/client.d.ts:71
+Defined in: .pnpm/@gramota+oid4vci@0.3.0/node\_modules/@gramota/oid4vci/dist/client.d.ts:71
 
 Override which credential_configuration_id to request. Default: first.
 
@@ -525,7 +555,7 @@ AcceptOfferOptions.credentialConfigurationId
 optional proofIat?: number;
 ```
 
-Defined in: .pnpm/@gramota+oid4vci@0.2.0/node\_modules/@gramota/oid4vci/dist/client.d.ts:73
+Defined in: .pnpm/@gramota+oid4vci@0.3.0/node\_modules/@gramota/oid4vci/dist/client.d.ts:73
 
 Override iat in the proof JWT — for tests.
 
@@ -541,7 +571,7 @@ AcceptOfferOptions.proofIat
 optional fetcher?: Fetcher;
 ```
 
-Defined in: .pnpm/@gramota+oid4vci@0.2.0/node\_modules/@gramota/oid4vci/dist/client.d.ts:75
+Defined in: .pnpm/@gramota+oid4vci@0.3.0/node\_modules/@gramota/oid4vci/dist/client.d.ts:75
 
 Override fetcher per-call.
 
@@ -963,7 +993,7 @@ Remove a credential. Returns true if it existed.
 
 ### StoredCredential
 
-Defined in: @gramota/holder/dist/types.d.ts:6
+Defined in: @gramota/holder/dist/types.d.ts:7
 
 A credential the holder has received and validated.
 
@@ -975,7 +1005,7 @@ A credential the holder has received and validated.
 id: string;
 ```
 
-Defined in: @gramota/holder/dist/types.d.ts:7
+Defined in: @gramota/holder/dist/types.d.ts:8
 
 ##### token
 
@@ -983,7 +1013,7 @@ Defined in: @gramota/holder/dist/types.d.ts:7
 token: string;
 ```
 
-Defined in: @gramota/holder/dist/types.d.ts:9
+Defined in: @gramota/holder/dist/types.d.ts:10
 
 The original compact-serialised SD-JWT-VC issuance token.
 
@@ -993,7 +1023,7 @@ The original compact-serialised SD-JWT-VC issuance token.
 parsed: ParsedSdJwt;
 ```
 
-Defined in: @gramota/holder/dist/types.d.ts:11
+Defined in: @gramota/holder/dist/types.d.ts:12
 
 Pre-parsed view; pre-computed for faster queries.
 
@@ -1003,7 +1033,7 @@ Pre-parsed view; pre-computed for faster queries.
 issuer: string;
 ```
 
-Defined in: @gramota/holder/dist/types.d.ts:13
+Defined in: @gramota/holder/dist/types.d.ts:14
 
 Issuer identifier, copied out of `iss` for indexed access.
 
@@ -1013,7 +1043,7 @@ Issuer identifier, copied out of `iss` for indexed access.
 receivedAt: number;
 ```
 
-Defined in: @gramota/holder/dist/types.d.ts:15
+Defined in: @gramota/holder/dist/types.d.ts:16
 
 Unix seconds of when the holder accepted this credential.
 
@@ -1021,7 +1051,7 @@ Unix seconds of when the holder accepted this credential.
 
 ### CredentialQuery
 
-Defined in: @gramota/holder/dist/types.d.ts:18
+Defined in: @gramota/holder/dist/types.d.ts:19
 
 Optional filter when listing stored credentials.
 
@@ -1033,7 +1063,7 @@ Optional filter when listing stored credentials.
 optional issuer?: string;
 ```
 
-Defined in: @gramota/holder/dist/types.d.ts:19
+Defined in: @gramota/holder/dist/types.d.ts:20
 
 ##### withClaim?
 
@@ -1041,7 +1071,7 @@ Defined in: @gramota/holder/dist/types.d.ts:19
 optional withClaim?: string;
 ```
 
-Defined in: @gramota/holder/dist/types.d.ts:21
+Defined in: @gramota/holder/dist/types.d.ts:22
 
 Match credentials that contain a given selectively-disclosable claim.
 
@@ -1049,7 +1079,7 @@ Match credentials that contain a given selectively-disclosable claim.
 
 ### CredentialStore
 
-Defined in: @gramota/holder/dist/types.d.ts:32
+Defined in: @gramota/holder/dist/types.d.ts:33
 
 Persistence boundary (Strategy + Repository pattern).
 
@@ -1067,7 +1097,7 @@ Future implementations: `FileCredentialStore`, `EncryptedCredentialStore`,
 add(credential: StoredCredential): Promise<void>;
 ```
 
-Defined in: @gramota/holder/dist/types.d.ts:33
+Defined in: @gramota/holder/dist/types.d.ts:34
 
 ###### Parameters
 
@@ -1085,7 +1115,7 @@ Defined in: @gramota/holder/dist/types.d.ts:33
 get(id: string): Promise<StoredCredential>;
 ```
 
-Defined in: @gramota/holder/dist/types.d.ts:34
+Defined in: @gramota/holder/dist/types.d.ts:35
 
 ###### Parameters
 
@@ -1103,7 +1133,7 @@ Defined in: @gramota/holder/dist/types.d.ts:34
 list(query?: CredentialQuery): Promise<readonly StoredCredential[]>;
 ```
 
-Defined in: @gramota/holder/dist/types.d.ts:35
+Defined in: @gramota/holder/dist/types.d.ts:36
 
 ###### Parameters
 
@@ -1121,7 +1151,7 @@ Defined in: @gramota/holder/dist/types.d.ts:35
 remove(id: string): Promise<boolean>;
 ```
 
-Defined in: @gramota/holder/dist/types.d.ts:36
+Defined in: @gramota/holder/dist/types.d.ts:37
 
 ###### Parameters
 
@@ -1137,7 +1167,7 @@ Defined in: @gramota/holder/dist/types.d.ts:36
 
 ### ReceiveOptions
 
-Defined in: @gramota/holder/dist/types.d.ts:67
+Defined in: @gramota/holder/dist/types.d.ts:68
 
 #### Properties
 
@@ -1147,7 +1177,7 @@ Defined in: @gramota/holder/dist/types.d.ts:67
 trustedIssuers: readonly JsonWebKey[];
 ```
 
-Defined in: @gramota/holder/dist/types.d.ts:70
+Defined in: @gramota/holder/dist/types.d.ts:71
 
 Public JWKs of issuers the holder trusts. The credential's signature
 must verify against at least one.
@@ -1156,7 +1186,7 @@ must verify against at least one.
 
 ### PresentOptions
 
-Defined in: @gramota/holder/dist/types.d.ts:72
+Defined in: @gramota/holder/dist/types.d.ts:73
 
 #### Properties
 
@@ -1166,7 +1196,7 @@ Defined in: @gramota/holder/dist/types.d.ts:72
 credentialId: string;
 ```
 
-Defined in: @gramota/holder/dist/types.d.ts:73
+Defined in: @gramota/holder/dist/types.d.ts:74
 
 ##### disclose
 
@@ -1174,7 +1204,7 @@ Defined in: @gramota/holder/dist/types.d.ts:73
 disclose: readonly string[];
 ```
 
-Defined in: @gramota/holder/dist/types.d.ts:76
+Defined in: @gramota/holder/dist/types.d.ts:77
 
 Names of object claims to selectively disclose. All must be available
 in the credential. To disclose nothing, pass `[]`.
@@ -1185,7 +1215,7 @@ in the credential. To disclose nothing, pass `[]`.
 audience: string;
 ```
 
-Defined in: @gramota/holder/dist/types.d.ts:78
+Defined in: @gramota/holder/dist/types.d.ts:79
 
 Verifier identifier — bound into the KB-JWT's `aud` claim.
 
@@ -1195,7 +1225,7 @@ Verifier identifier — bound into the KB-JWT's `aud` claim.
 nonce: string;
 ```
 
-Defined in: @gramota/holder/dist/types.d.ts:80
+Defined in: @gramota/holder/dist/types.d.ts:81
 
 Verifier challenge — bound into the KB-JWT's `nonce` claim.
 
@@ -1205,7 +1235,7 @@ Verifier challenge — bound into the KB-JWT's `nonce` claim.
 optional now?: () => number;
 ```
 
-Defined in: @gramota/holder/dist/types.d.ts:82
+Defined in: @gramota/holder/dist/types.d.ts:83
 
 Override "now" — for tests.
 
@@ -1221,7 +1251,7 @@ Override "now" — for tests.
 type CredentialId = string;
 ```
 
-Defined in: @gramota/holder/dist/types.d.ts:4
+Defined in: @gramota/holder/dist/types.d.ts:5
 
 Identifier of a stored credential. UUID v4, generated at receive time.
 
@@ -1235,7 +1265,7 @@ type HolderConfig = HolderSignerInput & {
 };
 ```
 
-Defined in: @gramota/holder/dist/types.d.ts:63
+Defined in: @gramota/holder/dist/types.d.ts:64
 
 Configuration for a Holder instance.
 
@@ -1270,6 +1300,6 @@ type HolderErrorCode =
   | "holder.unknown_flow";
 ```
 
-Defined in: @gramota/holder/dist/types.d.ts:85
+Defined in: @gramota/holder/dist/types.d.ts:86
 
 Stable codes for `HolderError`.
