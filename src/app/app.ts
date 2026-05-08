@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header';
 import { FooterComponent } from './components/footer';
+import { SeoService } from './seo.service';
 
 @Component({
   selector: 'app-root',
@@ -22,4 +23,10 @@ import { FooterComponent } from './components/footer';
     main { flex: 1; }
   `,
 })
-export class App {}
+export class App {
+  private readonly seo = inject(SeoService);
+
+  constructor() {
+    this.seo.start();
+  }
+}

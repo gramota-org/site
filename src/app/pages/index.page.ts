@@ -188,7 +188,7 @@ import { RouterLink } from '@angular/router';
     :host { display: block; }
 
     .container {
-      max-width: 56rem;
+      max-width: var(--container);
       margin: 0 auto;
       padding: 0 1.5rem;
     }
@@ -346,7 +346,7 @@ import { RouterLink } from '@angular/router';
       padding: 5rem 0;
       border-top: 1px solid rgb(var(--border));
     }
-    .how-container { max-width: 76rem; }
+    .how-container { max-width: var(--container-wide); }
     .how h2 {
       font-size: 1.875rem;
       letter-spacing: -0.01em;
@@ -367,7 +367,7 @@ import { RouterLink } from '@angular/router';
     }
     .how-video {
       position: relative;
-      max-width: 64rem;
+      max-width: var(--container);
       margin: 0 auto 4rem;
       border: 1px solid rgb(var(--border));
       border-radius: 1rem;
@@ -419,9 +419,8 @@ import { RouterLink } from '@angular/router';
     .how-steps {
       list-style: none;
       padding: 0;
-      margin: 0;
-      max-width: 64rem;
       margin: 0 auto;
+      max-width: var(--container);
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1.5rem;

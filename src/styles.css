@@ -25,6 +25,14 @@
   --accent: 79 70 229;     /* indigo-600 */
   --code-bg: 15 23 42;     /* slate-900 */
   --code-fg: 226 232 240;  /* slate-200 */
+
+  /* Layout tokens — single source of truth for container widths. Pages used
+     to spread between 48rem (markdown), 56rem (landing), 64rem (header/
+     footer), and 76rem (how-it-works), which made content jump as you
+     navigated. Use these everywhere instead. */
+  --container-narrow: 48rem;   /* prose: blog posts + docs articles */
+  --container: 64rem;          /* default: landing sections, headers */
+  --container-wide: 76rem;     /* hero panels: video, triptych */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -79,7 +87,7 @@ analog-markdown-route,
    only `<analog-markdown-route>` (rendered directly into <router-outlet>
    for /docs/<slug> and /blog/<slug>) needs this. */
 analog-markdown-route {
-  max-width: 48rem;
+  max-width: var(--container-narrow);
   margin: 0 auto;
   padding: 3rem 1.5rem;
 }

@@ -58,7 +58,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
       border-bottom: 1px solid rgb(var(--border));
     }
     .container {
-      max-width: 64rem;
+      max-width: var(--container);
       margin: 0 auto;
       padding: 0 1.5rem;
       height: 3.5rem;

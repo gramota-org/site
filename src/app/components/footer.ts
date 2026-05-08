@@ -65,7 +65,7 @@ import { RouterLink } from '@angular/router';
       margin-top: 4rem;
     }
     .container {
-      max-width: 64rem;
+      max-width: var(--container);
       margin: 0 auto;
       padding: 0 1.5rem;
     }
