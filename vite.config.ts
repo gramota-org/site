@@ -37,7 +37,7 @@ function readFrontmatter(filepath: string): Record<string, string> {
   return out;
 }
 
-const SITE_URL = process.env.SITE_URL ?? 'https://gramota-org.github.io/site';
+const SITE_URL = process.env.SITE_URL ?? 'https://gramota.eu';
 
 /** Emit sitemap.xml, robots.txt, and rss.xml into dist/client at build end. */
 function seoArtifacts() {

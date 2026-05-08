@@ -40,13 +40,13 @@ jobs:
       # docs once Dependabot bumps the lockfile.
       - run: pnpm gen:api
 
-      # GitHub Pages serves project repos under https://<owner>.github.io/<repo>/
-      # so we have to set the base href accordingly. When you point a custom
-      # domain (e.g. gramota.dev) at this Pages site, drop the BASE_HREF env
-      # to get the apex back.
+      # Custom domain at gramota.eu — Pages serves at the apex, so the
+      # base href stays "/" (the default in vite.config.ts). The CNAME
+      # in public/CNAME tells Pages to issue a Let's Encrypt cert for
+      # gramota.eu and serve under that hostname.
       - run: pnpm build
         env:
-          BASE_HREF: /site/
+          SITE_URL: https://gramota.eu
 
       - uses: actions/configure-pages@v5
 

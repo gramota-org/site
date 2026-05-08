@@ -137,7 +137,7 @@ export class SeoService {
       const base = (this.doc.querySelector('base')?.getAttribute('href') ?? '/').replace(/\/$/, '');
       return `${window.location.origin}${base}`;
     }
-    return 'https://gramota-org.github.io/site';
+    return 'https://gramota.eu';
   }
 
   private normalizePath(path: string): string {
