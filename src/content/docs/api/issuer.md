@@ -219,7 +219,7 @@ GramotaError.constructor
 readonly optional cause?: unknown;
 ```
 
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:44
+Defined in: .pnpm/@gramota+core@0.2.1/node\_modules/@gramota/core/dist/error.d.ts:44
 
 Optional original error that caused this one. Always set when the
 Gramota package is wrapping a thrown exception from a dependency

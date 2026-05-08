@@ -328,7 +328,7 @@ GramotaError.constructor
 readonly optional cause?: unknown;
 ```
 
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:44
+Defined in: .pnpm/@gramota+core@0.2.1/node\_modules/@gramota/core/dist/error.d.ts:44
 
 Optional original error that caused this one. Always set when the
 Gramota package is wrapping a thrown exception from a dependency
@@ -403,96 +403,6 @@ GramotaError.stack
 ```
 
 ## Interfaces
-
-### FetcherResponse
-
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:35
-
-Subset of the Web `Response` shape that Gramota libraries actually
-consume.
-
-Both `json()` and `text()` are required — every real-world `fetch`
-impl (Web platform, undici, node-fetch) supplies both, and forcing
-adapters to implement both keeps library call sites clean (no
-`if (!response.text) throw` guards on the hot path). Test mocks
-use the mockFetcherResponse helper to satisfy the contract
-without typing out every method.
-
-#### Properties
-
-##### ok
-
-```ts
-readonly ok: boolean;
-```
-
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:36
-
-##### status
-
-```ts
-readonly status: number;
-```
-
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:37
-
-##### headers?
-
-```ts
-readonly optional headers?: {
-  get: string;
-};
-```
-
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:41
-
-Optional, but if present must support case-insensitive header
-lookup per HTTP §3.2. Required by RFC 9449 §8 (DPoP-Nonce) and
-a few other "look at the header on a non-success response" paths.
-
-###### get()
-
-```ts
-get(name: string): string;
-```
-
-###### Parameters
-
-###### name
-
-`string`
-
-###### Returns
-
-`string`
-
-#### Methods
-
-##### json()
-
-```ts
-json(): Promise<unknown>;
-```
-
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:44
-
-###### Returns
-
-`Promise`\<`unknown`\>
-
-##### text()
-
-```ts
-text(): Promise<string>;
-```
-
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:45
-
-###### Returns
-
-`Promise`\<`string`\>
-
-***
 
 ### BuildAuthorizationUrlOptions
 
@@ -2331,33 +2241,6 @@ Optional notification id for the wallet to acknowledge issuance.
 
 ## Type Aliases
 
-### Fetcher
-
-```ts
-type Fetcher = (url: string, init?: RequestInit) => Promise<FetcherResponse>;
-```
-
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:49
-
-Adapter-friendly HTTP fetcher. Compatible with global `fetch`,
-`node-fetch`, `undici`, and test mocks.
-
-#### Parameters
-
-##### url
-
-`string`
-
-##### init?
-
-`RequestInit`
-
-#### Returns
-
-`Promise`\<[`FetcherResponse`](#fetcherresponse)\>
-
-***
-
 ### Oid4vciClientConfig
 
 ```ts
@@ -2456,6 +2339,14 @@ type Oid4vciErrorCode =
 Defined in: @gramota/oid4vci/dist/types.d.ts:153
 
 Stable codes for `Oid4vciError`.
+
+***
+
+### Fetcher
+
+```ts
+type Fetcher = any;
+```
 
 ## Variables
 
@@ -2809,7 +2700,7 @@ Fetch + validate Issuer Metadata from
 
 ###### fetcher?
 
-[`Fetcher`](#fetcher)
+`Fetcher`
 
 #### Returns
 
@@ -2899,7 +2790,7 @@ auth-code flow, otherwise the EU Keycloak-backed dev issuer will 404.
 
 ###### fetcher?
 
-[`Fetcher`](#fetcher)
+`Fetcher`
 
 #### Returns
 
@@ -3318,3 +3209,9 @@ requires the wallet to embed in the next proof JWT.
 #### Returns
 
 `Promise`\<[`TokenResponse`](#tokenresponse)\>
+
+## References
+
+### FetcherResponse
+
+Renames and re-exports [Fetcher](#fetcher-8)

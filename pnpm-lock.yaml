@@ -82,8 +82,8 @@ importers:
         specifier: ^21.0.0
         version: 21.2.11(@angular/compiler@21.2.11)(typescript@5.9.3)
       '@gramota/core':
-        specifier: ^0.2.0
-        version: 0.2.0
+        specifier: ^0.2.1
+        version: 0.2.1
       '@gramota/credential-format':
         specifier: ^0.1.2
         version: 0.1.2
@@ -97,8 +97,8 @@ importers:
         specifier: ^0.3.1
         version: 0.3.1
       '@gramota/jose':
-        specifier: ^0.2.1
-        version: 0.2.1
+        specifier: ^0.3.0
+        version: 0.3.0
       '@gramota/oid4vci':
         specifier: ^0.3.0
         version: 0.3.0
@@ -109,8 +109,8 @@ importers:
         specifier: ^0.1.2
         version: 0.1.2
       '@gramota/qr':
-        specifier: ^0.3.0
-        version: 0.3.0
+        specifier: ^0.4.0
+        version: 0.4.0
       '@gramota/sd-jwt':
         specifier: ^0.2.1
         version: 0.2.1
@@ -124,8 +124,8 @@ importers:
         specifier: ^0.1.2
         version: 0.1.2
       '@gramota/verifier':
-        specifier: ^0.4.0
-        version: 0.4.0
+        specifier: ^0.5.0
+        version: 0.5.0
       '@tailwindcss/vite':
         specifier: ^4.0.0
         version: 4.2.4(vite@8.0.10(esbuild@0.28.0)(jiti@2.6.1)(sass@1.97.3)(terser@5.46.2)(yaml@2.8.4))
@@ -1029,8 +1029,16 @@ packages:
     resolution: {integrity: sha512-Er+foFUQmxEUKD+5VPzRS5G2/k+1Ea0qbslaIC5jv6JY3E7/qXYbdklv1x8GojVcHZKMd8cPiJO1vFFmIxIUdg==}
     engines: {node: '>=20'}
 
+  '@gramota/core@0.2.1':
+    resolution: {integrity: sha512-PNzSYLnIWcO7b6J9Fe4Ig8+Qh2OTbJ+/02T4NoQUNKUhcXeLqGWAR+UOUuOnnWyvZMAnJgml4I6msfb0SllBGQ==}
+    engines: {node: '>=20'}
+
   '@gramota/credential-format@0.1.2':
     resolution: {integrity: sha512-75u6+VUPt9GYkeRcBy/CWwHczNxyo9N7ADB0R0G7l5c0/ATJPjytAmHkHVsKDypVfTMknwKiFKcGizxqskiIVQ==}
+    engines: {node: '>=20'}
+
+  '@gramota/credential-format@0.1.3':
+    resolution: {integrity: sha512-DwvgqmAwkZpu++Kn65PAkcK7kNCAj6vdY+yzPGon0amautczArzKoXBNh4r7Z72IpgX1TIBrdpSF1wSJ9+TZIA==}
     engines: {node: '>=20'}
 
   '@gramota/dcql@0.1.2':
@@ -1049,12 +1057,24 @@ packages:
     resolution: {integrity: sha512-n/8myf3tNrbqoV4vYOSu3Hb33qivV1VQaCEmBZ8Oj32xizx3ra0RA4twR0IlrCN2omYNdtvJbEWV7ecwOY/0TQ==}
     engines: {node: '>=20'}
 
+  '@gramota/jose@0.3.0':
+    resolution: {integrity: sha512-wU20EBtZCecDCo4763S6TBx1cAU7SyWdXawLBpgR+RvE+yY1yjUxzchOoO1TX4wp/L6pa/uYHv7dZR0upOrTww==}
+    engines: {node: '>=20'}
+
   '@gramota/oid4vci@0.3.0':
     resolution: {integrity: sha512-4WriRxAalLtI/sE0eMrTGEAObL58rbp6KTQOhaVzr/LmUZGZCjrBC+tdQYBT9ZNGdFglVBcpBZPovZsonAK3sw==}
     engines: {node: '>=20'}
 
+  '@gramota/oid4vci@0.3.1':
+    resolution: {integrity: sha512-4Y256j0rr3H3IbD+mctrBhpv+g3du9cFVhbo6t6IanmCX602JOiUeuKlvAGeZKS8ux8u0cdhDkaruxnPrNHdag==}
+    engines: {node: '>=20'}
+
   '@gramota/oid4vp@0.2.1':
     resolution: {integrity: sha512-iA4QHHISJnez7m852N6Gzdzvs7XVJo0JWsMDipTStPdxkbkWh05NVx6zWRtaKTlbQG60rbk2wV6oO0nKTmboQQ==}
+    engines: {node: '>=20'}
+
+  '@gramota/oid4vp@0.2.2':
+    resolution: {integrity: sha512-+xbHldBMueJhYxAesvkdjuEdcAmcbskGKIxwGt0tSYR0Loz/zhwjWchpFGBFUfFM/a0Js30h9VEdhrzqm701dQ==}
     engines: {node: '>=20'}
 
   '@gramota/presentation-exchange@0.1.2':
@@ -1065,8 +1085,16 @@ packages:
     resolution: {integrity: sha512-lu3oKnAyP30wsgcoNbZ+DgKKMbbxYDBJGNuVghXAK/Cd7PRW7iRIQnXv7w4+n3fXgm6kKVS317yvTOxdS1r4rQ==}
     engines: {node: '>=20'}
 
+  '@gramota/qr@0.4.0':
+    resolution: {integrity: sha512-3Nt43RfFjH/+eaIOoDsVGr7KKfZhdVSX62aqpT4V74UUHevV7g4oLO6jVSajHNvYYK1Min6iueHfbeA3o46pQw==}
+    engines: {node: '>=20'}
+
   '@gramota/sd-jwt@0.2.1':
     resolution: {integrity: sha512-fcilbgVDgcL61AoNOdgy7c/JhcXIHA2zZn15Wu2TKDuK5QYvvDkraLZGKFE4r8uTu5Z5MiTPADu0ouLi8wo9Xg==}
+    engines: {node: '>=20'}
+
+  '@gramota/sd-jwt@0.2.2':
+    resolution: {integrity: sha512-mDWhWRb+kmjyUaTCQIsSsR0DZL+VAu0OaW1yHYLpTvl/FTCN1vBhaXhXrNFQ63U1nm3Ng4eE15+3BoW7aPzhWg==}
     engines: {node: '>=20'}
 
   '@gramota/sdk@0.2.0':
@@ -1077,12 +1105,24 @@ packages:
     resolution: {integrity: sha512-IkAxAEWWKl/CoM52lm8shu8aAj8T9eCZWDv5ICbfQtAAUBIuzF8Dk2RZAYbjU91kbrV8PS67n9PZEuzBQU3ZVQ==}
     engines: {node: '>=20'}
 
+  '@gramota/status-list@0.1.3':
+    resolution: {integrity: sha512-ffooY468IPoQO4+S0q4qdjegv5Wz6iLRHAzuKQwEPx1ind/9HhFiBMOhyA1ikzWiDWbmSpr50KZ2EtR29M5DGg==}
+    engines: {node: '>=20'}
+
   '@gramota/trust@0.1.2':
     resolution: {integrity: sha512-3UqGzBAKr4ZMXsqGfx6c+0JIkacBxGdWUwJwEc58pvTjzZ3aK9E1gqKsqc+kqI06g63xcS9l0nzn/6P/Bc3VWA==}
     engines: {node: '>=20'}
 
+  '@gramota/trust@0.1.3':
+    resolution: {integrity: sha512-bT+bjrnQomY048LOcQ9gqzCbujd1P15ShHJFxKelG+sHJZ9+uxelfmy7X4DrKZqRcjVysPXWD7oiai/M4YLR2w==}
+    engines: {node: '>=20'}
+
   '@gramota/verifier@0.4.0':
     resolution: {integrity: sha512-yVIVQdQcshBqPeOh0+mxvQ9pEmaW/NBL0G/VDMu0cV9jFr7ZKgFCp6rHfSTR93RMdQn8d8fY7lQbIwOKonFsvw==}
+    engines: {node: '>=20'}
+
+  '@gramota/verifier@0.5.0':
+    resolution: {integrity: sha512-4hBxPIo3TuRPegz3f45I99Kg3Hru85CVukcmVvvNMZje1FUqEiIJ0sguK2zP81HXv3SH1CwipcVFbvDF+1lQJg==}
     engines: {node: '>=20'}
 
   '@harperfast/extended-iterable@1.0.3':
@@ -5999,9 +6039,15 @@ snapshots:
 
   '@gramota/core@0.2.0': {}
 
+  '@gramota/core@0.2.1': {}
+
   '@gramota/credential-format@0.1.2':
     dependencies:
       '@gramota/core': 0.2.0
+
+  '@gramota/credential-format@0.1.3':
+    dependencies:
+      '@gramota/core': 0.2.1
 
   '@gramota/dcql@0.1.2':
     dependencies:
@@ -6028,16 +6074,35 @@ snapshots:
       '@gramota/core': 0.2.0
       jose: 5.10.0
 
+  '@gramota/jose@0.3.0':
+    dependencies:
+      '@gramota/core': 0.2.1
+      jose: 5.10.0
+
   '@gramota/oid4vci@0.3.0':
     dependencies:
       '@gramota/core': 0.2.0
       '@gramota/credential-format': 0.1.2
       '@gramota/jose': 0.2.1
 
+  '@gramota/oid4vci@0.3.1':
+    dependencies:
+      '@gramota/core': 0.2.1
+      '@gramota/credential-format': 0.1.3
+      '@gramota/jose': 0.3.0
+
   '@gramota/oid4vp@0.2.1':
     dependencies:
       '@gramota/core': 0.2.0
       '@gramota/jose': 0.2.1
+      '@peculiar/x509': 2.0.0
+      jose: 5.10.0
+      reflect-metadata: 0.2.2
+
+  '@gramota/oid4vp@0.2.2':
+    dependencies:
+      '@gramota/core': 0.2.1
+      '@gramota/jose': 0.3.0
       '@peculiar/x509': 2.0.0
       jose: 5.10.0
       reflect-metadata: 0.2.2
@@ -6054,10 +6119,22 @@ snapshots:
       '@gramota/oid4vp': 0.2.1
       qrcode: 1.5.4
 
+  '@gramota/qr@0.4.0':
+    dependencies:
+      '@gramota/core': 0.2.1
+      '@gramota/oid4vci': 0.3.1
+      '@gramota/oid4vp': 0.2.2
+      qrcode: 1.5.4
+
   '@gramota/sd-jwt@0.2.1':
     dependencies:
       '@gramota/core': 0.2.0
       '@gramota/jose': 0.2.1
+
+  '@gramota/sd-jwt@0.2.2':
+    dependencies:
+      '@gramota/core': 0.2.1
+      '@gramota/jose': 0.3.0
 
   '@gramota/sdk@0.2.0':
     dependencies:
@@ -6075,10 +6152,21 @@ snapshots:
       '@gramota/jose': 0.2.1
       '@gramota/sd-jwt': 0.2.1
 
+  '@gramota/status-list@0.1.3':
+    dependencies:
+      '@gramota/core': 0.2.1
+      '@gramota/jose': 0.3.0
+      '@gramota/sd-jwt': 0.2.2
+
   '@gramota/trust@0.1.2':
     dependencies:
       '@gramota/core': 0.2.0
       '@gramota/jose': 0.2.1
+
+  '@gramota/trust@0.1.3':
+    dependencies:
+      '@gramota/core': 0.2.1
+      '@gramota/jose': 0.3.0
 
   '@gramota/verifier@0.4.0':
     dependencies:
@@ -6088,6 +6176,15 @@ snapshots:
       '@gramota/sd-jwt': 0.2.1
       '@gramota/status-list': 0.1.2
       '@gramota/trust': 0.1.2
+
+  '@gramota/verifier@0.5.0':
+    dependencies:
+      '@gramota/core': 0.2.1
+      '@gramota/jose': 0.3.0
+      '@gramota/oid4vp': 0.2.2
+      '@gramota/sd-jwt': 0.2.2
+      '@gramota/status-list': 0.1.3
+      '@gramota/trust': 0.1.3
 
   '@harperfast/extended-iterable@1.0.3':
     optional: true

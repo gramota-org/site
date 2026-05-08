@@ -1,27 +1,27 @@
 ---
-title: "@gramota/sdk, @gramota/core, and Stripe-shaped namespaces across every package"
+title: "@gramota/sdk, @gramota/core, and one shape for every package"
 slug: 2026-05-08-stripe-shape-release
-description: A structural release. New top-level facade, new shared base, every client now reads as one product instead of fifteen.
+description: A structural release. New top-level facade, new shared base, every client reads as one product instead of fifteen. Old shapes removed in the same cycle — no deprecations.
 date: 2026-05-08
 author: Petromil Pavlov
 ---
 
-# @gramota/sdk, @gramota/core, and Stripe-shaped namespaces across every package
+# @gramota/sdk, @gramota/core, and one shape for every package
 
 Today's release is structural. Runtime behaviour is unchanged; the
 public surface got tightened so that the fifteen packages now read
 as one product instead of fifteen separately-designed ones.
 
-Two new packages, two reshaped clients, one shared base. Versions on
-npm right now:
+Two new packages, two reshaped clients, one shared base, **and the
+old shapes removed in the same cycle**. There's exactly one way to
+call each thing. Versions on npm right now:
 
 - `@gramota/sdk@0.2.0` — top-level facade (new)
-- `@gramota/core@0.2.0` — shared primitives (new)
-- `@gramota/verifier@0.4.0` — Stripe-shaped namespaces + the require predicate hook
-- `@gramota/qr@0.3.0` — `QrClient` class
+- `@gramota/core@0.2.1` — shared primitives (new)
+- `@gramota/verifier@0.5.0` — Stripe-shaped namespaces, flat methods removed
+- `@gramota/qr@0.4.0` — `QrClient` class, loose factories removed
+- `@gramota/jose@0.3.0` — `Fetcher` re-export removed (import from `@gramota/core`)
 - everything else — patch bump for the `GramotaError` retrofit
-
-Migration is opt-in. Every old call site keeps working through 1.0.
 
 ## What changed and why
 
@@ -30,9 +30,9 @@ Migration is opt-in. Every old call site keeps working through 1.0.
 Before today, the verifier was a flat surface:
 
 ```ts
-verifier.verify(token, opts);
-verifier.response(rawBody, opts);
-verifier.request(opts);
+verifier.verify(token, opts);       // gone
+verifier.response(rawBody, opts);   // gone
+verifier.request(opts);             // gone
 ```
 
 The holder + issuer were already namespaced (`holder.credentials.*`,
@@ -40,14 +40,14 @@ The holder + issuer were already namespaced (`holder.credentials.*`,
 Inconsistent inside one product. Fixed:
 
 ```ts
-verifier.presentations.verify(token, opts);   // was verifier.verify
-verifier.responses.verify(rawBody, opts);     // was verifier.response
-verifier.requests.create(opts);               // was verifier.request
+verifier.presentations.verify(token, opts);
+verifier.responses.verify(rawBody, opts);
+verifier.requests.create(opts);
 ```
 
 Every client now reads `client.<resource>.<verb>` — same shape Stripe,
 AWS SDK v3, and the modern OpenAI client all use. The flat methods
-stay alive, marked `@deprecated`, removed in 1.0. Migrate at your pace.
+have been removed; this is the only public shape now.
 
 ### One import for the common case
 
@@ -125,9 +125,10 @@ await code.toDataUrl();       // <img src=...>
 ```
 
 The default `qr` singleton is now an instance of `QrClient` with the
-default renderer — `qr.fromUrl(...)` keeps working without change.
-This was the lowest-blast-radius reshape since the package was barely
-24 hours old.
+default renderer — `qr.fromUrl(...)` works the same. The loose factory
+re-exports (`fromUrl`, `fromAuthorizationRequest`, `fromCredentialOffer`)
+that used to be available as named imports have been removed; pick
+either `qr.*` or `new QrClient({...}).*`.
 
 ## Test surface
 
@@ -142,11 +143,26 @@ the new packages and the namespace coverage added 34. Zero regressions.
 - **`verifier.statusLists.*`** — same for status-list resolution.
 - **Idempotency keys + retry policy on `@gramota/sdk`** — Stripe-style.
   This is a 1.0 thing.
-- **Removing the deprecated flat methods** — 1.0.
 
-If you've integrated against 0.2 or 0.3, this is your nudge to bump
-to the new versions and switch to the namespace shape one method at
-a time. The deprecation warnings will tell you where.
+## Migration
+
+If you upgraded to 0.4.0/0.3.0 yesterday and saw deprecation
+warnings, fix the call sites the warnings pointed at — that's the
+only change. Runtime behaviour is identical; the type-checker tells
+you exactly what to change.
+
+If you're upgrading from earlier (0.2 → today), the changes you'll
+hit are concentrated in three places:
+
+- `verifier.verify(...)` → `verifier.presentations.verify(...)` (and
+  `.response` / `.request` similarly).
+- `import { Fetcher } from "@gramota/jose"` → `from "@gramota/core"`.
+- `import { fromUrl } from "@gramota/qr"` → use `qr.fromUrl(...)` or
+  `new QrClient({...}).fromUrl(...)`.
+
+Per-package error classes still extend their own subclasses
+(`VerifierError`, `IssuerError`, etc.) — those are unchanged. The
+new bit is `instanceof GramotaError` works as a single catch.
 
 — [`@gramota/sdk` on npm](https://www.npmjs.com/package/@gramota/sdk)
 · [GitHub](https://github.com/gramota-org/gramota)

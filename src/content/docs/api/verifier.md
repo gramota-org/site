@@ -64,7 +64,7 @@ GramotaError.constructor
 readonly optional cause?: unknown;
 ```
 
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:44
+Defined in: .pnpm/@gramota+core@0.2.1/node\_modules/@gramota/core/dist/error.d.ts:44
 
 Optional original error that caused this one. Always set when the
 Gramota package is wrapping a thrown exception from a dependency
@@ -277,110 +277,6 @@ create(options: PresentationRequestOptions): PresentationRequest;
 ###### Returns
 
 [`PresentationRequest`](#presentationrequest)
-
-#### Methods
-
-##### ~~verify()~~
-
-```ts
-verify<TClaims>(presentationToken: string, options: VerifyOptions<TClaims>): Promise<VerifyResult<TClaims>>;
-```
-
-Defined in: @gramota/verifier/dist/verifier.d.ts:35
-
-Verify an SD-JWT-VC presentation token end-to-end.
-
-Runs 9 security checks in order; stops at the first failure and reports
-which check failed. On success, returns the disclosed claims plus
-protocol metadata plus the full audit trail of checks performed.
-
-###### Type Parameters
-
-###### TClaims
-
-`TClaims` = `Record`\<`string`, `unknown`\>
-
-###### Parameters
-
-###### presentationToken
-
-`string`
-
-###### options
-
-[`VerifyOptions`](#verifyoptions)\<`TClaims`\>
-
-###### Returns
-
-`Promise`\<[`VerifyResult`](#verifyresult)\<`TClaims`\>\>
-
-###### Deprecated
-
-Use `verifier.presentations.verify(token, opts)` instead.
-  Removed in 1.0. The flat shape predates Gramota's Stripe-style
-  namespacing — the namespaced version is the supported surface.
-
-##### ~~request()~~
-
-```ts
-request(options: PresentationRequestOptions): PresentationRequest;
-```
-
-Defined in: @gramota/verifier/dist/verifier.d.ts:41
-
-Build an OID4VP Authorization Request URL to share with the wallet.
-
-###### Parameters
-
-###### options
-
-[`PresentationRequestOptions`](#presentationrequestoptions)
-
-###### Returns
-
-[`PresentationRequest`](#presentationrequest)
-
-###### Deprecated
-
-Use `verifier.requests.create(opts)` instead. Removed in 1.0.
-
-##### ~~response()~~
-
-```ts
-response<TClaims>(rawBody: string | URLSearchParams | Record<string, string>, options: VerifyResponseOptions<TClaims>): Promise<VerifyResponseResult<TClaims>>;
-```
-
-Defined in: @gramota/verifier/dist/verifier.d.ts:51
-
-Process an OID4VP Authorization Response body end-to-end:
-parse the form body, enforce CSRF state matching, and verify the
-vp_token cryptographically. Returns the same result shape as `verify()`
-plus the parsed transport envelope.
-
-###### Type Parameters
-
-###### TClaims
-
-`TClaims` = `Record`\<`string`, `unknown`\>
-
-###### Parameters
-
-###### rawBody
-
-`string` \| `URLSearchParams` \| `Record`\<`string`, `string`\>
-
-###### options
-
-[`VerifyResponseOptions`](#verifyresponseoptions)\<`TClaims`\>
-
-###### Returns
-
-`Promise`\<[`VerifyResponseResult`](#verifyresponseresult)\<`TClaims`\>\>
-
-###### Deprecated
-
-Use `verifier.responses.verify(rawBody, opts)` instead.
-  Removed in 1.0.
 
 ## Interfaces
 
@@ -908,7 +804,7 @@ Throws `VerifierError` carrying this result.
 
 ### PresentationRequestOptions
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:59
+Defined in: @gramota/verifier/dist/verifier.d.ts:56
 
 Options for `verifier.request()`.
 
@@ -920,7 +816,7 @@ Options for `verifier.request()`.
 baseUrl: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:61
+Defined in: @gramota/verifier/dist/verifier.d.ts:58
 
 Base URL or scheme: `openid4vp://authorize`, `https://wallet.example.com/...`
 
@@ -930,7 +826,7 @@ Base URL or scheme: `openid4vp://authorize`, `https://wallet.example.com/...`
 nonce: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:63
+Defined in: @gramota/verifier/dist/verifier.d.ts:60
 
 OID4VP nonce.
 
@@ -940,7 +836,7 @@ OID4VP nonce.
 optional state?: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:65
+Defined in: @gramota/verifier/dist/verifier.d.ts:62
 
 Optional opaque CSRF state echoed back unchanged in the response.
 
@@ -950,7 +846,7 @@ Optional opaque CSRF state echoed back unchanged in the response.
 optional responseUri?: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:67
+Defined in: @gramota/verifier/dist/verifier.d.ts:64
 
 `direct_post` callback URL (required when response_mode=direct_post).
 
@@ -960,7 +856,7 @@ Defined in: @gramota/verifier/dist/verifier.d.ts:67
 optional presentationDefinition?: Readonly<Record<string, unknown>>;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:69
+Defined in: @gramota/verifier/dist/verifier.d.ts:66
 
 Inline DIF Presentation Definition.
 
@@ -970,7 +866,7 @@ Inline DIF Presentation Definition.
 optional presentationDefinitionUri?: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:71
+Defined in: @gramota/verifier/dist/verifier.d.ts:68
 
 Or a URL the wallet can fetch the PD from. Mutually exclusive with above.
 
@@ -980,7 +876,7 @@ Or a URL the wallet can fetch the PD from. Mutually exclusive with above.
 optional responseMode?: "direct_post" | "direct_post.jwt" | "fragment" | "query";
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:74
+Defined in: @gramota/verifier/dist/verifier.d.ts:71
 
 Override response_mode (default: direct_post when responseUri is set,
 otherwise undefined).
@@ -991,7 +887,7 @@ otherwise undefined).
 optional clientIdScheme?: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:76
+Defined in: @gramota/verifier/dist/verifier.d.ts:73
 
 client_id_scheme (default: redirect_uri).
 
@@ -1001,7 +897,7 @@ client_id_scheme (default: redirect_uri).
 optional clientId?: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:78
+Defined in: @gramota/verifier/dist/verifier.d.ts:75
 
 Override the client_id (defaults to the verifier's audience).
 
@@ -1009,7 +905,7 @@ Override the client_id (defaults to the verifier's audience).
 
 ### PresentationRequest
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:81
+Defined in: @gramota/verifier/dist/verifier.d.ts:78
 
 Result of `verifier.request()`.
 
@@ -1021,7 +917,7 @@ Result of `verifier.request()`.
 url: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:83
+Defined in: @gramota/verifier/dist/verifier.d.ts:80
 
 The full URL to share with the wallet (QR / deep link).
 
@@ -1031,7 +927,7 @@ The full URL to share with the wallet (QR / deep link).
 request: AuthorizationRequest;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:85
+Defined in: @gramota/verifier/dist/verifier.d.ts:82
 
 The structured AuthorizationRequest, useful for storage and logging.
 
@@ -1041,7 +937,7 @@ The structured AuthorizationRequest, useful for storage and logging.
 nonce: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:87
+Defined in: @gramota/verifier/dist/verifier.d.ts:84
 
 Echoes the nonce so callers can persist it for later verification.
 
@@ -1051,7 +947,7 @@ Echoes the nonce so callers can persist it for later verification.
 state: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:89
+Defined in: @gramota/verifier/dist/verifier.d.ts:86
 
 Echoes the state if one was supplied.
 
@@ -1059,7 +955,7 @@ Echoes the state if one was supplied.
 
 ### VerifyResponseOptions
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:92
+Defined in: @gramota/verifier/dist/verifier.d.ts:89
 
 Options for `verifier.response()`.
 
@@ -1077,7 +973,7 @@ Options for `verifier.response()`.
 expectedNonce: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:94
+Defined in: @gramota/verifier/dist/verifier.d.ts:91
 
 Required — the nonce used in the original request.
 
@@ -1087,7 +983,7 @@ Required — the nonce used in the original request.
 optional expectedState?: string;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:96
+Defined in: @gramota/verifier/dist/verifier.d.ts:93
 
 Optional — when supplied, response.state MUST equal this.
 
@@ -1097,7 +993,7 @@ Optional — when supplied, response.state MUST equal this.
 optional now?: () => number;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:98
+Defined in: @gramota/verifier/dist/verifier.d.ts:95
 
 Override "now" — for tests.
 
@@ -1111,7 +1007,7 @@ Override "now" — for tests.
 optional requireStatus?: boolean;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:102
+Defined in: @gramota/verifier/dist/verifier.d.ts:99
 
 Forwarded to `verify()` — fail when credential has no resolvable
 status. Has effect only when the Verifier was constructed with a
@@ -1126,7 +1022,7 @@ optional require?: (input: RequireInput<TClaims>) =>
 | Promise<boolean | RequireResult>;
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:105
+Defined in: @gramota/verifier/dist/verifier.d.ts:102
 
 Forwarded to `verify()` — application-level predicate that runs
 after all crypto + status checks pass. See [VerifyOptions.require](#require).
@@ -1196,7 +1092,7 @@ type VerifyResponseResult<TClaims> = VerifyResult<TClaims> & {
 };
 ```
 
-Defined in: @gramota/verifier/dist/verifier.d.ts:55
+Defined in: @gramota/verifier/dist/verifier.d.ts:52
 
 Result of `verifier.responses.verify()` — same shape as `VerifyResult`
 plus the parsed OID4VP transport envelope.

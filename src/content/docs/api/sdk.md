@@ -18,7 +18,7 @@ Source: [github.com/gramota-org/gramota/tree/main/packages/sdk](https://github.c
 
 ### GramotaError
 
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:34
+Defined in: .pnpm/@gramota+core@0.2.1/node\_modules/@gramota/core/dist/error.d.ts:34
 
 Base error for everything thrown out of `@gramota/*` packages.
 
@@ -70,7 +70,7 @@ new GramotaError(
 }): GramotaError;
 ```
 
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:45
+Defined in: .pnpm/@gramota+core@0.2.1/node\_modules/@gramota/core/dist/error.d.ts:45
 
 ###### Parameters
 
@@ -106,7 +106,7 @@ Error.constructor
 readonly code: string;
 ```
 
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:39
+Defined in: .pnpm/@gramota+core@0.2.1/node\_modules/@gramota/core/dist/error.d.ts:39
 
 Stable string that identifies the failure mode. Subclasses narrow
 the type; at runtime it's always a string. Use for branching, logs,
@@ -119,7 +119,7 @@ for that purpose, message strings drift across versions.
 readonly optional cause?: unknown;
 ```
 
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:44
+Defined in: .pnpm/@gramota+core@0.2.1/node\_modules/@gramota/core/dist/error.d.ts:44
 
 Optional original error that caused this one. Always set when the
 Gramota package is wrapping a thrown exception from a dependency
@@ -287,7 +287,7 @@ QR code rendering. Always available — has no required config.
 
 ### FetcherResponse
 
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:35
+Defined in: .pnpm/@gramota+core@0.2.1/node\_modules/@gramota/core/dist/fetcher.d.ts:35
 
 Subset of the Web `Response` shape that Gramota libraries actually
 consume.
@@ -307,7 +307,7 @@ without typing out every method.
 readonly ok: boolean;
 ```
 
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:36
+Defined in: .pnpm/@gramota+core@0.2.1/node\_modules/@gramota/core/dist/fetcher.d.ts:36
 
 ##### status
 
@@ -315,7 +315,7 @@ Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d
 readonly status: number;
 ```
 
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:37
+Defined in: .pnpm/@gramota+core@0.2.1/node\_modules/@gramota/core/dist/fetcher.d.ts:37
 
 ##### headers?
 
@@ -325,7 +325,7 @@ readonly optional headers?: {
 };
 ```
 
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:41
+Defined in: .pnpm/@gramota+core@0.2.1/node\_modules/@gramota/core/dist/fetcher.d.ts:41
 
 Optional, but if present must support case-insensitive header
 lookup per HTTP §3.2. Required by RFC 9449 §8 (DPoP-Nonce) and
@@ -355,7 +355,7 @@ get(name: string): string;
 json(): Promise<unknown>;
 ```
 
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:44
+Defined in: .pnpm/@gramota+core@0.2.1/node\_modules/@gramota/core/dist/fetcher.d.ts:44
 
 ###### Returns
 
@@ -367,7 +367,7 @@ Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d
 text(): Promise<string>;
 ```
 
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:45
+Defined in: .pnpm/@gramota+core@0.2.1/node\_modules/@gramota/core/dist/fetcher.d.ts:45
 
 ###### Returns
 
@@ -449,7 +449,7 @@ still wins when set.
 type Fetcher = (url: string, init?: RequestInit) => Promise<FetcherResponse>;
 ```
 
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:49
+Defined in: .pnpm/@gramota+core@0.2.1/node\_modules/@gramota/core/dist/fetcher.d.ts:49
 
 Adapter-friendly HTTP fetcher. Compatible with global `fetch`,
 `node-fetch`, `undici`, and test mocks.
@@ -476,7 +476,7 @@ Adapter-friendly HTTP fetcher. Compatible with global `fetch`,
 function isGramotaError(err: unknown): err is GramotaError;
 ```
 
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:56
+Defined in: .pnpm/@gramota+core@0.2.1/node\_modules/@gramota/core/dist/error.d.ts:56
 
 Type guard — narrows a caught `unknown` to [GramotaError](#gramotaerror).
 
@@ -508,7 +508,7 @@ function mockFetcherResponse(input: {
 }): FetcherResponse;
 ```
 
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:60
+Defined in: .pnpm/@gramota+core@0.2.1/node\_modules/@gramota/core/dist/fetcher.d.ts:60
 
 Build a [FetcherResponse](#fetcherresponse) for tests / in-process adapters with
 minimal boilerplate. Both `json()` and `text()` are derived from the

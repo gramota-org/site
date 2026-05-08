@@ -400,7 +400,7 @@ GramotaError.constructor
 readonly optional cause?: unknown;
 ```
 
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:44
+Defined in: .pnpm/@gramota+core@0.2.1/node\_modules/@gramota/core/dist/error.d.ts:44
 
 Optional original error that caused this one. Always set when the
 Gramota package is wrapping a thrown exception from a dependency
@@ -706,20 +706,6 @@ general use).
 
 ## Type Aliases
 
-### ~~QrFactoryOptions~~
-
-```ts
-type QrFactoryOptions = QrClientOptions;
-```
-
-Defined in: @gramota/qr/dist/client.d.ts:58
-
-#### Deprecated
-
-alias for [QrClientOptions](#qrclientoptions) — kept for source compat.
-
-***
-
 ### QrFormat
 
 ```ts
@@ -758,96 +744,3 @@ Default singleton [QrClient](#qrclient) with the default renderer.
 Most consumers want this — no construction, no options, just
 `qr.fromUrl(deepLink)`. Pass a custom renderer or default options
 by constructing your own `new QrClient({...})`.
-
-***
-
-### fromUrl
-
-```ts
-const fromUrl: QrClient["fromUrl"];
-```
-
-Defined in: @gramota/qr/dist/client.d.ts:54
-
-`@gramota/qr` public API.
-
-Two patterns work — pick whichever fits:
-
-  1. **Default singleton** (zero config):
-     ```ts
-     import { qr } from "@gramota/qr";
-     const code = qr.fromUrl("openid4vp://…");
-     ```
-
-  2. **Custom client** (custom renderer, default options):
-     ```ts
-     import { QrClient } from "@gramota/qr";
-     const qr = new QrClient({ errorCorrection: "H", width: 512 });
-     const code = qr.fromUrl("openid4vp://…");
-     ```
-
-Tree-shakers can also import the named factories directly
-(`fromUrl`, `fromAuthorizationRequest`, `fromCredentialOffer`) —
-they delegate to the singleton.
-
-***
-
-### fromAuthorizationRequest
-
-```ts
-const fromAuthorizationRequest: QrClient["fromAuthorizationRequest"];
-```
-
-Defined in: @gramota/qr/dist/client.d.ts:55
-
-`@gramota/qr` public API.
-
-Two patterns work — pick whichever fits:
-
-  1. **Default singleton** (zero config):
-     ```ts
-     import { qr } from "@gramota/qr";
-     const code = qr.fromUrl("openid4vp://…");
-     ```
-
-  2. **Custom client** (custom renderer, default options):
-     ```ts
-     import { QrClient } from "@gramota/qr";
-     const qr = new QrClient({ errorCorrection: "H", width: 512 });
-     const code = qr.fromUrl("openid4vp://…");
-     ```
-
-Tree-shakers can also import the named factories directly
-(`fromUrl`, `fromAuthorizationRequest`, `fromCredentialOffer`) —
-they delegate to the singleton.
-
-***
-
-### fromCredentialOffer
-
-```ts
-const fromCredentialOffer: QrClient["fromCredentialOffer"];
-```
-
-Defined in: @gramota/qr/dist/client.d.ts:56
-
-`@gramota/qr` public API.
-
-Two patterns work — pick whichever fits:
-
-  1. **Default singleton** (zero config):
-     ```ts
-     import { qr } from "@gramota/qr";
-     const code = qr.fromUrl("openid4vp://…");
-     ```
-
-  2. **Custom client** (custom renderer, default options):
-     ```ts
-     import { QrClient } from "@gramota/qr";
-     const qr = new QrClient({ errorCorrection: "H", width: 512 });
-     const code = qr.fromUrl("openid4vp://…");
-     ```
-
-Tree-shakers can also import the named factories directly
-(`fromUrl`, `fromAuthorizationRequest`, `fromCredentialOffer`) —
-they delegate to the singleton.

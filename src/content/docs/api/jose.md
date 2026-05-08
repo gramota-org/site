@@ -167,7 +167,7 @@ GramotaError.constructor
 readonly optional cause?: unknown;
 ```
 
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:44
+Defined in: .pnpm/@gramota+core@0.2.1/node\_modules/@gramota/core/dist/error.d.ts:44
 
 Optional original error that caused this one. Always set when the
 Gramota package is wrapping a thrown exception from a dependency
@@ -242,96 +242,6 @@ GramotaError.stack
 ```
 
 ## Interfaces
-
-### FetcherResponse
-
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:35
-
-Subset of the Web `Response` shape that Gramota libraries actually
-consume.
-
-Both `json()` and `text()` are required — every real-world `fetch`
-impl (Web platform, undici, node-fetch) supplies both, and forcing
-adapters to implement both keeps library call sites clean (no
-`if (!response.text) throw` guards on the hot path). Test mocks
-use the [mockFetcherResponse](#mockfetcherresponse) helper to satisfy the contract
-without typing out every method.
-
-#### Properties
-
-##### ok
-
-```ts
-readonly ok: boolean;
-```
-
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:36
-
-##### status
-
-```ts
-readonly status: number;
-```
-
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:37
-
-##### headers?
-
-```ts
-readonly optional headers?: {
-  get: string;
-};
-```
-
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:41
-
-Optional, but if present must support case-insensitive header
-lookup per HTTP §3.2. Required by RFC 9449 §8 (DPoP-Nonce) and
-a few other "look at the header on a non-success response" paths.
-
-###### get()
-
-```ts
-get(name: string): string;
-```
-
-###### Parameters
-
-###### name
-
-`string`
-
-###### Returns
-
-`string`
-
-#### Methods
-
-##### json()
-
-```ts
-json(): Promise<unknown>;
-```
-
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:44
-
-###### Returns
-
-`Promise`\<`unknown`\>
-
-##### text()
-
-```ts
-text(): Promise<string>;
-```
-
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:45
-
-###### Returns
-
-`Promise`\<`string`\>
-
-***
 
 ### SignJwsOptions
 
@@ -898,33 +808,6 @@ The trust anchor that ultimately validated the chain.
 
 ## Type Aliases
 
-### Fetcher
-
-```ts
-type Fetcher = (url: string, init?: RequestInit) => Promise<FetcherResponse>;
-```
-
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:49
-
-Adapter-friendly HTTP fetcher. Compatible with global `fetch`,
-`node-fetch`, `undici`, and test mocks.
-
-#### Parameters
-
-##### url
-
-`string`
-
-##### init?
-
-`RequestInit`
-
-#### Returns
-
-`Promise`\<[`FetcherResponse`](#fetcherresponse)\>
-
-***
-
 ### SupportedAlg
 
 ```ts
@@ -974,62 +857,6 @@ Defined in: @gramota/jose/dist/types.d.ts:40
 Stable machine-readable error codes for `JoseError`.
 
 ## Functions
-
-### mockFetcherResponse()
-
-```ts
-function mockFetcherResponse(input: {
-  ok?: boolean;
-  status?: number;
-  json?: unknown;
-  text?: string;
-  headers?: Readonly<Record<string, string>>;
-}): FetcherResponse;
-```
-
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:60
-
-Build a [FetcherResponse](#fetcherresponse) for tests / in-process adapters with
-minimal boilerplate. Both `json()` and `text()` are derived from the
-supplied body so the strict contract is satisfied without forcing
-mock authors to spell every method out.
-
-  mockFetcherResponse({ json: { keys: [...] } })
-  mockFetcherResponse({ text: "compact-jws" })
-  mockFetcherResponse({ ok: false, status: 404, text: "not found" })
-
-#### Parameters
-
-##### input
-
-###### ok?
-
-`boolean`
-
-###### status?
-
-`number`
-
-###### json?
-
-`unknown`
-
-Provide either `json` or `text`. If both, `json` wins for `json()`,
-`text` wins for `text()`. If neither, the body is the empty string.
-
-###### text?
-
-`string`
-
-###### headers?
-
-`Readonly`\<`Record`\<`string`, `string`\>\>
-
-#### Returns
-
-[`FetcherResponse`](#fetcherresponse)
-
-***
 
 ### makeSigner()
 

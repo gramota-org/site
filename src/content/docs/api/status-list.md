@@ -136,7 +136,7 @@ GramotaError.constructor
 readonly optional cause?: unknown;
 ```
 
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/error.d.ts:44
+Defined in: .pnpm/@gramota+core@0.2.1/node\_modules/@gramota/core/dist/error.d.ts:44
 
 Optional original error that caused this one. Always set when the
 Gramota package is wrapping a thrown exception from a dependency
@@ -704,33 +704,6 @@ The reference that pointed at the list.
 
 ## Type Aliases
 
-### Fetcher
-
-```ts
-type Fetcher = (url: string, init?: RequestInit) => Promise<FetcherResponse>;
-```
-
-Defined in: .pnpm/@gramota+core@0.2.0/node\_modules/@gramota/core/dist/fetcher.d.ts:49
-
-Adapter-friendly HTTP fetcher. Compatible with global `fetch`,
-`node-fetch`, `undici`, and test mocks.
-
-#### Parameters
-
-##### url
-
-`string`
-
-##### init?
-
-`RequestInit`
-
-#### Returns
-
-`Promise`\<`FetcherResponse`\>
-
-***
-
 ### StatusBits
 
 ```ts
@@ -775,6 +748,14 @@ type StatusListErrorCode =
 Defined in: @gramota/status-list/dist/types.d.ts:72
 
 Stable error codes for `StatusListError`.
+
+***
+
+### Fetcher
+
+```ts
+type Fetcher = any;
+```
 
 ## Variables
 
